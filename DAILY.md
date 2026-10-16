@@ -5,7 +5,7 @@ Repo: https://github.com/mayaaravapalli/xalgoquest
 Claude artifact copy: https://claude.ai/artifact/M2bHpABf4Npc2p3Uc1Mka9
 Local folder: `/Users/maya/untitled folder/x-algo-quest`
 
-GitHub already rebuilds the numbers every morning (`.github/workflows/daily-scan.yml`).
+GitHub already rebuilds the numbers every morning at 5:30 AM ET (`.github/workflows/daily-scan.yml`). This task runs at 6:00 AM.
 This job adds the plain-English words, then pushes so production updates.
 
 1. Sync the site repo: `git pull --rebase --quiet`

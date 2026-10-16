@@ -4,7 +4,7 @@ name: Daily scan
 # Each commit makes Vercel redeploy production, so the live site updates daily.
 on:
   schedule:
-    - cron: "30 12 * * *"   # 8:30 AM New York (EDT)
+    - cron: "30 9 * * *"    # 5:30 AM New York (EDT), 4:30 AM in winter. X usually pushes 9 PM to 1 AM ET.
   workflow_dispatch:
 
 permissions:
