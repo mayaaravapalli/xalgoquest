@@ -33,7 +33,7 @@ if (og) {
   console.log("wrote public/og.png");
 } else if (stillsAt >= 0) {
   const dir = args[stillsAt + 1]; mkdirSync(dir, { recursive: true });
-  const times = promo ? [0, .3, .97, 1.7, 2.95, 4.05, 5.5, 6.5, 8.5, 9.6, 11.0, 12.3, 14.0] : [0.3, 1.2, 2.6, 6.0, 8.2, 10.4, 12.6, 14.6, 16.8, 18.9, 20.8];
+  const times = promo ? [0, .95, 3.0, 5.4, 7.4, 8.4, 10.4, 12.6, 13.6, 15.4, 17.6] : [0.3, 1.2, 2.6, 6.0, 8.2, 10.4, 12.6, 14.6, 16.8, 18.9, 20.8];
   for (const t of times) writeFileSync(join(dir, `${promo ? "p" : "t"}${t}.png`), await shot(t));
   console.log("stills in", dir);
 } else {
