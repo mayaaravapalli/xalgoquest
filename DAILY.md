@@ -20,9 +20,11 @@ This job adds the plain-English words, then pushes so production updates.
    - `NEEDS_FACTOR_COPY <codes>`: a new score factor appeared. Add it to `copy.json` → `factors`
      with a plain `name`, an `icon` from the sprite list in `template.html` (`SPR`), and an optional short `note`.
    - Then run step 3 again.
-5. Commit and push: `git add copy.json public && git commit -m "Daily notes <date>" && git push`
+5. If step 4 found a new day, re-record the X video so it leads with the newest change:
+   `node tools/record.mjs --promo` (writes `public/xalgoquest-x.mp4`; needs Chrome and LaunchReel's bundled ffmpeg).
+6. Commit and push: `git add copy.json public && git commit -m "Daily notes <date>" && git push`
    (skip the commit if nothing changed). The push redeploys the live site.
-6. Also publish `artifact.html` with the Artifact tool to the artifact URL above.
+7. Also publish `artifact.html` with the Artifact tool to the artifact URL above.
 
 ## Writing rules
 
