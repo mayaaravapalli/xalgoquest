@@ -1,7 +1,7 @@
 # X Algo Quest daily notes
 
 Live site: https://xalgoquest.vercel.app (Vercel deploys every push to `main`)
-Repo: https://github.com/mayaaravapalli/Xalgoquest
+Repo: https://github.com/mayaaravapalli/xalgoquest
 Claude artifact copy: https://claude.ai/artifact/M2bHpABf4Npc2p3Uc1Mka9
 Local folder: `/Users/maya/untitled folder/x-algo-quest`
 
