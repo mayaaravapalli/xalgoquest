@@ -306,7 +306,7 @@ footer .wrap { display: grid; gap: 6px; }
 .sg-top { position: absolute; left: 40px; right: 40px; top: 26px; display: flex; justify-content: space-between; align-items: center; z-index: 3; }
 .sg-top b { font-family: var(--f-pixel); font-size: 14px; color: var(--gold); font-weight: 400; }
 .sg-top span { font-family: var(--f-label); font-size: 22px; color: var(--muted); }
-.sc { position: absolute; inset: 0; }
+.sg-sc { position: absolute; inset: 0; }
 .sg-cap { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: max-content; max-width: 1080px; background: var(--ink); font-weight: 700; font-size: 30px; line-height: 1.3; padding: 14px 26px; text-align: center; z-index: 4; }
 .sg-hand { position: absolute; left: 0; top: 0; width: 60px; z-index: 6; }
 .sg-h1 { font-family: var(--f-pixel); font-size: 84px; line-height: 1.15; color: var(--gold); text-shadow: 6px 6px 0 var(--harsh), 12px 12px 0 var(--ink); }
@@ -332,6 +332,7 @@ footer .wrap { display: grid; gap: 6px; }
 .sg-badge { display: inline-block; font-family: var(--f-label); font-size: 16px; font-weight: 600; padding: 4px 8px; color: var(--ink); }
 .sg-row { position: absolute; left: 220px; width: 840px; height: 64px; background: var(--panel); display: grid; grid-template-columns: 40px 1fr auto; gap: 0 16px; align-items: center; padding: 0 18px; }
 .sg-row img { width: 36px; }
+.sg-row .sg-badge { transform-origin: 0 50%; margin-left: 4px; }
 .sg-row .n { font-size: 23px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
 .sg-row .v { font-family: var(--f-label); font-size: 28px; font-weight: 600; }
 .sg-row .bar { position: absolute; left: 74px; right: 18px; bottom: 9px; height: 8px; background: var(--ink); }
@@ -430,7 +431,7 @@ html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
       <div class="stats" id="stats"></div>
       <div class="start-row">
         <button class="btn press" id="start">PRESS START</button>
-        <a class="btn ghost" href="#howto">WATCH THE TOUR</a>
+        <a class="btn ghost" href="#howto" id="watchTour">WATCH THE TOUR</a>
       </div>
     </div>
     <div class="box latest-card" id="latestCard"></div>
@@ -439,14 +440,14 @@ html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
 
 <main>
   <section class="block wrap" id="howto">
-    <div class="head"><div><h2>HOW IT WORKS</h2><p>A 25 second tour. Pause anytime, jump to a chapter, or try each part for real.</p></div></div>
+    <div class="head"><div><h2>HOW IT WORKS</h2><p>A 20 second tour. Pause anytime, jump to a chapter, or try each part for real.</p></div></div>
     <div class="box tour">
       <div class="stage-wrap" id="stageWrap" aria-label="Animated tour of X Algo Quest. Click to play or pause."><div class="stage" id="stage"></div></div>
       <div class="player-ui">
         <div class="pl-row">
           <button class="pl-play" id="tourPlay">PLAY</button>
-          <input type="range" id="tourSeek" min="0" max="245" value="9" aria-label="Tour position">
-          <span class="pl-time" id="tourTime">0:00 / 0:24</span>
+          <input type="range" id="tourSeek" min="0" max="215" value="8" aria-label="Tour position">
+          <span class="pl-time" id="tourTime">0:00 / 0:21</span>
         </div>
         <div class="pl-ch">
           <span class="pl-ch" id="tourCh"></span>
@@ -984,7 +985,7 @@ renderScores(false);
 /* ---------- how-to tour (player + MP4 share one timeline) ---------- */
 (function tour() {
   const wrap = $("#stageWrap"), host = $("#stage");
-  const SW = 1280, SH = 720, DUR = 24.5;
+  const SW = 1280, SH = 720;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
   const easeOut = x => 1 - Math.pow(1 - x, 3);
@@ -995,30 +996,31 @@ renderScores(false);
   const kindCol = k => ({ buff: "--buff", softer: "--buff", nerf: "--nerf", harsher: "--harsh", new: "--new", gone: "--muted", switch: "--gold" }[k] || "--gold");
 
   /* scenes: [start, end]; hard cuts between them */
-  const S = { count: [0, 2.4], stat1: [2.4, 4.3], stat2: [4.3, 6.1], title: [6.1, 8.3], map: [8.3, 11.0], card: [11.0, 13.8], points: [13.8, 16.8], scores: [16.8, 19.6], daily: [19.6, 21.8], outro: [21.8, 24.5] };
-  const ORDER = Object.keys(S);
+  const S = {
+    count: [0, 2.0], stat1: [2.0, 3.6], stat2: [3.6, 5.2], title: [5.2, 6.9], map: [6.9, 9.0], card: [9.0, 11.2],
+    earn: [11.2, 13.4], lose: [13.4, 15.4], scores: [15.4, 17.6], daily: [17.6, 19.4], outro: [19.4, 21.5]
+  };
+  const ORDER = Object.keys(S), DUR = S.outro[1];
 
   /* real data for each scene */
   const changed = D.factors.filter(f => !f.gone && f.history.length > 1 && f.history[0][1] && f.now)
     .map(f => ({ f, pct: Math.round((Math.abs(f.now) - Math.abs(f.history[0][1])) / Math.abs(f.history[0][1]) * 100) }))
     .sort((a, b) => (b.f.code === "FavoriteWeight") - (a.f.code === "FavoriteWeight") || Math.abs(b.pct) - Math.abs(a.pct));
   const stats = changed.slice(0, 2);
-  const weightDays = days.filter(d => d.chips.some(c => c.factor && ["buff", "nerf", "harsher", "softer"].includes(c.kind)));
+  const MOVES = ["buff", "nerf", "harsher", "softer"];
+  const weightDays = days.filter(d => d.chips.some(c => c.factor && MOVES.includes(c.kind)));
   const star = weightDays[weightDays.length - 1] || days[days.length - 1];
   const start = clamp(star.idx - 15, 0, Math.max(0, days.length - 21));
   const win = days.slice(start, start + 21);
   const starChips = [...star.chips.filter(c => c.factor && c.kind !== "gone"), ...star.extra].slice(0, 3);
-  const hotChip = star.chips.find(c => c.factor && ["buff", "nerf", "harsher", "softer"].includes(c.kind));
-  const hot = hotChip ? F[hotChip.factor] : F.FavoriteWeight;
-  const pos = D.factors.filter(f => !f.gone && f.now > 0).sort((a, b) => b.now - a.now);
-  const neg = D.factors.filter(f => !f.gone && f.now < 0).sort((a, b) => a.now - b.now);
-  let rowsF = pos.slice(0, 3);
-  rowsF.push(rowsF.includes(hot) || hot.now < 0 ? pos[3] : hot);
-  rowsF = rowsF.sort((a, b) => b.now - a.now);
-  const negPick = neg.includes(hot) ? [hot, neg.find(f => f !== hot)] : neg.slice(0, 2);
-  rowsF = [...rowsF, ...negPick.sort((a, b) => b.now - a.now)].filter(Boolean).slice(0, 6);
-  const hotRow = rowsF.indexOf(hot);
-  const hotPrev = hot.history.length > 1 ? hot.history[hot.history.length - 2][1] : hot.now;
+  const hotChips = new Map(star.chips.filter(c => c.factor && MOVES.includes(c.kind)).map(c => [c.factor, c]));
+  const live = D.factors.filter(f => !f.gone);
+  let earn = live.filter(f => f.now > 0).sort((a, b) => b.now - a.now).slice(0, 4);
+  live.filter(f => f.now > 0 && hotChips.has(f.code) && !earn.includes(f)).forEach(f => earn.push(f));
+  earn = earn.sort((a, b) => b.now - a.now).slice(0, 5);
+  const lose = live.filter(f => f.now < 0).sort((a, b) => a.now - b.now).slice(0, 5);
+  const prevOf = f => f.history.length > 1 ? f.history[f.history.length - 2][1] : f.now;
+  const hotIn = list => list.findIndex(f => hotChips.has(f.code));
   const oldRules = firstSnap, newRules = D.latest;
   const scoreRows = POSTS.map((p, n) => ({ p, n, a: scoreOf(p, oldRules), b: scoreOf(p, newRules) }));
   const rankA = [...scoreRows].sort((x, y) => y.a - x.a), rankB = [...scoreRows].sort((x, y) => y.b - x.b);
@@ -1039,43 +1041,47 @@ renderScores(false);
   const sqPos = i => ({ x: gridX + (i % COLS) * (SQ + GAP), y: gridY + Math.floor(i / COLS) * (SQ + GAP) });
   const starI = Math.max(0, win.indexOf(star)), starP = sqPos(starI);
   const CARD = { x: 200, y: 120, w: 880, h: 420 };
-  const rowY = i => 150 + i * 74;
+  const rowY = i => 168 + i * 80;
   const scoreY = r => 196 + r * 82;
   const cellX = i => 85 + i * 80;
   const pillOld = { x: 380, w: 230 }, pillNew = { x: 630, w: 270 };
 
   const CH = [
     { t: 0, name: "Hook", go: null }, { t: S.map[0], name: "The map", go: "#map" }, { t: S.card[0], name: "What changed", go: "#viewer" },
-    { t: S.points[0], name: "Points", go: "#score" }, { t: S.scores[0], name: "High scores", go: "#hiscores" },
+    { t: S.earn[0], name: "Points", go: "#score" }, { t: S.scores[0], name: "High scores", go: "#hiscores" },
     { t: S.daily[0], name: "Daily scan", go: "#scan" }, { t: S.outro[0], name: "Start", go: "start" }
   ];
+  const statCap = s => s ? `${s.f.name} is worth ${Math.abs(s.pct)}% ${s.pct > 0 ? "more" : "less"} than in ${MON[pd(s.f.history[0][0]).m - 1].charAt(0) + MON[pd(s.f.history[0][0]).m - 1].slice(1).toLowerCase()}.` : "";
   const CAPS = [
-    [S.stat1[0] + .1, S.stat1[1], stats[0] ? `${stats[0].f.name} is worth ${Math.abs(stats[0].pct)}% ${stats[0].pct > 0 ? "more" : "less"} since ${fmtShort(stats[0].f.history[0][0])}.` : ""],
-    [S.stat2[0] + .1, S.stat2[1], stats[1] ? `${stats[1].f.name} is worth ${Math.abs(stats[1].pct)}% ${stats[1].pct > 0 ? "more" : "less"}.` : ""],
+    [S.stat1[0] + .1, S.stat1[1], statCap(stats[0])],
+    [S.stat2[0] + .1, S.stat2[1], statCap(stats[1])],
     [S.map[0] + .2, S.map[1], "Every square is a day X changed the code."],
     [S.card[0] + .1, S.card[1], "Tap one. See what changed, in plain words."],
-    [S.points[0] + .1, S.points[1], "See what pushes a post up or down."],
+    [S.earn[0] + .1, S.earn[1], "What pushes a post up in your feed."],
+    [S.lose[0] + .1, S.lose[1], "What pushes a post down."],
     [S.scores[0] + .1, S.scores[1], "Flip old vs new rules. Watch scores move."],
     [S.daily[0] + .1, S.daily[1], "Checked every morning. New changes light up."],
     [S.outro[0] + .2, DUR, "Free. Updated every day."]
   ];
   const T = {
-    slam: 1.15, stat1: S.stat1[0] + .45, stat2: S.stat2[0] + .45, titleSlam: S.title[0] + .55,
-    click1: S.map[0] + 1.3, grow: S.points[0] + .8, pill: S.scores[0] + 1.0, coin: S.daily[0] + 1.4, press: S.outro[0] + 1.4
+    slam: .95, stat1: S.stat1[0] + .35, stat2: S.stat2[0] + .35, titleSlam: S.title[0] + .4,
+    click1: S.map[0] + 1.0, earnGrow: S.earn[0] + .55, loseGrow: S.lose[0] + .55, pill: S.scores[0] + .8, coin: S.daily[0] + 1.15, press: S.outro[0] + 1.1
   };
   const CLICKS = [T.click1, T.pill, T.press];
-  const SHAKES = [[T.slam, 14], [T.stat1, 10], [T.stat2, 10], [T.titleSlam, 12], [T.click1, 5], [T.press, 6]];
+  const SHAKES = [[T.slam, 14], [T.stat1, 10], [T.stat2, 10], [T.titleSlam, 12], [T.click1, 5], [S.lose[0] + .1, 7], [T.press, 6]];
+  const earnHot = hotIn(earn), loseHot = hotIn(lose);
   const SOUNDS = [
-    ...days.slice(0, 18).map((d, i) => [i * .055, "tick", 330 + i * 38]),
-    [T.slam, "mega"], [T.stat1, "up"], [T.stat2, "down"], [T.titleSlam, "start"],
-    [T.click1, "coin"], [S.card[0] + .3, "up"], [T.grow + .7, "up"], [T.pill, "coin"], [T.coin, "coin"], [T.press, "mega"]
+    ...days.slice(0, 18).map((d, i) => [i * .045, "tick", 330 + i * 38]),
+    [T.slam, "mega"], [T.stat1, stats[0] && stats[0].pct > 0 ? "up" : "down"], [T.stat2, stats[1] && stats[1].pct > 0 ? "up" : "down"], [T.titleSlam, "start"],
+    [T.click1, "coin"], [S.card[0] + .25, "up"], [T.earnGrow + .55, "up"], [S.lose[0] + .1, "down"], [T.pill, "coin"], [T.coin, "coin"], [T.press, "mega"]
   ];
-  const hotC = { x: 640, y: rowY(Math.max(0, hotRow)) + 30 };
+  const rowC = (list, i) => ({ x: 700, y: rowY(Math.max(0, i)) + 30 });
+  const eC = rowC(earn, earnHot < 0 ? 0 : earnHot), lC = rowC(lose, loseHot < 0 ? 0 : loseHot);
   const HAND = [
-    [S.map[0] + .1, 1300, 760], [S.map[0] + 1.1, starP.x + 34, starP.y + 36], [S.card[0] - .1, starP.x + 34, starP.y + 36],
-    [S.card[0] + .7, 330, 470], [S.points[0], 330, 470], [S.points[0] + .6, hotC.x, hotC.y], [S.scores[0] + .3, hotC.x, hotC.y],
-    [T.pill - .15, pillNew.x + 140, 142], [T.pill + .3, pillNew.x + 140, 142], [S.daily[0] - .2, 1130, 600],
-    [S.daily[0] + 1.1, cellX(13) + 40, 350], [S.outro[0] + .2, cellX(13) + 40, 350], [T.press - .2, 660, 360], [DUR, 660, 360]
+    [S.map[0] + .05, 1300, 760], [S.map[0] + .8, starP.x + 34, starP.y + 36], [S.card[0] - .1, starP.x + 34, starP.y + 36],
+    [S.card[0] + .55, 330, 470], [S.earn[0], 330, 470], [S.earn[0] + .45, eC.x, eC.y], [S.lose[0], eC.x, eC.y],
+    [S.lose[0] + .45, lC.x, lC.y], [S.scores[0] + .1, lC.x, lC.y], [T.pill - .15, pillNew.x + 140, 142], [T.pill + .25, pillNew.x + 140, 142],
+    [S.daily[0] - .15, 1130, 600], [S.daily[0] + .9, cellX(13) + 40, 350], [S.outro[0] + .15, cellX(13) + 40, 350], [T.press - .2, 660, 330], [DUR, 660, 330]
   ];
 
   /* build the stage once */
@@ -1090,60 +1096,68 @@ renderScores(false);
     const v = from === null ? `<b>${esc(to)}</b>` : `<s>${esc(from)}</s> &gt; <b>${esc(to)}</b>`;
     return `<div class="sg-chip"><div class="n">${img(KIND_ICON[kind] || "switch")}${esc(label)}</div><div class="v">${v}</div><span class="sg-badge" style="background:var(${kindCol(kind)})">${BADGE[kind]}</span></div>`;
   };
-  const statScene = (id, s) => s ? `<div class="sc" id="${id}">
+  const statScene = (id, s) => s ? `<div class="sg-sc" id="${id}">
       <img class="spr" src="${sprURL(s.f.icon)}" alt="" style="position:absolute;left:230px;top:200px;width:240px">
       <div style="position:absolute;left:540px;top:170px">
         <div class="sg-lbl">${esc(s.f.name.toUpperCase())}</div>
         <div class="sg-big" data-pct="${s.pct}" style="color:var(${s.pct > 0 ? "--buff" : "--harsh"})"></div>
-      </div></div>` : `<div class="sc" id="${id}"></div>`;
+      </div></div>` : `<div class="sg-sc" id="${id}"></div>`;
+  const rowsHTML = (list, cls, fill) => list.map((f, i) => {
+    const c = hotChips.get(f.code);
+    return `<div class="sg-row ${cls}" data-code="${f.code}" style="top:${rowY(i)}px;--fill:var(${fill})">${img(f.icon)}<div class="n">${esc(f.name)}${c ? `<span class="sg-badge" style="background:var(${kindCol(c.kind)})">${pctWord(c.from, c.to, c.kind)}</span>` : ""}</div><div class="v">${fmtNum(f.now)}</div><div class="bar"><i style="width:${barPct(f.now)}%"></i>${c ? `<b style="left:${barPct(prevOf(f))}%"></b>` : ""}</div></div>`;
+  }).join("");
   host.innerHTML = `
     <canvas id="sgStars" width="${SW}" height="${SH}"></canvas>
     <div class="sg-top"><b>X ALGO QUEST</b><span id="sgCh"></span></div>
     <div id="sgCam" style="position:absolute;inset:0">
-    <div class="sc" id="sc-count">
+    <div class="sg-sc" id="sc-count">
       <div style="position:absolute;left:0;right:0;top:120px;text-align:center" class="sg-lbl" id="sgCountTop">X UPDATED ITS ALGORITHM</div>
       ${days.map((d, i) => `<div class="sg-mini" style="left:${miniX(i)}px;top:${miniY(i)}px;background:var(${HYPE_COL[d.hype]})"></div>`).join("")}
       <div style="position:absolute;left:0;right:0;top:${miniY(0) + mRows * (MINI + MG) + 40}px;text-align:center"><span class="sg-h1" id="sgCount" style="font-size:76px;display:inline-block">0 TIMES</span></div>
     </div>
     ${statScene("sc-stat1", stats[0])}
     ${statScene("sc-stat2", stats[1])}
-    <div class="sc" id="sc-title">
+    <div class="sg-sc" id="sc-title">
       <div style="position:absolute;left:0;right:0;top:170px;text-align:center;color:var(--muted)" class="sg-lbl" id="sgSo">SO WE MADE IT A GAME</div>
       <div style="position:absolute;left:0;right:0;top:270px;text-align:center">
         <div class="sg-h1" id="sgTitle" style="position:relative;display:inline-block">X ALGO<br><span>QUEST</span><div class="sg-glare" id="sgGlare">X ALGO<br><span>QUEST</span></div></div>
       </div>
     </div>
-    <div class="sc" id="sc-map">
+    <div class="sg-sc" id="sc-map">
       <div class="sg-head" style="top:110px">WORLD MAP</div>
-      ${win.map((d, i) => { const p = sqPos(i); return `<div class="sg-sq" data-i="${i}" style="left:${p.x}px;top:${p.y}px;background:var(${HYPE_COL[d.hype]});${d.hype === 4 ? "color:var(--cream)" : ""}">${pd(d.date).d}</div>`; }).join("")}
+      ${win.map((d, i) => { const p = sqPos(i); return `<div class="sg-sq" style="left:${p.x}px;top:${p.y}px;background:var(${HYPE_COL[d.hype]});${d.hype === 4 ? "color:var(--cream)" : ""}">${pd(d.date).d}</div>`; }).join("")}
       <div style="position:absolute;left:0;right:0;top:${gridY + 3 * (SQ + GAP) + 6}px;text-align:center;font-size:22px;color:var(--muted)">${fmtShort(win[0].date)} to ${fmtShort(win[win.length - 1].date)}</div>
     </div>
     <div class="sg-morph" id="sgMorph"></div>
-    <div class="sc" id="sc-card" style="z-index:2"><div class="sg-card">
+    <div class="sg-sc" id="sc-card" style="z-index:2"><div class="sg-card">
       <div class="d">${fmtDate(star.date)}</div>
       <h4>${esc(star.title)}</h4>
       <p>${esc(star.story)}</p>
       <div class="sg-chips">${starChips.map(chipBlock).join("")}</div>
     </div></div>
-    <div class="sc" id="sc-points">
-      <div class="sg-head" style="top:92px">WHAT EARNS POINTS</div>
-      ${rowsF.map((f, i) => `<div class="sg-row" style="top:${rowY(i)}px;--fill:var(${f.now < 0 ? "--harsh" : "--buff"})">${img(f.icon)}<div class="n">${esc(f.name)}${f === hot ? `<span class="sg-badge" id="sgHotBadge" style="background:var(${kindCol(hotChip ? hotChip.kind : "buff")})">${hotChip ? pctWord(hotChip.from, hotChip.to, hotChip.kind) : ""}</span>` : ""}</div><div class="v">${fmtNum(f.now)}</div><div class="bar"><i style="width:${barPct(f.now)}%"></i>${f === hot ? `<b style="left:${barPct(hotPrev)}%"></b>` : ""}</div></div>`).join("")}
+    <div class="sg-sc" id="sc-earn">
+      <div class="sg-head" style="top:84px;color:var(--buff)">WHAT EARNS POINTS</div>
+      ${rowsHTML(earn, "earn", "--buff")}
     </div>
-    <div class="sc" id="sc-scores">
+    <div class="sg-sc" id="sc-lose">
+      <div class="sg-head" style="top:84px;color:var(--harsh)">WHAT LOSES POINTS</div>
+      ${rowsHTML(lose, "lose", "--harsh")}
+    </div>
+    <div class="sg-sc" id="sc-scores">
       <div class="sg-head" style="top:64px">HIGH SCORES</div>
       <div class="sg-pill" id="sgPillA" style="left:${pillOld.x}px;width:${pillOld.w}px">${fmtShort(oldRules)} RULES</div>
       <div class="sg-pill" id="sgPillB" style="left:${pillNew.x}px;width:${pillNew.w}px">TODAY'S RULES</div>
       ${scoreRows.map(r => `<div class="sg-score" data-n="${r.n}"><span class="rk"></span>${img(r.p.icon)}<span class="t">${esc(r.p.name)}</span><span class="s"></span></div>`).join("")}
     </div>
-    <div class="sc" id="sc-daily">
+    <div class="sg-sc" id="sc-daily">
       <div class="sg-tick"><div id="sgTick">${esc(tickText)}</div></div>
       <div class="sg-head" style="top:228px;font-size:26px;color:var(--cream)">DAILY SCAN</div>
       ${stripDays.map((d, i) => `<div class="sg-cell" style="left:${cellX(i)}px;${i === 13 ? "outline:4px solid var(--buff)" : ""}"><small>${d.mon}</small>${img(d.has ? "coin" : "post")}<em>${d.day}</em></div>`).join("")}
       <div class="sg-beam" id="sgBeam"></div>
     </div>
-    <div class="sc" id="sc-outro">
-      <div class="sg-btn" id="sgStart" style="left:470px;top:260px">PRESS START</div>
-      <div style="position:absolute;left:0;right:0;top:410px;text-align:center;font-family:var(--f-label);font-size:44px;font-weight:600;color:var(--gold)">${SITE}</div>
+    <div class="sg-sc" id="sc-outro">
+      <div class="sg-btn" id="sgStart" style="left:470px;top:230px">PRESS START</div>
+      <div style="position:absolute;left:0;right:0;top:380px;text-align:center;font-family:var(--f-label);font-size:44px;font-weight:600;color:var(--gold)">${SITE}</div>
     </div>
     </div>
     <canvas id="sgFx" width="${SW}" height="${SH}" style="z-index:5"></canvas>
@@ -1161,7 +1175,8 @@ renderScores(false);
 
   const q = s => host.querySelector(s), qa = s => [...host.querySelectorAll(s)];
   const scene = Object.fromEntries(ORDER.map(k => [k, q("#sc-" + k)]));
-  const minis = qa(".sg-mini"), squares = qa(".sg-sq"), rows = qa(".sg-row"), sRows = qa(".sg-score"), cells = qa(".sg-cell"), chips = qa(".sg-chip");
+  const minis = qa(".sg-mini"), squares = qa(".sg-sq"), sRows = qa(".sg-score"), cells = qa(".sg-cell"), chips = qa(".sg-chip");
+  const rowSets = [[qa(".sg-row.earn"), S.earn[0], T.earnGrow], [qa(".sg-row.lose"), S.lose[0], T.loseGrow]];
   const hand = q("#sgHand"), cap = q("#sgCap"), fxc = q("#sgFx").getContext("2d"), cam = q("#sgCam"), flash = q("#sgFlash");
   const morph = q("#sgMorph"), glare = q("#sgGlare"), chLabel = q("#sgCh");
 
@@ -1178,19 +1193,16 @@ renderScores(false);
     /* hard cuts with a whip-in: each scene lands slightly big and snaps to size */
     ORDER.forEach(k => {
       const [a, b] = S[k], el = scene[k];
-      const on = t >= a && t < b + (k === "map" ? .5 : 0);
+      const on = t >= a && t < b + (k === "map" ? .4 : 0);
       el.style.visibility = on ? "visible" : "hidden";
       el.style.opacity = on ? 1 : 0;
-      const w = easeOut(P(t, a, a + .28));
-      el.style.transform = a === 0 ? "none" : `scale(${lerp(1.18, 1, w).toFixed(3)})`;
-      el.style.filter = "none";
+      el.style.transform = a === 0 ? "none" : `scale(${lerp(1.18, 1, easeOut(P(t, a, a + .24))).toFixed(3)})`;
     });
-    const cutFlash = ORDER.slice(1, 4).map(k => S[k][0]).some(a => t >= a && t < a + .07);
-    flash.style.opacity = cutFlash ? .5 : 0;
+    flash.style.opacity = ["stat1", "stat2", "title", "earn", "lose"].some(k => t >= S[k][0] && t < S[k][0] + .06) ? .45 : 0;
 
     /* camera shake on slams */
     let sx = 0, sy = 0;
-    SHAKES.forEach(([s, amp], i) => { const d = t - s; if (d >= 0 && d < .35) { const k = amp * (1 - d / .35); sx += Math.sin(d * 90 + i) * k; sy += Math.cos(d * 70 + i * 2) * k; } });
+    SHAKES.forEach(([s, amp], i) => { const d = t - s; if (d >= 0 && d < .32) { const k = amp * (1 - d / .32); sx += Math.sin(d * 90 + i) * k; sy += Math.cos(d * 70 + i * 2) * k; } });
     if (reduce) sx = sy = 0;
     cam.style.transform = `translate(${sx.toFixed(1)}px, ${sy.toFixed(1)}px)`;
 
@@ -1199,74 +1211,71 @@ renderScores(false);
 
     /* count: squares rain in from frame one, counter races, then slams */
     minis.forEach((m, i) => {
-      const s0 = -0.25 + i * .026, k = P(t, s0, s0 + .35);
+      const s0 = -0.25 + i * .021, k = P(t, s0, s0 + .3);
       m.style.transform = `translateY(${((1 - backOut(k)) * -340).toFixed(1)}px)`;
       m.style.opacity = k > 0 ? 1 : 0;
     });
-    const n = Math.round(days.length * easeOut(P(t, 0, T.slam)));
     const cnt = q("#sgCount");
-    cnt.textContent = `${n} TIMES`;
-    const sl = P(t, T.slam, T.slam + .25);
-    cnt.style.transform = `scale(${t < T.slam ? .9 : lerp(1.45, 1, easeOut(sl)).toFixed(3)})`;
-    q("#sgCountTop").style.opacity = P(t, 0, .2);
+    cnt.textContent = `${Math.round(days.length * easeOut(P(t, 0, T.slam)))} TIMES`;
+    cnt.style.transform = `scale(${t < T.slam ? .9 : lerp(1.45, 1, easeOut(P(t, T.slam, T.slam + .22))).toFixed(3)})`;
+    q("#sgCountTop").style.opacity = P(t, 0, .15);
 
     /* stat cards: number counts up and slams */
-    [["stat1", 0], ["stat2", 1]].forEach(([k, i]) => {
+    ["stat1", "stat2"].forEach(k => {
       const big = scene[k].querySelector(".sg-big"); if (!big) return;
       const pct = +big.dataset.pct, a = S[k][0];
-      const v = Math.round(Math.abs(pct) * easeOut(P(t, a + .05, a + .45)));
-      big.textContent = `${pct > 0 ? "+" : "-"}${v}%`;
-      big.style.transform = `scale(${lerp(1.35, 1, easeOut(P(t, a + .45, a + .7))).toFixed(3)})`;
-      scene[k].querySelector("img").style.transform = `rotate(${(Math.sin((t - a) * 9) * 6 * (1 - P(t, a, a + .8))).toFixed(1)}deg) scale(${lerp(.6, 1, backOut(P(t, a, a + .4))).toFixed(3)})`;
+      big.textContent = `${pct > 0 ? "+" : "-"}${Math.round(Math.abs(pct) * easeOut(P(t, a + .04, a + .35)))}%`;
+      big.style.transform = `scale(${lerp(1.35, 1, easeOut(P(t, a + .35, a + .58))).toFixed(3)})`;
+      scene[k].querySelector("img").style.transform = `rotate(${(Math.sin((t - a) * 10) * 6 * (1 - P(t, a, a + .7))).toFixed(1)}deg) scale(${lerp(.6, 1, backOut(P(t, a, a + .32))).toFixed(3)})`;
     });
 
     /* title slam with glare */
-    q("#sgSo").style.opacity = P(t, S.title[0], S.title[0] + .15);
-    q("#sgTitle").style.transform = `scale(${t < T.titleSlam ? 0 : lerp(1.6, 1, easeOut(P(t, T.titleSlam, T.titleSlam + .3))).toFixed(3)})`;
-    glare.style.backgroundPosition = `${lerp(100, 0, ease(P(t, T.titleSlam + .3, T.titleSlam + 1.1)))}% 0`;
+    q("#sgSo").style.opacity = P(t, S.title[0], S.title[0] + .12);
+    q("#sgTitle").style.transform = `scale(${t < T.titleSlam ? 0 : lerp(1.6, 1, easeOut(P(t, T.titleSlam, T.titleSlam + .26))).toFixed(3)})`;
+    glare.style.backgroundPosition = `${lerp(100, 0, ease(P(t, T.titleSlam + .25, T.titleSlam + .95)))}% 0`;
 
     /* map: pick the big day, everything else blurs */
-    const focus = P(t, T.click1 + .05, T.click1 + .35);
+    const focus = P(t, T.click1 + .05, T.click1 + .3);
     squares.forEach((s, i) => {
-      const isStar = i === starI, a = S.map[0] + i * .015;
-      const pop = isStar ? 1 + .25 * Math.sin(Math.PI * P(t, T.click1, T.click1 + .3)) : 1;
-      s.style.transform = `scale(${(pop * backOut(P(t, a, a + .25))).toFixed(3)})`;
+      const isStar = i === starI, a = S.map[0] + i * .012;
+      const pop = isStar ? 1 + .25 * Math.sin(Math.PI * P(t, T.click1, T.click1 + .28)) : 1;
+      s.style.transform = `scale(${(pop * backOut(P(t, a, a + .22))).toFixed(3)})`;
       s.style.opacity = isStar ? 1 : 1 - .65 * focus;
       s.style.filter = !isStar && focus > 0 ? `blur(${(focus * 3).toFixed(2)}px)` : "none";
       s.style.outline = isStar && t > T.click1 ? "4px solid var(--cream)" : "none";
     });
 
     /* morph: the square grows into the card */
-    const m0 = S.card[0] - .4, m = ease(P(t, m0, S.card[0] + .2));
+    const m0 = S.card[0] - .35, m = ease(P(t, m0, S.card[0] + .15));
     morph.style.opacity = t >= m0 && t < S.card[1] ? 1 : 0;
     morph.style.left = lerp(starP.x, CARD.x, m) + "px"; morph.style.top = lerp(starP.y, CARD.y, m) + "px";
     morph.style.width = lerp(SQ, CARD.w, m) + "px"; morph.style.height = lerp(SQ, CARD.h, m) + "px";
     morph.style.background = m < .5 ? `var(${HYPE_COL[star.hype]})` : "var(--panel)";
     morph.style.boxShadow = `0 0 0 ${m < .5 ? 4 : 5}px var(${m < .5 ? "--ink" : "--cream"}), 10px 10px 0 5px var(--ink)`;
     morph.style.transform = scene.card.style.transform;
-    scene.card.querySelector(".sg-card").style.opacity = P(t, S.card[0] + .15, S.card[0] + .35);
-    chips.forEach((c, i) => { const k = backOut(P(t, S.card[0] + .35 + i * .12, S.card[0] + .65 + i * .12)); c.style.opacity = Math.min(1, k); c.style.transform = `translateY(${((1 - k) * 30).toFixed(1)}px)`; });
+    scene.card.querySelector(".sg-card").style.opacity = P(t, S.card[0] + .1, S.card[0] + .28);
+    chips.forEach((c, i) => { const k = backOut(P(t, S.card[0] + .28 + i * .1, S.card[0] + .55 + i * .1)); c.style.opacity = Math.min(1, k); c.style.transform = `translateY(${((1 - k) * 30).toFixed(1)}px)`; });
 
-    /* points */
-    rows.forEach((r, i) => {
-      const k = easeOut(P(t, S.points[0] + i * .06, S.points[0] + .3 + i * .06));
-      r.style.opacity = k; r.style.transform = `translateX(${((1 - k) * -60).toFixed(1)}px)`;
-      const isHot = i === hotRow;
-      r.style.outline = isHot && t > T.grow - .2 ? "4px solid var(--buff)" : "none";
-      if (isHot) {
-        r.querySelector(".bar i").style.width = lerp(barPct(hotPrev), barPct(hot.now), ease(P(t, T.grow, T.grow + .7))) + "%";
-        r.querySelector(".v").textContent = fmtNum(t < T.grow + .7 ? hotPrev : hot.now);
-      }
-    });
-    const hb = q("#sgHotBadge");
-    if (hb) { const k = P(t, T.grow + .7, T.grow + .95); hb.style.opacity = k; hb.style.transform = `scale(${(1 + .35 * Math.sin(Math.PI * k)).toFixed(3)})`; }
+    /* earns / loses points: rows slam in, changed rows grow from old value to new */
+    rowSets.forEach(([rs, a, grow]) => rs.forEach((r, i) => {
+      const k = easeOut(P(t, a + i * .05, a + .26 + i * .05));
+      r.style.opacity = k; r.style.transform = `translateX(${((1 - k) * -70).toFixed(1)}px)`;
+      const f = F[r.dataset.code], c = hotChips.get(f.code);
+      if (!c) return;
+      const g = ease(P(t, grow, grow + .55));
+      r.style.outline = t > grow - .15 ? `4px solid var(${kindCol(c.kind)})` : "none";
+      r.querySelector(".bar i").style.width = lerp(barPct(prevOf(f)), barPct(f.now), g) + "%";
+      r.querySelector(".v").textContent = fmtNum(g < 1 ? prevOf(f) : f.now);
+      const b = r.querySelector(".sg-badge"), bk = P(t, grow + .55, grow + .75);
+      b.style.opacity = bk; b.style.transform = `scale(${(1 + .35 * Math.sin(Math.PI * bk)).toFixed(3)})`;
+    }));
 
     /* high scores flip */
-    const flip = ease(P(t, T.pill + .1, T.pill + .8));
+    const flip = ease(P(t, T.pill + .08, T.pill + .65));
     [[q("#sgPillA"), t < T.pill], [q("#sgPillB"), t >= T.pill]].forEach(([p, on]) => { p.style.background = on ? "var(--cream)" : "transparent"; p.style.color = on ? "var(--ink)" : "var(--muted)"; });
     sRows.forEach(r => {
       const row = scoreRows[+r.dataset.n], ra = rankA.indexOf(row), rb = rankB.indexOf(row);
-      r.style.opacity = easeOut(P(t, S.scores[0] + ra * .07, S.scores[0] + .3 + ra * .07));
+      r.style.opacity = easeOut(P(t, S.scores[0] + ra * .06, S.scores[0] + .26 + ra * .06));
       r.style.top = lerp(scoreY(ra), scoreY(rb), flip) + "px";
       r.querySelector(".rk").textContent = "#" + ((flip < .5 ? ra : rb) + 1);
       const v = lerp(row.a, row.b, flip), s = r.querySelector(".s");
@@ -1274,13 +1283,13 @@ renderScores(false);
     });
 
     /* daily scan */
-    q("#sgTick").style.left = (SW - (t - S.daily[0]) * 260) + "px";
-    const b0 = S.daily[0] + .2, b1 = T.coin, bx = lerp(cellX(0) - 20, cellX(13) + 90, P(t, b0, b1));
-    const beam = q("#sgBeam"); beam.style.left = bx + "px"; beam.style.opacity = t > b0 && t < b1 + .2 ? 1 : 0;
+    q("#sgTick").style.left = (SW - (t - S.daily[0]) * 300) + "px";
+    const b0 = S.daily[0] + .15, b1 = T.coin, bx = lerp(cellX(0) - 20, cellX(13) + 90, P(t, b0, b1));
+    const beam = q("#sgBeam"); beam.style.left = bx + "px"; beam.style.opacity = t > b0 && t < b1 + .15 ? 1 : 0;
     cells.forEach((c, i) => {
-      const k = P(t, b0 + (i / 13) * (b1 - b0), b0 + (i / 13) * (b1 - b0) + .25);
+      const k = P(t, b0 + (i / 13) * (b1 - b0), b0 + (i / 13) * (b1 - b0) + .2);
       let y = 0;
-      if (i === 13 && stripDays[13].has) { const d = P(t, T.coin, T.coin + .5); y = d < 1 ? -70 * (1 - easeOut(d)) * Math.abs(Math.cos(d * Math.PI * 1.5)) : 0; }
+      if (i === 13 && stripDays[13].has) { const d = P(t, T.coin, T.coin + .45); y = d < 1 ? -70 * (1 - easeOut(d)) * Math.abs(Math.cos(d * Math.PI * 1.5)) : 0; }
       c.style.transform = `translateY(${y.toFixed(1)}px) scale(${(1 + .14 * Math.sin(Math.PI * k)).toFixed(3)})`;
       c.style.opacity = t < b0 || bx > cellX(i) + 35 ? 1 : .5;
     });
@@ -1288,7 +1297,7 @@ renderScores(false);
     /* outro press */
     q("#sgStart").style.transform = `translateY(${((P(t, T.press - .1, T.press) - P(t, T.press, T.press + .2)) * 8).toFixed(1)}px)`;
 
-    /* hand, click rings, bursts (clicks and slams) */
+    /* hand, click rings, bursts */
     const [, hx, hy] = handAt(t);
     const down = CLICKS.some(c => t >= c - .05 && t < c + .12);
     hand.style.opacity = t >= S.map[0] ? 1 : 0;
@@ -1300,22 +1309,22 @@ renderScores(false);
       [T.slam, SW / 2, 470, 60], [T.stat1, 820, 330, 50], [T.stat2, 820, 330, 50], [T.titleSlam, SW / 2, 380, 70]
     ];
     bursts.forEach(([c, cx, cy, count], bi) => {
-      const dt = t - c; if (dt < 0 || dt > 1.1) return;
-      fxc.strokeStyle = col("--cream"); fxc.lineWidth = 4; fxc.globalAlpha = Math.max(0, 1 - dt * 2.6);
-      const rr = 10 + dt * 200; fxc.strokeRect(cx - rr, cy - rr, rr * 2, rr * 2);
+      const dt = t - c; if (dt < 0 || dt > 1.0) return;
+      fxc.strokeStyle = col("--cream"); fxc.lineWidth = 4; fxc.globalAlpha = Math.max(0, 1 - dt * 2.8);
+      const rr = 10 + dt * 220; fxc.strokeRect(cx - rr, cy - rr, rr * 2, rr * 2);
       let s = 97 + bi * 31; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-      fxc.globalAlpha = Math.max(0, 1 - dt / 1.1);
+      fxc.globalAlpha = Math.max(0, 1 - dt);
       for (let i = 0; i < count; i++) {
-        const a = r() * Math.PI * 2, sp = 220 + r() * 520, sz = 6 + (r() * 3 | 0) * 3;
+        const a = r() * Math.PI * 2, sp = 240 + r() * 560, sz = 6 + (r() * 3 | 0) * 3;
         fxc.fillStyle = colors[i % colors.length];
-        fxc.fillRect(cx + Math.cos(a) * sp * dt, cy + Math.sin(a) * sp * dt - 300 * dt + 640 * dt * dt, sz, sz);
+        fxc.fillRect(cx + Math.cos(a) * sp * dt, cy + Math.sin(a) * sp * dt - 320 * dt + 700 * dt * dt, sz, sz);
       }
       fxc.globalAlpha = 1;
     });
 
     /* captions */
     const c = CAPS.find(([a, b, txt]) => txt && t >= a && t < b);
-    cap.style.opacity = c ? Math.min(1, P(t, c[0], c[0] + .12)) : 0;
+    cap.style.opacity = c ? Math.min(1, P(t, c[0], c[0] + .1)) : 0;
     if (c && cap.textContent !== c[2]) cap.textContent = c[2];
   }
 
@@ -1326,7 +1335,7 @@ renderScores(false);
   if (location.hash === "#record") { document.documentElement.classList.add("rec"); fit(); render(0); return; }
 
   /* player */
-  let t = 0.9, playing = false, last = 0, autoplayed = false;
+  let t = 0.75, playing = false, last = 0, autoplayed = false;
   const btn = $("#tourPlay"), seek = $("#tourSeek"), time = $("#tourTime"), chBox = $("#tourCh"), tryBtn = $("#tourTry");
   const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   chBox.innerHTML = CH.map((c, i) => `<button class="chipbtn" data-ch="${i}">${i + 1} ${c.name.toUpperCase()}</button>`).join("");
@@ -1350,6 +1359,12 @@ renderScores(false);
   function play() { if (t >= DUR) t = 0; playing = true; last = performance.now(); requestAnimationFrame(frame); ui(); }
   function pause() { playing = false; ui(); }
   btn.onclick = () => playing ? pause() : play();
+  $("#watchTour").onclick = e => {
+    e.preventDefault();
+    autoplayed = true; pause(); t = 0; render(t); ui();
+    wrap.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    setTimeout(play, reduce ? 0 : 650);
+  };
   wrap.onclick = () => playing ? pause() : play();
   seek.max = Math.round(DUR * 10);
   seek.oninput = () => { pause(); t = seek.value / 10; render(t); ui(); };

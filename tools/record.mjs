@@ -26,11 +26,11 @@ const { dur, sounds } = await page.evaluate(() => ({ dur: window.__xaqTour.dur, 
 const shot = async t => { await page.evaluate(t => window.__xaqTour.seek(t), t); return page.screenshot({ type: "png" }); };
 
 if (og) {
-  writeFileSync(join(ROOT, "public/og.png"), await shot(7.6));
+  writeFileSync(join(ROOT, "public/og.png"), await shot(6.4));
   console.log("wrote public/og.png");
 } else if (args[0] === "--stills") {
   const dir = args[1]; mkdirSync(dir, { recursive: true });
-  for (const t of [0.0, 0.5, 1.3, 2.9, 4.9, 6.9, 9.8, 12.2, 15.6, 18.5, 20.7, 23.3]) writeFileSync(join(dir, `t${t}.png`), await shot(t));
+  for (const t of [0.3, 1.2, 2.6, 6.0, 8.2, 10.4, 12.6, 14.6, 16.8, 18.9, 20.8]) writeFileSync(join(dir, `t${t}.png`), await shot(t));
   console.log("stills in", dir);
 } else {
   const wav = join(ROOT, ".cache/tour-audio.wav");

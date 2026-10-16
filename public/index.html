@@ -323,7 +323,7 @@ footer .wrap { display: grid; gap: 6px; }
 .sg-top { position: absolute; left: 40px; right: 40px; top: 26px; display: flex; justify-content: space-between; align-items: center; z-index: 3; }
 .sg-top b { font-family: var(--f-pixel); font-size: 14px; color: var(--gold); font-weight: 400; }
 .sg-top span { font-family: var(--f-label); font-size: 22px; color: var(--muted); }
-.sc { position: absolute; inset: 0; }
+.sg-sc { position: absolute; inset: 0; }
 .sg-cap { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: max-content; max-width: 1080px; background: var(--ink); font-weight: 700; font-size: 30px; line-height: 1.3; padding: 14px 26px; text-align: center; z-index: 4; }
 .sg-hand { position: absolute; left: 0; top: 0; width: 60px; z-index: 6; }
 .sg-h1 { font-family: var(--f-pixel); font-size: 84px; line-height: 1.15; color: var(--gold); text-shadow: 6px 6px 0 var(--harsh), 12px 12px 0 var(--ink); }
@@ -349,6 +349,7 @@ footer .wrap { display: grid; gap: 6px; }
 .sg-badge { display: inline-block; font-family: var(--f-label); font-size: 16px; font-weight: 600; padding: 4px 8px; color: var(--ink); }
 .sg-row { position: absolute; left: 220px; width: 840px; height: 64px; background: var(--panel); display: grid; grid-template-columns: 40px 1fr auto; gap: 0 16px; align-items: center; padding: 0 18px; }
 .sg-row img { width: 36px; }
+.sg-row .sg-badge { transform-origin: 0 50%; margin-left: 4px; }
 .sg-row .n { font-size: 23px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
 .sg-row .v { font-family: var(--f-label); font-size: 28px; font-weight: 600; }
 .sg-row .bar { position: absolute; left: 74px; right: 18px; bottom: 9px; height: 8px; background: var(--ink); }
@@ -449,7 +450,7 @@ html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
       <div class="stats" id="stats"></div>
       <div class="start-row">
         <button class="btn press" id="start">PRESS START</button>
-        <a class="btn ghost" href="#howto">WATCH THE TOUR</a>
+        <a class="btn ghost" href="#howto" id="watchTour">WATCH THE TOUR</a>
       </div>
     </div>
     <div class="box latest-card" id="latestCard"></div>
@@ -458,14 +459,14 @@ html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
 
 <main>
   <section class="block wrap" id="howto">
-    <div class="head"><div><h2>HOW IT WORKS</h2><p>A 25 second tour. Pause anytime, jump to a chapter, or try each part for real.</p></div></div>
+    <div class="head"><div><h2>HOW IT WORKS</h2><p>A 20 second tour. Pause anytime, jump to a chapter, or try each part for real.</p></div></div>
     <div class="box tour">
       <div class="stage-wrap" id="stageWrap" aria-label="Animated tour of X Algo Quest. Click to play or pause."><div class="stage" id="stage"></div></div>
       <div class="player-ui">
         <div class="pl-row">
           <button class="pl-play" id="tourPlay">PLAY</button>
-          <input type="range" id="tourSeek" min="0" max="245" value="9" aria-label="Tour position">
-          <span class="pl-time" id="tourTime">0:00 / 0:24</span>
+          <input type="range" id="tourSeek" min="0" max="215" value="8" aria-label="Tour position">
+          <span class="pl-time" id="tourTime">0:00 / 0:21</span>
         </div>
         <div class="pl-ch">
           <span class="pl-ch" id="tourCh"></span>
@@ -572,7 +573,7 @@ window.addEventListener("error", e => {
   box.textContent = "Something broke while loading: " + (e.message || "unknown error");
 });
 (function () {
-const D = {"repo":"https://github.com/xai-org/x-algorithm","checkedAt":"2026-10-15T22:20-04:00","latest":"2026-10-15","days":[{"date":"2026-01-20","sha":"aaa167b","url":"https://github.com/xai-org/x-algorithm/commit/aaa167b3de8a674587c53545a43c90eaad360010","commits":1,"files":79,"plus":8816,"minus":0,"chips":[],"title":"The code goes public","story":"X posts the For You feed code for anyone to read. An AI built on Grok ranks every post.","extra":[],"tags":["big"],"hype":4,"needsCopy":false},{"date":"2026-05-15","sha":"0bfc279","url":"https://github.com/xai-org/x-algorithm/commit/0bfc2795d308f90032544322747caacd535f75ae","commits":2,"files":188,"plus":18265,"minus":928,"chips":[],"title":"Expansion pack","story":"Adds how ads get placed, spam detectors, and a mini model anyone can run at home.","extra":[],"tags":["ads","safety"],"hype":3,"needsCopy":false},{"date":"2026-08-13","sha":"a389166","url":"https://github.com/xai-org/x-algorithm/commit/a389166f6cf5da70a286b568c87695d4dcdce3a1","commits":2,"files":2054,"plus":363246,"minus":11642,"chips":[],"title":"The mega drop","story":"2,053 files at once. The real scoring weights, the safety filters, and the actual training code.","extra":[["Under the Hood",null,"launched","new"]],"tags":["big","weights","safety"],"hype":5,"needsCopy":false},{"date":"2026-08-14","sha":"c65aa17","url":"https://github.com/xai-org/x-algorithm/commit/c65aa179db7bdd61e2c2821eac87f208a105c053","commits":1,"files":21,"plus":2271,"minus":32,"chips":[],"title":"Brazil election filter","story":"Accounts reported to Brazil's Electoral Court vanish from For You, unless you follow them.","extra":[["Election filter",null,"on","new"]],"tags":["legal"],"hype":4,"needsCopy":false},{"date":"2026-08-17","sha":"b089ce6","url":"https://github.com/xai-org/x-algorithm/commit/b089ce64891f9c50fab73aa00dbe65acb82f198f","commits":1,"files":34,"plus":751,"minus":162,"chips":[],"title":"Spam radar tune-up","story":"Spam and rule-breaking detectors get retrained. New ad safety check added, switched off.","extra":[],"tags":["safety","ads"],"hype":1,"needsCopy":false},{"date":"2026-08-18","sha":"11a71f8","url":"https://github.com/xai-org/x-algorithm/commit/11a71f87d6a7fc4c1e8159dad8f3c5ff90a0f7ed","commits":1,"files":14,"plus":208,"minus":70,"chips":[],"title":"Your follows get checked too","story":"Posts from people you follow now run their own safety check. Reply spam detector updated.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-08-19","sha":"aad7179","url":"https://github.com/xai-org/x-algorithm/commit/aad7179773944e17eb8798bbbf0231d6cd6c1ffc","commits":1,"files":79,"plus":3303,"minus":651,"chips":[],"title":"Muted words hit harder","story":"Muted words now also catch text inside quoted posts.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-08-20","sha":"d0cef2f","url":"https://github.com/xai-org/x-algorithm/commit/d0cef2f943084ee0d4310378031c9c2c37d67f12","commits":1,"files":14,"plus":479,"minus":200,"chips":[],"title":"AI trend switch","story":"A new switch lets trend feedback shape ranking. Off by default.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-21","sha":"28e414f","url":"https://github.com/xai-org/x-algorithm/commit/28e414f535e4b5a50ca12ee87674e7649e50c7ad","commits":1,"files":35,"plus":856,"minus":152,"chips":[],"title":"Model plumbing","story":"Storage and data changes inside the AI. Nothing you would notice.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-24","sha":"d011592","url":"https://github.com/xai-org/x-algorithm/commit/d011592a1c8c4bfb23781ff15577a68dc08bdde1","commits":1,"files":19,"plus":1418,"minus":117,"chips":[],"title":"Safety tests added","story":"The safety filter gets a checker that compares old and new answers.","extra":[],"tags":["safety","tech"],"hype":1,"needsCopy":false},{"date":"2026-08-25","sha":"0d3cdd8","url":"https://github.com/xai-org/x-algorithm/commit/0d3cdd806c405f04db7030f720b48687aa304061","commits":1,"files":47,"plus":5850,"minus":586,"chips":[{"factor":"VideoOpenWeight","from":0.05,"to":0.07,"kind":"buff"},{"factor":"VqvWeight","from":0.05,"to":0.0,"kind":"nerf"},{"factor":"DwellWeight","from":0.0,"to":0.05,"kind":"buff"}],"title":"Looking now counts","story":"Stopping to look at a post now earns points. Video views stop counting, video opens go up.","extra":[["AI learns from","short looks","long looks","switch"]],"tags":["weights","video"],"hype":4,"needsCopy":false},{"date":"2026-08-26","sha":"45b48ba","url":"https://github.com/xai-org/x-algorithm/commit/45b48ba6baa40e212f6dcbaf8fe9fdc8d9da722e","commits":1,"files":36,"plus":873,"minus":525,"chips":[],"title":"Training upgrades","story":"Behind-the-scenes work on how the AI learns.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-28","sha":"bc8e5f0","url":"https://github.com/xai-org/x-algorithm/commit/bc8e5f0f07b31337bfdcaf690121498e00199b64","commits":2,"files":65,"plus":4021,"minus":1440,"chips":[],"title":"Smarter ad placement","story":"A new ad mixer that checks how risky nearby posts are before placing an ad.","extra":[],"tags":["ads"],"hype":2,"needsCopy":false},{"date":"2026-09-01","sha":"2a38187","url":"https://github.com/xai-org/x-algorithm/commit/2a38187dbffa67ae1c81781db7e048a5f461ab13","commits":3,"files":105,"plus":5213,"minus":3596,"chips":[],"title":"New ad mixer goes live","story":"The risk-aware ad mixer becomes the default. Safety rules get reorganized.","extra":[["Ad placement","basic","checks risk","switch"]],"tags":["ads","safety"],"hype":3,"needsCopy":false},{"date":"2026-09-02","sha":"85ac72a","url":"https://github.com/xai-org/x-algorithm/commit/85ac72a1bba41f21615e3f0bca56da75970a6633","commits":1,"files":34,"plus":1081,"minus":525,"chips":[],"title":"Stranger posts: long looks win","story":"The AI that finds posts from people you don't follow now learns from long looks too.","extra":[["Stranger post AI learns from","short looks","long looks","switch"]],"tags":["discovery"],"hype":2,"needsCopy":false},{"date":"2026-09-03","sha":"e4dcedd","url":"https://github.com/xai-org/x-algorithm/commit/e4dcedd3b2db8b7a9cc244c2b616d04a0ee2c353","commits":1,"files":1,"plus":2,"minus":0,"chips":[],"title":"A stranger's fix got in","story":"The first outside code fix gets merged. It stops duplicate safety lookups.","extra":[],"tags":["community"],"hype":2,"needsCopy":false},{"date":"2026-09-04","sha":"902a06f","url":"https://github.com/xai-org/x-algorithm/commit/902a06fd616ed815f660e5546d16d492fa1ca825","commits":2,"files":98,"plus":2434,"minus":2105,"chips":[],"title":"Small account boost rewritten","story":"The code that helps small accounts get seen gets rebuilt from scratch.","extra":[],"tags":["creators"],"hype":3,"needsCopy":false},{"date":"2026-09-08","sha":"49815da","url":"https://github.com/xai-org/x-algorithm/commit/49815da255010f2468fb87b8bdd1283c2a507ca8","commits":1,"files":78,"plus":10938,"minus":982,"chips":[],"title":"New AI picks stranger posts","story":"A new model starts picking posts from people you don't follow.","extra":[["Stranger post AI","version 1","version 2","switch"]],"tags":["discovery"],"hype":3,"needsCopy":false},{"date":"2026-09-09","sha":"75d93d9","url":"https://github.com/xai-org/x-algorithm/commit/75d93d9b6c7d08124173c513a727c37460ed5b04","commits":1,"files":28,"plus":801,"minus":252,"chips":[],"title":"Safety filter cleanup","story":"The final safety check before your feed gets simpler and faster.","extra":[],"tags":["safety"],"hype":1,"needsCopy":false},{"date":"2026-09-10","sha":"fee1d0f","url":"https://github.com/xai-org/x-algorithm/commit/fee1d0f3e99c25e4c10499e1aba4061c8d1cc86d","commits":1,"files":33,"plus":1587,"minus":391,"chips":[],"title":"Safety plumbing","story":"Under the Hood reports and safety data get faster.","extra":[],"tags":["safety","tech"],"hype":1,"needsCopy":false},{"date":"2026-09-12","sha":"6bb4594","url":"https://github.com/xai-org/x-algorithm/commit/6bb4594253cdfa9ea19983a54a401d5ce8f8275d","commits":1,"files":24,"plus":1397,"minus":338,"chips":[],"title":"Brazil list updated","story":"The list of election accounts gets updated.","extra":[],"tags":["legal"],"hype":2,"needsCopy":false},{"date":"2026-09-15","sha":"2d4a03c","url":"https://github.com/xai-org/x-algorithm/commit/2d4a03c2dbfb1214571d8098077c53f4ee8a9dc1","commits":1,"files":17,"plus":594,"minus":9,"chips":[],"title":"Feed variety tracker","story":"X starts measuring how varied each feed is.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-09-16","sha":"fad2f71","url":"https://github.com/xai-org/x-algorithm/commit/fad2f71edc780ab14e4cfaebbb8b221385782e43","commits":1,"files":26,"plus":552,"minus":233,"chips":[],"title":"Ad safety check paused","story":"The newer ad safety check gets switched back off.","extra":[["Newer ad safety check","on","off","switch"]],"tags":["ads"],"hype":1,"needsCopy":false},{"date":"2026-09-17","sha":"42266f3","url":"https://github.com/xai-org/x-algorithm/commit/42266f3e2be54d8a3c4d2228aac2e8f8d1c1f034","commits":1,"files":64,"plus":2288,"minus":3627,"chips":[],"title":"The viral holdout","story":"A new switch can hide very liked posts from a small slice of people, up to 15%. Off by default.","extra":[["Small account boost window","1 day","2 days","buff"]],"tags":["creators","big"],"hype":4,"needsCopy":false},{"date":"2026-09-18","sha":"8b25829","url":"https://github.com/xai-org/x-algorithm/commit/8b25829717a4f104dd04403ee7d0253c5fedb1b7","commits":2,"files":71,"plus":4368,"minus":1982,"chips":[],"title":"See legal takedowns","story":"Under the Hood now shows if a country forced your post to be hidden, and which one.","extra":[["Legal takedown info",null,"visible","new"]],"tags":["legal","safety"],"hype":4,"needsCopy":false},{"date":"2026-09-22","sha":"3aa0fa3","url":"https://github.com/xai-org/x-algorithm/commit/3aa0fa336c4a20e4149b6151629b6050897bb8a5","commits":1,"files":72,"plus":5588,"minus":2601,"chips":[],"title":"Ranking gets logged","story":"More data recorded about which posts were picked and why.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-09-23","sha":"1b3fec2","url":"https://github.com/xai-org/x-algorithm/commit/1b3fec20bc3fd9879bc3e9f3d9c42753cdc3fede","commits":1,"files":92,"plus":4993,"minus":3132,"chips":[],"title":"Final shuffle goes public","story":"X shares the code that does the last reshuffle of your feed. Small accounts get their own lane.","extra":[["Spots for small accounts","0","200","buff"]],"tags":["creators","discovery"],"hype":3,"needsCopy":false},{"date":"2026-09-24","sha":"44d37eb","url":"https://github.com/xai-org/x-algorithm/commit/44d37ebf87f2185b949cd37b710d410c2a77d21f","commits":1,"files":63,"plus":2569,"minus":2257,"chips":[{"factor":"ContActiveSecs5mResidualNormWeight","from":0.0,"to":null,"kind":"gone"}],"title":"Scoring moves house","story":"The scoring math moves into its own file. Same math, new home.","extra":[],"tags":["tech"],"hype":2,"needsCopy":false},{"date":"2026-09-25","sha":"bf7db1b","url":"https://github.com/xai-org/x-algorithm/commit/bf7db1becb6590152fba79b8c3bf0555752f7b14","commits":1,"files":87,"plus":7780,"minus":5759,"chips":[],"title":"Safety engine rebuild","story":"The visibility filter gets rebuilt. It can now tell which region you are in.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-09-26","sha":"4c5cfe8","url":"https://github.com/xai-org/x-algorithm/commit/4c5cfe8f07f1c76d4f04277e803f20e6039f5191","commits":1,"files":80,"plus":9130,"minus":2652,"chips":[],"title":"Appeals stick","story":"If you win an appeal, the same punishment is not put back for a while.","extra":[],"tags":["safety"],"hype":3,"needsCopy":false},{"date":"2026-09-29","sha":"a707cc2","url":"https://github.com/xai-org/x-algorithm/commit/a707cc27ba36d3fa79450c9cffcc48a82d080b02","commits":1,"files":89,"plus":9552,"minus":2325,"chips":[{"factor":"ClickWeight","from":0.4,"to":0.3,"kind":"nerf"},{"factor":"ContClickDwellTimeWeight","from":0.0,"to":0.4,"kind":"buff"},{"factor":"NotInterestedWeight","from":-43.2,"to":-47.52,"kind":"harsher"}],"title":"Clickbait loses points","story":"Just tapping in is worth less. Actually staying to read is worth way more. Not interested hurts more.","extra":[],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-09-30","sha":"77d431a","url":"https://github.com/xai-org/x-algorithm/commit/77d431aabf409ca1c1eed9bec7e2183f7c914e23","commits":1,"files":69,"plus":3306,"minus":1489,"chips":[],"title":"Small account boost overhaul","story":"Accounts up to 50K followers now get a boost, but only for a post's first 2 hours.","extra":[["Follower limit","1K","50K","buff"],["Post age window","48 hrs","2 hrs","nerf"],["Boost stops after","1,000 views","200 views","nerf"],["Random tryouts for new posts","off","on","new"]],"tags":["creators","big"],"hype":5,"needsCopy":false},{"date":"2026-10-01","sha":"b79b947","url":"https://github.com/xai-org/x-algorithm/commit/b79b947ce9283c786822274ef8fe208c33c585b2","commits":1,"files":47,"plus":2490,"minus":506,"chips":[],"title":"Limits explained","story":"New text explains why some actions are limited on your account.","extra":[],"tags":["safety"],"hype":1,"needsCopy":false},{"date":"2026-10-02","sha":"76843a5","url":"https://github.com/xai-org/x-algorithm/commit/76843a5eea278ced444b21372d4e6d6909f5c35e","commits":1,"files":105,"plus":5227,"minus":756,"chips":[],"title":"New way to find posts","story":"A new way to find posts by what they mean. Built, but off for now.","extra":[],"tags":["discovery"],"hype":2,"needsCopy":false},{"date":"2026-10-03","sha":"b412112","url":"https://github.com/xai-org/x-algorithm/commit/b412112d03f27acbfd668e0cc040abcafa1080c1","commits":1,"files":148,"plus":9128,"minus":2356,"chips":[],"title":"Popular posts built","story":"A shared list of popular posts gets built. Ad safety check comes back on.","extra":[["Newer ad safety check","off","on","switch"]],"tags":["discovery","ads"],"hype":3,"needsCopy":false},{"date":"2026-10-06","sha":"e62790c","url":"https://github.com/xai-org/x-algorithm/commit/e62790c99484b51424c2eccc488ed4e7517e8778","commits":1,"files":103,"plus":6916,"minus":1393,"chips":[],"title":"Notices instead of deletes","story":"Safety can now keep a post up with a notice on it instead of hiding it.","extra":[["Safety options","3","4","new"]],"tags":["safety"],"hype":3,"needsCopy":false},{"date":"2026-10-07","sha":"78460ca","url":"https://github.com/xai-org/x-algorithm/commit/78460ca8b65c57ddd3a05f9217c8aaeba214b628","commits":1,"files":22,"plus":775,"minus":681,"chips":[{"factor":"PostUnexploredWeight","from":0.02,"to":0.015,"kind":"nerf"}],"title":"Popular posts go live","story":"Popular recent posts from the most followed accounts now join everyone's feed pool.","extra":[["Popular posts source","off","on","new"]],"tags":["discovery","big"],"hype":5,"needsCopy":false},{"date":"2026-10-08","sha":"35650fb","url":"https://github.com/xai-org/x-algorithm/commit/35650fb89f3b14dc6234312535f642779d891d88","commits":1,"files":173,"plus":15160,"minus":2465,"chips":[],"title":"Video row arrives","story":"A swipeable row of videos at spot 6 in your feed, at most once an hour. Testing.","extra":[["Video row",null,"built","new"]],"tags":["video"],"hype":4,"needsCopy":false},{"date":"2026-10-09","sha":"cb45b55","url":"https://github.com/xai-org/x-algorithm/commit/cb45b5501423126adfc508052116c2d67c0e3fec","commits":1,"files":16,"plus":1228,"minus":218,"chips":[],"title":"Faster training","story":"The AI trains faster. Nothing you would notice yet.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-10-13","sha":"e1a0375","url":"https://github.com/xai-org/x-algorithm/commit/e1a0375a903899984545c663bb0bccb3cdcdf046","commits":1,"files":179,"plus":26532,"minus":5971,"chips":[{"factor":"FavoriteWeight","from":0.5,"to":0.6,"kind":"buff"},{"factor":"VideoOpenWeight","from":0.07,"to":0.02,"kind":"nerf"},{"factor":"ReactWithVideoWeight","from":null,"to":0.0,"kind":"new"},{"factor":"ContDwellTimeWeight","from":0.004,"to":0.006,"kind":"buff"}],"title":"Likes get a boost","story":"Likes are worth more, video opens worth way less. Brazil list cut to the runoff.","extra":[["Enforcement off switch",null,"added","new"]],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-10-14","sha":"17c96bf","url":"https://github.com/xai-org/x-algorithm/commit/17c96bf346df3d62b90f1bb01830d432dba74485","commits":1,"files":52,"plus":7745,"minus":6964,"chips":[{"factor":"FavoriteWeight","from":0.6,"to":0.66,"kind":"buff"},{"factor":"NotInterestedWeight","from":-47.52,"to":-52.272,"kind":"harsher"}],"title":"Likes boosted again","story":"Second like boost in two days. Not interested hurts a post even more.","extra":[],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-10-15","sha":"92f0918","url":"https://github.com/xai-org/x-algorithm/commit/92f0918f6cb52837cb53a8c790c68f906b2c0db1","commits":1,"files":57,"plus":7145,"minus":2959,"chips":[{"factor":"VideoCarouselVideoOpenWeight","from":null,"to":1.0,"kind":"new"},{"factor":"VideoCarouselImmersiveVqvWeight","from":null,"to":0.0,"kind":"new"}],"title":"Video row gets a brain","story":"The video row gets its own scoring AI. Ads now skip risky authors by default.","extra":[["Risky author ad check","off","on","switch"]],"tags":["video","ads"],"hype":4,"needsCopy":false}],"factors":[{"code":"FavoriteWeight","since":"2026-08-13","history":[["2026-08-13",0.5],["2026-10-13",0.6],["2026-10-14",0.66]],"name":"Like","note":"","icon":"heart","now":0.66},{"code":"ReplyWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Reply","note":"","icon":"reply","now":5.0},{"code":"BidirectionalFollowReplyWeightBoost","since":"2026-08-13","history":[["2026-08-13",15.0]],"name":"Reply to a mutual","note":"Bonus on top of Reply when you follow each other","icon":"mutual","now":15.0},{"code":"BidirectionalFollowDwellWeightBoost","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Look at a mutual's post","note":"Tested in July, never shipped","icon":"mutual","now":0.0},{"code":"RetweetWeight","since":"2026-08-13","history":[["2026-08-13",1.0]],"name":"Repost","note":"","icon":"repost","now":1.0},{"code":"PhotoExpandWeight","since":"2026-08-13","history":[["2026-08-13",0.05]],"name":"Open a photo","note":"","icon":"photo","now":0.05},{"code":"VideoOpenWeight","since":"2026-08-13","history":[["2026-08-13",0.05],["2026-08-25",0.07],["2026-10-13",0.02]],"name":"Open a video","note":"","icon":"play","now":0.02},{"code":"ClickWeight","since":"2026-08-13","history":[["2026-08-13",0.4],["2026-09-29",0.3]],"name":"Tap into the post","note":"","icon":"tap","now":0.3},{"code":"OpenLinkWeight","since":"2026-08-13","history":[["2026-08-13",0.2]],"name":"Open a link","note":"","icon":"open","now":0.2},{"code":"ProfileClickWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Visit the profile","note":"","icon":"follow","now":0.0},{"code":"VqvWeight","since":"2026-08-13","history":[["2026-08-13",0.05],["2026-08-25",0.0]],"name":"Actually watch the video","note":"","icon":"play","now":0.0},{"code":"ShareWeight","since":"2026-08-13","history":[["2026-08-13",2.0]],"name":"Share","note":"","icon":"share","now":2.0},{"code":"ShareViaDmWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Send it in DMs","note":"","icon":"dm","now":5.0},{"code":"ShareViaCopyLinkWeight","since":"2026-08-13","history":[["2026-08-13",20.0]],"name":"Copy the link","note":"The biggest single move","icon":"link","now":20.0},{"code":"DwellWeight","since":"2026-08-13","history":[["2026-08-13",0.0],["2026-08-25",0.05]],"name":"Stop scrolling to look","note":"","icon":"eye","now":0.05},{"code":"QuoteWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Quote","note":"","icon":"quote","now":5.0},{"code":"QuotedClickWeight","since":"2026-08-13","history":[["2026-08-13",0.05]],"name":"Tap the quoted post","note":"","icon":"tap","now":0.05},{"code":"QuotedVqvWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Watch the quoted video","note":"","icon":"play","now":0.0},{"code":"FollowAuthorWeight","since":"2026-08-13","history":[["2026-08-13",4.0]],"name":"Follow the author","note":"","icon":"follow","now":4.0},{"code":"PostUnexploredWeight","since":"2026-08-13","history":[["2026-08-13",0.02],["2026-10-07",0.015]],"name":"Explore bonus","note":"","icon":"star","now":0.015},{"code":"ContDwellTimeWeight","since":"2026-08-13","history":[["2026-08-13",0.004],["2026-10-13",0.006]],"name":"Seconds spent reading","note":"Tiny per second, adds up","icon":"clock","now":0.006},{"code":"ContClickDwellTimeWeight","since":"2026-08-13","history":[["2026-08-13",0.0],["2026-09-29",0.4]],"name":"Time spent after tapping in","note":"","icon":"clock","now":0.4},{"code":"ContActiveSecs5mResidualNormWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"gone":"2026-09-24","name":"Active time bonus","note":"Was set to 0, then deleted","icon":"clock","now":0.0},{"code":"NotInterestedWeight","since":"2026-08-13","history":[["2026-08-13",-43.2],["2026-09-29",-47.52],["2026-10-14",-52.272]],"name":"Not interested","note":"","icon":"thumbdown","now":-52.272},{"code":"BlockAuthorWeight","since":"2026-08-13","history":[["2026-08-13",-31.2]],"name":"Block","note":"","icon":"block","now":-31.2},{"code":"MuteAuthorWeight","since":"2026-08-13","history":[["2026-08-13",-58.8]],"name":"Mute","note":"","icon":"mute","now":-58.8},{"code":"ReportWeight","since":"2026-08-13","history":[["2026-08-13",-234.0]],"name":"Report","note":"","icon":"skull","now":-234.0},{"code":"NotDwelledWeight","since":"2026-08-13","history":[["2026-08-13",-0.02]],"name":"Scroll right past","note":"","icon":"wind","now":-0.02},{"code":"ReactWithVideoWeight","since":"2026-10-13","history":[["2026-10-13",0.0]],"name":"Reply with a video","note":"Brand new. Set to 0 for now","icon":"camera","now":0.0},{"code":"VideoCarouselVideoOpenWeight","since":"2026-10-15","history":[["2026-10-15",1.0]],"name":"Open a carousel video","note":"Only inside the new video row","icon":"play","now":1.0},{"code":"VideoCarouselImmersiveVqvWeight","since":"2026-10-15","history":[["2026-10-15",0.0]],"name":"Watch in the video row","note":"Brand new. Set to 0 for now","icon":"play","now":0.0}]};
+const D = {"repo":"https://github.com/xai-org/x-algorithm","checkedAt":"2026-10-15T22:28-04:00","latest":"2026-10-15","days":[{"date":"2026-01-20","sha":"aaa167b","url":"https://github.com/xai-org/x-algorithm/commit/aaa167b3de8a674587c53545a43c90eaad360010","commits":1,"files":79,"plus":8816,"minus":0,"chips":[],"title":"The code goes public","story":"X posts the For You feed code for anyone to read. An AI built on Grok ranks every post.","extra":[],"tags":["big"],"hype":4,"needsCopy":false},{"date":"2026-05-15","sha":"0bfc279","url":"https://github.com/xai-org/x-algorithm/commit/0bfc2795d308f90032544322747caacd535f75ae","commits":2,"files":188,"plus":18265,"minus":928,"chips":[],"title":"Expansion pack","story":"Adds how ads get placed, spam detectors, and a mini model anyone can run at home.","extra":[],"tags":["ads","safety"],"hype":3,"needsCopy":false},{"date":"2026-08-13","sha":"a389166","url":"https://github.com/xai-org/x-algorithm/commit/a389166f6cf5da70a286b568c87695d4dcdce3a1","commits":2,"files":2054,"plus":363246,"minus":11642,"chips":[],"title":"The mega drop","story":"2,053 files at once. The real scoring weights, the safety filters, and the actual training code.","extra":[["Under the Hood",null,"launched","new"]],"tags":["big","weights","safety"],"hype":5,"needsCopy":false},{"date":"2026-08-14","sha":"c65aa17","url":"https://github.com/xai-org/x-algorithm/commit/c65aa179db7bdd61e2c2821eac87f208a105c053","commits":1,"files":21,"plus":2271,"minus":32,"chips":[],"title":"Brazil election filter","story":"Accounts reported to Brazil's Electoral Court vanish from For You, unless you follow them.","extra":[["Election filter",null,"on","new"]],"tags":["legal"],"hype":4,"needsCopy":false},{"date":"2026-08-17","sha":"b089ce6","url":"https://github.com/xai-org/x-algorithm/commit/b089ce64891f9c50fab73aa00dbe65acb82f198f","commits":1,"files":34,"plus":751,"minus":162,"chips":[],"title":"Spam radar tune-up","story":"Spam and rule-breaking detectors get retrained. New ad safety check added, switched off.","extra":[],"tags":["safety","ads"],"hype":1,"needsCopy":false},{"date":"2026-08-18","sha":"11a71f8","url":"https://github.com/xai-org/x-algorithm/commit/11a71f87d6a7fc4c1e8159dad8f3c5ff90a0f7ed","commits":1,"files":14,"plus":208,"minus":70,"chips":[],"title":"Your follows get checked too","story":"Posts from people you follow now run their own safety check. Reply spam detector updated.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-08-19","sha":"aad7179","url":"https://github.com/xai-org/x-algorithm/commit/aad7179773944e17eb8798bbbf0231d6cd6c1ffc","commits":1,"files":79,"plus":3303,"minus":651,"chips":[],"title":"Muted words hit harder","story":"Muted words now also catch text inside quoted posts.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-08-20","sha":"d0cef2f","url":"https://github.com/xai-org/x-algorithm/commit/d0cef2f943084ee0d4310378031c9c2c37d67f12","commits":1,"files":14,"plus":479,"minus":200,"chips":[],"title":"AI trend switch","story":"A new switch lets trend feedback shape ranking. Off by default.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-21","sha":"28e414f","url":"https://github.com/xai-org/x-algorithm/commit/28e414f535e4b5a50ca12ee87674e7649e50c7ad","commits":1,"files":35,"plus":856,"minus":152,"chips":[],"title":"Model plumbing","story":"Storage and data changes inside the AI. Nothing you would notice.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-24","sha":"d011592","url":"https://github.com/xai-org/x-algorithm/commit/d011592a1c8c4bfb23781ff15577a68dc08bdde1","commits":1,"files":19,"plus":1418,"minus":117,"chips":[],"title":"Safety tests added","story":"The safety filter gets a checker that compares old and new answers.","extra":[],"tags":["safety","tech"],"hype":1,"needsCopy":false},{"date":"2026-08-25","sha":"0d3cdd8","url":"https://github.com/xai-org/x-algorithm/commit/0d3cdd806c405f04db7030f720b48687aa304061","commits":1,"files":47,"plus":5850,"minus":586,"chips":[{"factor":"VideoOpenWeight","from":0.05,"to":0.07,"kind":"buff"},{"factor":"VqvWeight","from":0.05,"to":0.0,"kind":"nerf"},{"factor":"DwellWeight","from":0.0,"to":0.05,"kind":"buff"}],"title":"Looking now counts","story":"Stopping to look at a post now earns points. Video views stop counting, video opens go up.","extra":[["AI learns from","short looks","long looks","switch"]],"tags":["weights","video"],"hype":4,"needsCopy":false},{"date":"2026-08-26","sha":"45b48ba","url":"https://github.com/xai-org/x-algorithm/commit/45b48ba6baa40e212f6dcbaf8fe9fdc8d9da722e","commits":1,"files":36,"plus":873,"minus":525,"chips":[],"title":"Training upgrades","story":"Behind-the-scenes work on how the AI learns.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-28","sha":"bc8e5f0","url":"https://github.com/xai-org/x-algorithm/commit/bc8e5f0f07b31337bfdcaf690121498e00199b64","commits":2,"files":65,"plus":4021,"minus":1440,"chips":[],"title":"Smarter ad placement","story":"A new ad mixer that checks how risky nearby posts are before placing an ad.","extra":[],"tags":["ads"],"hype":2,"needsCopy":false},{"date":"2026-09-01","sha":"2a38187","url":"https://github.com/xai-org/x-algorithm/commit/2a38187dbffa67ae1c81781db7e048a5f461ab13","commits":3,"files":105,"plus":5213,"minus":3596,"chips":[],"title":"New ad mixer goes live","story":"The risk-aware ad mixer becomes the default. Safety rules get reorganized.","extra":[["Ad placement","basic","checks risk","switch"]],"tags":["ads","safety"],"hype":3,"needsCopy":false},{"date":"2026-09-02","sha":"85ac72a","url":"https://github.com/xai-org/x-algorithm/commit/85ac72a1bba41f21615e3f0bca56da75970a6633","commits":1,"files":34,"plus":1081,"minus":525,"chips":[],"title":"Stranger posts: long looks win","story":"The AI that finds posts from people you don't follow now learns from long looks too.","extra":[["Stranger post AI learns from","short looks","long looks","switch"]],"tags":["discovery"],"hype":2,"needsCopy":false},{"date":"2026-09-03","sha":"e4dcedd","url":"https://github.com/xai-org/x-algorithm/commit/e4dcedd3b2db8b7a9cc244c2b616d04a0ee2c353","commits":1,"files":1,"plus":2,"minus":0,"chips":[],"title":"A stranger's fix got in","story":"The first outside code fix gets merged. It stops duplicate safety lookups.","extra":[],"tags":["community"],"hype":2,"needsCopy":false},{"date":"2026-09-04","sha":"902a06f","url":"https://github.com/xai-org/x-algorithm/commit/902a06fd616ed815f660e5546d16d492fa1ca825","commits":2,"files":98,"plus":2434,"minus":2105,"chips":[],"title":"Small account boost rewritten","story":"The code that helps small accounts get seen gets rebuilt from scratch.","extra":[],"tags":["creators"],"hype":3,"needsCopy":false},{"date":"2026-09-08","sha":"49815da","url":"https://github.com/xai-org/x-algorithm/commit/49815da255010f2468fb87b8bdd1283c2a507ca8","commits":1,"files":78,"plus":10938,"minus":982,"chips":[],"title":"New AI picks stranger posts","story":"A new model starts picking posts from people you don't follow.","extra":[["Stranger post AI","version 1","version 2","switch"]],"tags":["discovery"],"hype":3,"needsCopy":false},{"date":"2026-09-09","sha":"75d93d9","url":"https://github.com/xai-org/x-algorithm/commit/75d93d9b6c7d08124173c513a727c37460ed5b04","commits":1,"files":28,"plus":801,"minus":252,"chips":[],"title":"Safety filter cleanup","story":"The final safety check before your feed gets simpler and faster.","extra":[],"tags":["safety"],"hype":1,"needsCopy":false},{"date":"2026-09-10","sha":"fee1d0f","url":"https://github.com/xai-org/x-algorithm/commit/fee1d0f3e99c25e4c10499e1aba4061c8d1cc86d","commits":1,"files":33,"plus":1587,"minus":391,"chips":[],"title":"Safety plumbing","story":"Under the Hood reports and safety data get faster.","extra":[],"tags":["safety","tech"],"hype":1,"needsCopy":false},{"date":"2026-09-12","sha":"6bb4594","url":"https://github.com/xai-org/x-algorithm/commit/6bb4594253cdfa9ea19983a54a401d5ce8f8275d","commits":1,"files":24,"plus":1397,"minus":338,"chips":[],"title":"Brazil list updated","story":"The list of election accounts gets updated.","extra":[],"tags":["legal"],"hype":2,"needsCopy":false},{"date":"2026-09-15","sha":"2d4a03c","url":"https://github.com/xai-org/x-algorithm/commit/2d4a03c2dbfb1214571d8098077c53f4ee8a9dc1","commits":1,"files":17,"plus":594,"minus":9,"chips":[],"title":"Feed variety tracker","story":"X starts measuring how varied each feed is.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-09-16","sha":"fad2f71","url":"https://github.com/xai-org/x-algorithm/commit/fad2f71edc780ab14e4cfaebbb8b221385782e43","commits":1,"files":26,"plus":552,"minus":233,"chips":[],"title":"Ad safety check paused","story":"The newer ad safety check gets switched back off.","extra":[["Newer ad safety check","on","off","switch"]],"tags":["ads"],"hype":1,"needsCopy":false},{"date":"2026-09-17","sha":"42266f3","url":"https://github.com/xai-org/x-algorithm/commit/42266f3e2be54d8a3c4d2228aac2e8f8d1c1f034","commits":1,"files":64,"plus":2288,"minus":3627,"chips":[],"title":"The viral holdout","story":"A new switch can hide very liked posts from a small slice of people, up to 15%. Off by default.","extra":[["Small account boost window","1 day","2 days","buff"]],"tags":["creators","big"],"hype":4,"needsCopy":false},{"date":"2026-09-18","sha":"8b25829","url":"https://github.com/xai-org/x-algorithm/commit/8b25829717a4f104dd04403ee7d0253c5fedb1b7","commits":2,"files":71,"plus":4368,"minus":1982,"chips":[],"title":"See legal takedowns","story":"Under the Hood now shows if a country forced your post to be hidden, and which one.","extra":[["Legal takedown info",null,"visible","new"]],"tags":["legal","safety"],"hype":4,"needsCopy":false},{"date":"2026-09-22","sha":"3aa0fa3","url":"https://github.com/xai-org/x-algorithm/commit/3aa0fa336c4a20e4149b6151629b6050897bb8a5","commits":1,"files":72,"plus":5588,"minus":2601,"chips":[],"title":"Ranking gets logged","story":"More data recorded about which posts were picked and why.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-09-23","sha":"1b3fec2","url":"https://github.com/xai-org/x-algorithm/commit/1b3fec20bc3fd9879bc3e9f3d9c42753cdc3fede","commits":1,"files":92,"plus":4993,"minus":3132,"chips":[],"title":"Final shuffle goes public","story":"X shares the code that does the last reshuffle of your feed. Small accounts get their own lane.","extra":[["Spots for small accounts","0","200","buff"]],"tags":["creators","discovery"],"hype":3,"needsCopy":false},{"date":"2026-09-24","sha":"44d37eb","url":"https://github.com/xai-org/x-algorithm/commit/44d37ebf87f2185b949cd37b710d410c2a77d21f","commits":1,"files":63,"plus":2569,"minus":2257,"chips":[{"factor":"ContActiveSecs5mResidualNormWeight","from":0.0,"to":null,"kind":"gone"}],"title":"Scoring moves house","story":"The scoring math moves into its own file. Same math, new home.","extra":[],"tags":["tech"],"hype":2,"needsCopy":false},{"date":"2026-09-25","sha":"bf7db1b","url":"https://github.com/xai-org/x-algorithm/commit/bf7db1becb6590152fba79b8c3bf0555752f7b14","commits":1,"files":87,"plus":7780,"minus":5759,"chips":[],"title":"Safety engine rebuild","story":"The visibility filter gets rebuilt. It can now tell which region you are in.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-09-26","sha":"4c5cfe8","url":"https://github.com/xai-org/x-algorithm/commit/4c5cfe8f07f1c76d4f04277e803f20e6039f5191","commits":1,"files":80,"plus":9130,"minus":2652,"chips":[],"title":"Appeals stick","story":"If you win an appeal, the same punishment is not put back for a while.","extra":[],"tags":["safety"],"hype":3,"needsCopy":false},{"date":"2026-09-29","sha":"a707cc2","url":"https://github.com/xai-org/x-algorithm/commit/a707cc27ba36d3fa79450c9cffcc48a82d080b02","commits":1,"files":89,"plus":9552,"minus":2325,"chips":[{"factor":"ClickWeight","from":0.4,"to":0.3,"kind":"nerf"},{"factor":"ContClickDwellTimeWeight","from":0.0,"to":0.4,"kind":"buff"},{"factor":"NotInterestedWeight","from":-43.2,"to":-47.52,"kind":"harsher"}],"title":"Clickbait loses points","story":"Just tapping in is worth less. Actually staying to read is worth way more. Not interested hurts more.","extra":[],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-09-30","sha":"77d431a","url":"https://github.com/xai-org/x-algorithm/commit/77d431aabf409ca1c1eed9bec7e2183f7c914e23","commits":1,"files":69,"plus":3306,"minus":1489,"chips":[],"title":"Small account boost overhaul","story":"Accounts up to 50K followers now get a boost, but only for a post's first 2 hours.","extra":[["Follower limit","1K","50K","buff"],["Post age window","48 hrs","2 hrs","nerf"],["Boost stops after","1,000 views","200 views","nerf"],["Random tryouts for new posts","off","on","new"]],"tags":["creators","big"],"hype":5,"needsCopy":false},{"date":"2026-10-01","sha":"b79b947","url":"https://github.com/xai-org/x-algorithm/commit/b79b947ce9283c786822274ef8fe208c33c585b2","commits":1,"files":47,"plus":2490,"minus":506,"chips":[],"title":"Limits explained","story":"New text explains why some actions are limited on your account.","extra":[],"tags":["safety"],"hype":1,"needsCopy":false},{"date":"2026-10-02","sha":"76843a5","url":"https://github.com/xai-org/x-algorithm/commit/76843a5eea278ced444b21372d4e6d6909f5c35e","commits":1,"files":105,"plus":5227,"minus":756,"chips":[],"title":"New way to find posts","story":"A new way to find posts by what they mean. Built, but off for now.","extra":[],"tags":["discovery"],"hype":2,"needsCopy":false},{"date":"2026-10-03","sha":"b412112","url":"https://github.com/xai-org/x-algorithm/commit/b412112d03f27acbfd668e0cc040abcafa1080c1","commits":1,"files":148,"plus":9128,"minus":2356,"chips":[],"title":"Popular posts built","story":"A shared list of popular posts gets built. Ad safety check comes back on.","extra":[["Newer ad safety check","off","on","switch"]],"tags":["discovery","ads"],"hype":3,"needsCopy":false},{"date":"2026-10-06","sha":"e62790c","url":"https://github.com/xai-org/x-algorithm/commit/e62790c99484b51424c2eccc488ed4e7517e8778","commits":1,"files":103,"plus":6916,"minus":1393,"chips":[],"title":"Notices instead of deletes","story":"Safety can now keep a post up with a notice on it instead of hiding it.","extra":[["Safety options","3","4","new"]],"tags":["safety"],"hype":3,"needsCopy":false},{"date":"2026-10-07","sha":"78460ca","url":"https://github.com/xai-org/x-algorithm/commit/78460ca8b65c57ddd3a05f9217c8aaeba214b628","commits":1,"files":22,"plus":775,"minus":681,"chips":[{"factor":"PostUnexploredWeight","from":0.02,"to":0.015,"kind":"nerf"}],"title":"Popular posts go live","story":"Popular recent posts from the most followed accounts now join everyone's feed pool.","extra":[["Popular posts source","off","on","new"]],"tags":["discovery","big"],"hype":5,"needsCopy":false},{"date":"2026-10-08","sha":"35650fb","url":"https://github.com/xai-org/x-algorithm/commit/35650fb89f3b14dc6234312535f642779d891d88","commits":1,"files":173,"plus":15160,"minus":2465,"chips":[],"title":"Video row arrives","story":"A swipeable row of videos at spot 6 in your feed, at most once an hour. Testing.","extra":[["Video row",null,"built","new"]],"tags":["video"],"hype":4,"needsCopy":false},{"date":"2026-10-09","sha":"cb45b55","url":"https://github.com/xai-org/x-algorithm/commit/cb45b5501423126adfc508052116c2d67c0e3fec","commits":1,"files":16,"plus":1228,"minus":218,"chips":[],"title":"Faster training","story":"The AI trains faster. Nothing you would notice yet.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-10-13","sha":"e1a0375","url":"https://github.com/xai-org/x-algorithm/commit/e1a0375a903899984545c663bb0bccb3cdcdf046","commits":1,"files":179,"plus":26532,"minus":5971,"chips":[{"factor":"FavoriteWeight","from":0.5,"to":0.6,"kind":"buff"},{"factor":"VideoOpenWeight","from":0.07,"to":0.02,"kind":"nerf"},{"factor":"ReactWithVideoWeight","from":null,"to":0.0,"kind":"new"},{"factor":"ContDwellTimeWeight","from":0.004,"to":0.006,"kind":"buff"}],"title":"Likes get a boost","story":"Likes are worth more, video opens worth way less. Brazil list cut to the runoff.","extra":[["Enforcement off switch",null,"added","new"]],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-10-14","sha":"17c96bf","url":"https://github.com/xai-org/x-algorithm/commit/17c96bf346df3d62b90f1bb01830d432dba74485","commits":1,"files":52,"plus":7745,"minus":6964,"chips":[{"factor":"FavoriteWeight","from":0.6,"to":0.66,"kind":"buff"},{"factor":"NotInterestedWeight","from":-47.52,"to":-52.272,"kind":"harsher"}],"title":"Likes boosted again","story":"Second like boost in two days. Not interested hurts a post even more.","extra":[],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-10-15","sha":"92f0918","url":"https://github.com/xai-org/x-algorithm/commit/92f0918f6cb52837cb53a8c790c68f906b2c0db1","commits":1,"files":57,"plus":7145,"minus":2959,"chips":[{"factor":"VideoCarouselVideoOpenWeight","from":null,"to":1.0,"kind":"new"},{"factor":"VideoCarouselImmersiveVqvWeight","from":null,"to":0.0,"kind":"new"}],"title":"Video row gets a brain","story":"The video row gets its own scoring AI. Ads now skip risky authors by default.","extra":[["Risky author ad check","off","on","switch"]],"tags":["video","ads"],"hype":4,"needsCopy":false}],"factors":[{"code":"FavoriteWeight","since":"2026-08-13","history":[["2026-08-13",0.5],["2026-10-13",0.6],["2026-10-14",0.66]],"name":"Like","note":"","icon":"heart","now":0.66},{"code":"ReplyWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Reply","note":"","icon":"reply","now":5.0},{"code":"BidirectionalFollowReplyWeightBoost","since":"2026-08-13","history":[["2026-08-13",15.0]],"name":"Reply to a mutual","note":"Bonus on top of Reply when you follow each other","icon":"mutual","now":15.0},{"code":"BidirectionalFollowDwellWeightBoost","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Look at a mutual's post","note":"Tested in July, never shipped","icon":"mutual","now":0.0},{"code":"RetweetWeight","since":"2026-08-13","history":[["2026-08-13",1.0]],"name":"Repost","note":"","icon":"repost","now":1.0},{"code":"PhotoExpandWeight","since":"2026-08-13","history":[["2026-08-13",0.05]],"name":"Open a photo","note":"","icon":"photo","now":0.05},{"code":"VideoOpenWeight","since":"2026-08-13","history":[["2026-08-13",0.05],["2026-08-25",0.07],["2026-10-13",0.02]],"name":"Open a video","note":"","icon":"play","now":0.02},{"code":"ClickWeight","since":"2026-08-13","history":[["2026-08-13",0.4],["2026-09-29",0.3]],"name":"Tap into the post","note":"","icon":"tap","now":0.3},{"code":"OpenLinkWeight","since":"2026-08-13","history":[["2026-08-13",0.2]],"name":"Open a link","note":"","icon":"open","now":0.2},{"code":"ProfileClickWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Visit the profile","note":"","icon":"follow","now":0.0},{"code":"VqvWeight","since":"2026-08-13","history":[["2026-08-13",0.05],["2026-08-25",0.0]],"name":"Actually watch the video","note":"","icon":"play","now":0.0},{"code":"ShareWeight","since":"2026-08-13","history":[["2026-08-13",2.0]],"name":"Share","note":"","icon":"share","now":2.0},{"code":"ShareViaDmWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Send it in DMs","note":"","icon":"dm","now":5.0},{"code":"ShareViaCopyLinkWeight","since":"2026-08-13","history":[["2026-08-13",20.0]],"name":"Copy the link","note":"The biggest single move","icon":"link","now":20.0},{"code":"DwellWeight","since":"2026-08-13","history":[["2026-08-13",0.0],["2026-08-25",0.05]],"name":"Stop scrolling to look","note":"","icon":"eye","now":0.05},{"code":"QuoteWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Quote","note":"","icon":"quote","now":5.0},{"code":"QuotedClickWeight","since":"2026-08-13","history":[["2026-08-13",0.05]],"name":"Tap the quoted post","note":"","icon":"tap","now":0.05},{"code":"QuotedVqvWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Watch the quoted video","note":"","icon":"play","now":0.0},{"code":"FollowAuthorWeight","since":"2026-08-13","history":[["2026-08-13",4.0]],"name":"Follow the author","note":"","icon":"follow","now":4.0},{"code":"PostUnexploredWeight","since":"2026-08-13","history":[["2026-08-13",0.02],["2026-10-07",0.015]],"name":"Explore bonus","note":"","icon":"star","now":0.015},{"code":"ContDwellTimeWeight","since":"2026-08-13","history":[["2026-08-13",0.004],["2026-10-13",0.006]],"name":"Seconds spent reading","note":"Tiny per second, adds up","icon":"clock","now":0.006},{"code":"ContClickDwellTimeWeight","since":"2026-08-13","history":[["2026-08-13",0.0],["2026-09-29",0.4]],"name":"Time spent after tapping in","note":"","icon":"clock","now":0.4},{"code":"ContActiveSecs5mResidualNormWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"gone":"2026-09-24","name":"Active time bonus","note":"Was set to 0, then deleted","icon":"clock","now":0.0},{"code":"NotInterestedWeight","since":"2026-08-13","history":[["2026-08-13",-43.2],["2026-09-29",-47.52],["2026-10-14",-52.272]],"name":"Not interested","note":"","icon":"thumbdown","now":-52.272},{"code":"BlockAuthorWeight","since":"2026-08-13","history":[["2026-08-13",-31.2]],"name":"Block","note":"","icon":"block","now":-31.2},{"code":"MuteAuthorWeight","since":"2026-08-13","history":[["2026-08-13",-58.8]],"name":"Mute","note":"","icon":"mute","now":-58.8},{"code":"ReportWeight","since":"2026-08-13","history":[["2026-08-13",-234.0]],"name":"Report","note":"","icon":"skull","now":-234.0},{"code":"NotDwelledWeight","since":"2026-08-13","history":[["2026-08-13",-0.02]],"name":"Scroll right past","note":"","icon":"wind","now":-0.02},{"code":"ReactWithVideoWeight","since":"2026-10-13","history":[["2026-10-13",0.0]],"name":"Reply with a video","note":"Brand new. Set to 0 for now","icon":"camera","now":0.0},{"code":"VideoCarouselVideoOpenWeight","since":"2026-10-15","history":[["2026-10-15",1.0]],"name":"Open a carousel video","note":"Only inside the new video row","icon":"play","now":1.0},{"code":"VideoCarouselImmersiveVqvWeight","since":"2026-10-15","history":[["2026-10-15",0.0]],"name":"Watch in the video row","note":"Brand new. Set to 0 for now","icon":"play","now":0.0}]};
 
 /* ---------- pixel sprites ---------- */
 const SPR = {
@@ -1003,7 +1004,7 @@ renderScores(false);
 /* ---------- how-to tour (player + MP4 share one timeline) ---------- */
 (function tour() {
   const wrap = $("#stageWrap"), host = $("#stage");
-  const SW = 1280, SH = 720, DUR = 24.5;
+  const SW = 1280, SH = 720;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
   const easeOut = x => 1 - Math.pow(1 - x, 3);
@@ -1014,30 +1015,31 @@ renderScores(false);
   const kindCol = k => ({ buff: "--buff", softer: "--buff", nerf: "--nerf", harsher: "--harsh", new: "--new", gone: "--muted", switch: "--gold" }[k] || "--gold");
 
   /* scenes: [start, end]; hard cuts between them */
-  const S = { count: [0, 2.4], stat1: [2.4, 4.3], stat2: [4.3, 6.1], title: [6.1, 8.3], map: [8.3, 11.0], card: [11.0, 13.8], points: [13.8, 16.8], scores: [16.8, 19.6], daily: [19.6, 21.8], outro: [21.8, 24.5] };
-  const ORDER = Object.keys(S);
+  const S = {
+    count: [0, 2.0], stat1: [2.0, 3.6], stat2: [3.6, 5.2], title: [5.2, 6.9], map: [6.9, 9.0], card: [9.0, 11.2],
+    earn: [11.2, 13.4], lose: [13.4, 15.4], scores: [15.4, 17.6], daily: [17.6, 19.4], outro: [19.4, 21.5]
+  };
+  const ORDER = Object.keys(S), DUR = S.outro[1];
 
   /* real data for each scene */
   const changed = D.factors.filter(f => !f.gone && f.history.length > 1 && f.history[0][1] && f.now)
     .map(f => ({ f, pct: Math.round((Math.abs(f.now) - Math.abs(f.history[0][1])) / Math.abs(f.history[0][1]) * 100) }))
     .sort((a, b) => (b.f.code === "FavoriteWeight") - (a.f.code === "FavoriteWeight") || Math.abs(b.pct) - Math.abs(a.pct));
   const stats = changed.slice(0, 2);
-  const weightDays = days.filter(d => d.chips.some(c => c.factor && ["buff", "nerf", "harsher", "softer"].includes(c.kind)));
+  const MOVES = ["buff", "nerf", "harsher", "softer"];
+  const weightDays = days.filter(d => d.chips.some(c => c.factor && MOVES.includes(c.kind)));
   const star = weightDays[weightDays.length - 1] || days[days.length - 1];
   const start = clamp(star.idx - 15, 0, Math.max(0, days.length - 21));
   const win = days.slice(start, start + 21);
   const starChips = [...star.chips.filter(c => c.factor && c.kind !== "gone"), ...star.extra].slice(0, 3);
-  const hotChip = star.chips.find(c => c.factor && ["buff", "nerf", "harsher", "softer"].includes(c.kind));
-  const hot = hotChip ? F[hotChip.factor] : F.FavoriteWeight;
-  const pos = D.factors.filter(f => !f.gone && f.now > 0).sort((a, b) => b.now - a.now);
-  const neg = D.factors.filter(f => !f.gone && f.now < 0).sort((a, b) => a.now - b.now);
-  let rowsF = pos.slice(0, 3);
-  rowsF.push(rowsF.includes(hot) || hot.now < 0 ? pos[3] : hot);
-  rowsF = rowsF.sort((a, b) => b.now - a.now);
-  const negPick = neg.includes(hot) ? [hot, neg.find(f => f !== hot)] : neg.slice(0, 2);
-  rowsF = [...rowsF, ...negPick.sort((a, b) => b.now - a.now)].filter(Boolean).slice(0, 6);
-  const hotRow = rowsF.indexOf(hot);
-  const hotPrev = hot.history.length > 1 ? hot.history[hot.history.length - 2][1] : hot.now;
+  const hotChips = new Map(star.chips.filter(c => c.factor && MOVES.includes(c.kind)).map(c => [c.factor, c]));
+  const live = D.factors.filter(f => !f.gone);
+  let earn = live.filter(f => f.now > 0).sort((a, b) => b.now - a.now).slice(0, 4);
+  live.filter(f => f.now > 0 && hotChips.has(f.code) && !earn.includes(f)).forEach(f => earn.push(f));
+  earn = earn.sort((a, b) => b.now - a.now).slice(0, 5);
+  const lose = live.filter(f => f.now < 0).sort((a, b) => a.now - b.now).slice(0, 5);
+  const prevOf = f => f.history.length > 1 ? f.history[f.history.length - 2][1] : f.now;
+  const hotIn = list => list.findIndex(f => hotChips.has(f.code));
   const oldRules = firstSnap, newRules = D.latest;
   const scoreRows = POSTS.map((p, n) => ({ p, n, a: scoreOf(p, oldRules), b: scoreOf(p, newRules) }));
   const rankA = [...scoreRows].sort((x, y) => y.a - x.a), rankB = [...scoreRows].sort((x, y) => y.b - x.b);
@@ -1058,43 +1060,47 @@ renderScores(false);
   const sqPos = i => ({ x: gridX + (i % COLS) * (SQ + GAP), y: gridY + Math.floor(i / COLS) * (SQ + GAP) });
   const starI = Math.max(0, win.indexOf(star)), starP = sqPos(starI);
   const CARD = { x: 200, y: 120, w: 880, h: 420 };
-  const rowY = i => 150 + i * 74;
+  const rowY = i => 168 + i * 80;
   const scoreY = r => 196 + r * 82;
   const cellX = i => 85 + i * 80;
   const pillOld = { x: 380, w: 230 }, pillNew = { x: 630, w: 270 };
 
   const CH = [
     { t: 0, name: "Hook", go: null }, { t: S.map[0], name: "The map", go: "#map" }, { t: S.card[0], name: "What changed", go: "#viewer" },
-    { t: S.points[0], name: "Points", go: "#score" }, { t: S.scores[0], name: "High scores", go: "#hiscores" },
+    { t: S.earn[0], name: "Points", go: "#score" }, { t: S.scores[0], name: "High scores", go: "#hiscores" },
     { t: S.daily[0], name: "Daily scan", go: "#scan" }, { t: S.outro[0], name: "Start", go: "start" }
   ];
+  const statCap = s => s ? `${s.f.name} is worth ${Math.abs(s.pct)}% ${s.pct > 0 ? "more" : "less"} than in ${MON[pd(s.f.history[0][0]).m - 1].charAt(0) + MON[pd(s.f.history[0][0]).m - 1].slice(1).toLowerCase()}.` : "";
   const CAPS = [
-    [S.stat1[0] + .1, S.stat1[1], stats[0] ? `${stats[0].f.name} is worth ${Math.abs(stats[0].pct)}% ${stats[0].pct > 0 ? "more" : "less"} since ${fmtShort(stats[0].f.history[0][0])}.` : ""],
-    [S.stat2[0] + .1, S.stat2[1], stats[1] ? `${stats[1].f.name} is worth ${Math.abs(stats[1].pct)}% ${stats[1].pct > 0 ? "more" : "less"}.` : ""],
+    [S.stat1[0] + .1, S.stat1[1], statCap(stats[0])],
+    [S.stat2[0] + .1, S.stat2[1], statCap(stats[1])],
     [S.map[0] + .2, S.map[1], "Every square is a day X changed the code."],
     [S.card[0] + .1, S.card[1], "Tap one. See what changed, in plain words."],
-    [S.points[0] + .1, S.points[1], "See what pushes a post up or down."],
+    [S.earn[0] + .1, S.earn[1], "What pushes a post up in your feed."],
+    [S.lose[0] + .1, S.lose[1], "What pushes a post down."],
     [S.scores[0] + .1, S.scores[1], "Flip old vs new rules. Watch scores move."],
     [S.daily[0] + .1, S.daily[1], "Checked every morning. New changes light up."],
     [S.outro[0] + .2, DUR, "Free. Updated every day."]
   ];
   const T = {
-    slam: 1.15, stat1: S.stat1[0] + .45, stat2: S.stat2[0] + .45, titleSlam: S.title[0] + .55,
-    click1: S.map[0] + 1.3, grow: S.points[0] + .8, pill: S.scores[0] + 1.0, coin: S.daily[0] + 1.4, press: S.outro[0] + 1.4
+    slam: .95, stat1: S.stat1[0] + .35, stat2: S.stat2[0] + .35, titleSlam: S.title[0] + .4,
+    click1: S.map[0] + 1.0, earnGrow: S.earn[0] + .55, loseGrow: S.lose[0] + .55, pill: S.scores[0] + .8, coin: S.daily[0] + 1.15, press: S.outro[0] + 1.1
   };
   const CLICKS = [T.click1, T.pill, T.press];
-  const SHAKES = [[T.slam, 14], [T.stat1, 10], [T.stat2, 10], [T.titleSlam, 12], [T.click1, 5], [T.press, 6]];
+  const SHAKES = [[T.slam, 14], [T.stat1, 10], [T.stat2, 10], [T.titleSlam, 12], [T.click1, 5], [S.lose[0] + .1, 7], [T.press, 6]];
+  const earnHot = hotIn(earn), loseHot = hotIn(lose);
   const SOUNDS = [
-    ...days.slice(0, 18).map((d, i) => [i * .055, "tick", 330 + i * 38]),
-    [T.slam, "mega"], [T.stat1, "up"], [T.stat2, "down"], [T.titleSlam, "start"],
-    [T.click1, "coin"], [S.card[0] + .3, "up"], [T.grow + .7, "up"], [T.pill, "coin"], [T.coin, "coin"], [T.press, "mega"]
+    ...days.slice(0, 18).map((d, i) => [i * .045, "tick", 330 + i * 38]),
+    [T.slam, "mega"], [T.stat1, stats[0] && stats[0].pct > 0 ? "up" : "down"], [T.stat2, stats[1] && stats[1].pct > 0 ? "up" : "down"], [T.titleSlam, "start"],
+    [T.click1, "coin"], [S.card[0] + .25, "up"], [T.earnGrow + .55, "up"], [S.lose[0] + .1, "down"], [T.pill, "coin"], [T.coin, "coin"], [T.press, "mega"]
   ];
-  const hotC = { x: 640, y: rowY(Math.max(0, hotRow)) + 30 };
+  const rowC = (list, i) => ({ x: 700, y: rowY(Math.max(0, i)) + 30 });
+  const eC = rowC(earn, earnHot < 0 ? 0 : earnHot), lC = rowC(lose, loseHot < 0 ? 0 : loseHot);
   const HAND = [
-    [S.map[0] + .1, 1300, 760], [S.map[0] + 1.1, starP.x + 34, starP.y + 36], [S.card[0] - .1, starP.x + 34, starP.y + 36],
-    [S.card[0] + .7, 330, 470], [S.points[0], 330, 470], [S.points[0] + .6, hotC.x, hotC.y], [S.scores[0] + .3, hotC.x, hotC.y],
-    [T.pill - .15, pillNew.x + 140, 142], [T.pill + .3, pillNew.x + 140, 142], [S.daily[0] - .2, 1130, 600],
-    [S.daily[0] + 1.1, cellX(13) + 40, 350], [S.outro[0] + .2, cellX(13) + 40, 350], [T.press - .2, 660, 360], [DUR, 660, 360]
+    [S.map[0] + .05, 1300, 760], [S.map[0] + .8, starP.x + 34, starP.y + 36], [S.card[0] - .1, starP.x + 34, starP.y + 36],
+    [S.card[0] + .55, 330, 470], [S.earn[0], 330, 470], [S.earn[0] + .45, eC.x, eC.y], [S.lose[0], eC.x, eC.y],
+    [S.lose[0] + .45, lC.x, lC.y], [S.scores[0] + .1, lC.x, lC.y], [T.pill - .15, pillNew.x + 140, 142], [T.pill + .25, pillNew.x + 140, 142],
+    [S.daily[0] - .15, 1130, 600], [S.daily[0] + .9, cellX(13) + 40, 350], [S.outro[0] + .15, cellX(13) + 40, 350], [T.press - .2, 660, 330], [DUR, 660, 330]
   ];
 
   /* build the stage once */
@@ -1109,60 +1115,68 @@ renderScores(false);
     const v = from === null ? `<b>${esc(to)}</b>` : `<s>${esc(from)}</s> &gt; <b>${esc(to)}</b>`;
     return `<div class="sg-chip"><div class="n">${img(KIND_ICON[kind] || "switch")}${esc(label)}</div><div class="v">${v}</div><span class="sg-badge" style="background:var(${kindCol(kind)})">${BADGE[kind]}</span></div>`;
   };
-  const statScene = (id, s) => s ? `<div class="sc" id="${id}">
+  const statScene = (id, s) => s ? `<div class="sg-sc" id="${id}">
       <img class="spr" src="${sprURL(s.f.icon)}" alt="" style="position:absolute;left:230px;top:200px;width:240px">
       <div style="position:absolute;left:540px;top:170px">
         <div class="sg-lbl">${esc(s.f.name.toUpperCase())}</div>
         <div class="sg-big" data-pct="${s.pct}" style="color:var(${s.pct > 0 ? "--buff" : "--harsh"})"></div>
-      </div></div>` : `<div class="sc" id="${id}"></div>`;
+      </div></div>` : `<div class="sg-sc" id="${id}"></div>`;
+  const rowsHTML = (list, cls, fill) => list.map((f, i) => {
+    const c = hotChips.get(f.code);
+    return `<div class="sg-row ${cls}" data-code="${f.code}" style="top:${rowY(i)}px;--fill:var(${fill})">${img(f.icon)}<div class="n">${esc(f.name)}${c ? `<span class="sg-badge" style="background:var(${kindCol(c.kind)})">${pctWord(c.from, c.to, c.kind)}</span>` : ""}</div><div class="v">${fmtNum(f.now)}</div><div class="bar"><i style="width:${barPct(f.now)}%"></i>${c ? `<b style="left:${barPct(prevOf(f))}%"></b>` : ""}</div></div>`;
+  }).join("");
   host.innerHTML = `
     <canvas id="sgStars" width="${SW}" height="${SH}"></canvas>
     <div class="sg-top"><b>X ALGO QUEST</b><span id="sgCh"></span></div>
     <div id="sgCam" style="position:absolute;inset:0">
-    <div class="sc" id="sc-count">
+    <div class="sg-sc" id="sc-count">
       <div style="position:absolute;left:0;right:0;top:120px;text-align:center" class="sg-lbl" id="sgCountTop">X UPDATED ITS ALGORITHM</div>
       ${days.map((d, i) => `<div class="sg-mini" style="left:${miniX(i)}px;top:${miniY(i)}px;background:var(${HYPE_COL[d.hype]})"></div>`).join("")}
       <div style="position:absolute;left:0;right:0;top:${miniY(0) + mRows * (MINI + MG) + 40}px;text-align:center"><span class="sg-h1" id="sgCount" style="font-size:76px;display:inline-block">0 TIMES</span></div>
     </div>
     ${statScene("sc-stat1", stats[0])}
     ${statScene("sc-stat2", stats[1])}
-    <div class="sc" id="sc-title">
+    <div class="sg-sc" id="sc-title">
       <div style="position:absolute;left:0;right:0;top:170px;text-align:center;color:var(--muted)" class="sg-lbl" id="sgSo">SO WE MADE IT A GAME</div>
       <div style="position:absolute;left:0;right:0;top:270px;text-align:center">
         <div class="sg-h1" id="sgTitle" style="position:relative;display:inline-block">X ALGO<br><span>QUEST</span><div class="sg-glare" id="sgGlare">X ALGO<br><span>QUEST</span></div></div>
       </div>
     </div>
-    <div class="sc" id="sc-map">
+    <div class="sg-sc" id="sc-map">
       <div class="sg-head" style="top:110px">WORLD MAP</div>
-      ${win.map((d, i) => { const p = sqPos(i); return `<div class="sg-sq" data-i="${i}" style="left:${p.x}px;top:${p.y}px;background:var(${HYPE_COL[d.hype]});${d.hype === 4 ? "color:var(--cream)" : ""}">${pd(d.date).d}</div>`; }).join("")}
+      ${win.map((d, i) => { const p = sqPos(i); return `<div class="sg-sq" style="left:${p.x}px;top:${p.y}px;background:var(${HYPE_COL[d.hype]});${d.hype === 4 ? "color:var(--cream)" : ""}">${pd(d.date).d}</div>`; }).join("")}
       <div style="position:absolute;left:0;right:0;top:${gridY + 3 * (SQ + GAP) + 6}px;text-align:center;font-size:22px;color:var(--muted)">${fmtShort(win[0].date)} to ${fmtShort(win[win.length - 1].date)}</div>
     </div>
     <div class="sg-morph" id="sgMorph"></div>
-    <div class="sc" id="sc-card" style="z-index:2"><div class="sg-card">
+    <div class="sg-sc" id="sc-card" style="z-index:2"><div class="sg-card">
       <div class="d">${fmtDate(star.date)}</div>
       <h4>${esc(star.title)}</h4>
       <p>${esc(star.story)}</p>
       <div class="sg-chips">${starChips.map(chipBlock).join("")}</div>
     </div></div>
-    <div class="sc" id="sc-points">
-      <div class="sg-head" style="top:92px">WHAT EARNS POINTS</div>
-      ${rowsF.map((f, i) => `<div class="sg-row" style="top:${rowY(i)}px;--fill:var(${f.now < 0 ? "--harsh" : "--buff"})">${img(f.icon)}<div class="n">${esc(f.name)}${f === hot ? `<span class="sg-badge" id="sgHotBadge" style="background:var(${kindCol(hotChip ? hotChip.kind : "buff")})">${hotChip ? pctWord(hotChip.from, hotChip.to, hotChip.kind) : ""}</span>` : ""}</div><div class="v">${fmtNum(f.now)}</div><div class="bar"><i style="width:${barPct(f.now)}%"></i>${f === hot ? `<b style="left:${barPct(hotPrev)}%"></b>` : ""}</div></div>`).join("")}
+    <div class="sg-sc" id="sc-earn">
+      <div class="sg-head" style="top:84px;color:var(--buff)">WHAT EARNS POINTS</div>
+      ${rowsHTML(earn, "earn", "--buff")}
     </div>
-    <div class="sc" id="sc-scores">
+    <div class="sg-sc" id="sc-lose">
+      <div class="sg-head" style="top:84px;color:var(--harsh)">WHAT LOSES POINTS</div>
+      ${rowsHTML(lose, "lose", "--harsh")}
+    </div>
+    <div class="sg-sc" id="sc-scores">
       <div class="sg-head" style="top:64px">HIGH SCORES</div>
       <div class="sg-pill" id="sgPillA" style="left:${pillOld.x}px;width:${pillOld.w}px">${fmtShort(oldRules)} RULES</div>
       <div class="sg-pill" id="sgPillB" style="left:${pillNew.x}px;width:${pillNew.w}px">TODAY'S RULES</div>
       ${scoreRows.map(r => `<div class="sg-score" data-n="${r.n}"><span class="rk"></span>${img(r.p.icon)}<span class="t">${esc(r.p.name)}</span><span class="s"></span></div>`).join("")}
     </div>
-    <div class="sc" id="sc-daily">
+    <div class="sg-sc" id="sc-daily">
       <div class="sg-tick"><div id="sgTick">${esc(tickText)}</div></div>
       <div class="sg-head" style="top:228px;font-size:26px;color:var(--cream)">DAILY SCAN</div>
       ${stripDays.map((d, i) => `<div class="sg-cell" style="left:${cellX(i)}px;${i === 13 ? "outline:4px solid var(--buff)" : ""}"><small>${d.mon}</small>${img(d.has ? "coin" : "post")}<em>${d.day}</em></div>`).join("")}
       <div class="sg-beam" id="sgBeam"></div>
     </div>
-    <div class="sc" id="sc-outro">
-      <div class="sg-btn" id="sgStart" style="left:470px;top:260px">PRESS START</div>
-      <div style="position:absolute;left:0;right:0;top:410px;text-align:center;font-family:var(--f-label);font-size:44px;font-weight:600;color:var(--gold)">${SITE}</div>
+    <div class="sg-sc" id="sc-outro">
+      <div class="sg-btn" id="sgStart" style="left:470px;top:230px">PRESS START</div>
+      <div style="position:absolute;left:0;right:0;top:380px;text-align:center;font-family:var(--f-label);font-size:44px;font-weight:600;color:var(--gold)">${SITE}</div>
     </div>
     </div>
     <canvas id="sgFx" width="${SW}" height="${SH}" style="z-index:5"></canvas>
@@ -1180,7 +1194,8 @@ renderScores(false);
 
   const q = s => host.querySelector(s), qa = s => [...host.querySelectorAll(s)];
   const scene = Object.fromEntries(ORDER.map(k => [k, q("#sc-" + k)]));
-  const minis = qa(".sg-mini"), squares = qa(".sg-sq"), rows = qa(".sg-row"), sRows = qa(".sg-score"), cells = qa(".sg-cell"), chips = qa(".sg-chip");
+  const minis = qa(".sg-mini"), squares = qa(".sg-sq"), sRows = qa(".sg-score"), cells = qa(".sg-cell"), chips = qa(".sg-chip");
+  const rowSets = [[qa(".sg-row.earn"), S.earn[0], T.earnGrow], [qa(".sg-row.lose"), S.lose[0], T.loseGrow]];
   const hand = q("#sgHand"), cap = q("#sgCap"), fxc = q("#sgFx").getContext("2d"), cam = q("#sgCam"), flash = q("#sgFlash");
   const morph = q("#sgMorph"), glare = q("#sgGlare"), chLabel = q("#sgCh");
 
@@ -1197,19 +1212,16 @@ renderScores(false);
     /* hard cuts with a whip-in: each scene lands slightly big and snaps to size */
     ORDER.forEach(k => {
       const [a, b] = S[k], el = scene[k];
-      const on = t >= a && t < b + (k === "map" ? .5 : 0);
+      const on = t >= a && t < b + (k === "map" ? .4 : 0);
       el.style.visibility = on ? "visible" : "hidden";
       el.style.opacity = on ? 1 : 0;
-      const w = easeOut(P(t, a, a + .28));
-      el.style.transform = a === 0 ? "none" : `scale(${lerp(1.18, 1, w).toFixed(3)})`;
-      el.style.filter = "none";
+      el.style.transform = a === 0 ? "none" : `scale(${lerp(1.18, 1, easeOut(P(t, a, a + .24))).toFixed(3)})`;
     });
-    const cutFlash = ORDER.slice(1, 4).map(k => S[k][0]).some(a => t >= a && t < a + .07);
-    flash.style.opacity = cutFlash ? .5 : 0;
+    flash.style.opacity = ["stat1", "stat2", "title", "earn", "lose"].some(k => t >= S[k][0] && t < S[k][0] + .06) ? .45 : 0;
 
     /* camera shake on slams */
     let sx = 0, sy = 0;
-    SHAKES.forEach(([s, amp], i) => { const d = t - s; if (d >= 0 && d < .35) { const k = amp * (1 - d / .35); sx += Math.sin(d * 90 + i) * k; sy += Math.cos(d * 70 + i * 2) * k; } });
+    SHAKES.forEach(([s, amp], i) => { const d = t - s; if (d >= 0 && d < .32) { const k = amp * (1 - d / .32); sx += Math.sin(d * 90 + i) * k; sy += Math.cos(d * 70 + i * 2) * k; } });
     if (reduce) sx = sy = 0;
     cam.style.transform = `translate(${sx.toFixed(1)}px, ${sy.toFixed(1)}px)`;
 
@@ -1218,74 +1230,71 @@ renderScores(false);
 
     /* count: squares rain in from frame one, counter races, then slams */
     minis.forEach((m, i) => {
-      const s0 = -0.25 + i * .026, k = P(t, s0, s0 + .35);
+      const s0 = -0.25 + i * .021, k = P(t, s0, s0 + .3);
       m.style.transform = `translateY(${((1 - backOut(k)) * -340).toFixed(1)}px)`;
       m.style.opacity = k > 0 ? 1 : 0;
     });
-    const n = Math.round(days.length * easeOut(P(t, 0, T.slam)));
     const cnt = q("#sgCount");
-    cnt.textContent = `${n} TIMES`;
-    const sl = P(t, T.slam, T.slam + .25);
-    cnt.style.transform = `scale(${t < T.slam ? .9 : lerp(1.45, 1, easeOut(sl)).toFixed(3)})`;
-    q("#sgCountTop").style.opacity = P(t, 0, .2);
+    cnt.textContent = `${Math.round(days.length * easeOut(P(t, 0, T.slam)))} TIMES`;
+    cnt.style.transform = `scale(${t < T.slam ? .9 : lerp(1.45, 1, easeOut(P(t, T.slam, T.slam + .22))).toFixed(3)})`;
+    q("#sgCountTop").style.opacity = P(t, 0, .15);
 
     /* stat cards: number counts up and slams */
-    [["stat1", 0], ["stat2", 1]].forEach(([k, i]) => {
+    ["stat1", "stat2"].forEach(k => {
       const big = scene[k].querySelector(".sg-big"); if (!big) return;
       const pct = +big.dataset.pct, a = S[k][0];
-      const v = Math.round(Math.abs(pct) * easeOut(P(t, a + .05, a + .45)));
-      big.textContent = `${pct > 0 ? "+" : "-"}${v}%`;
-      big.style.transform = `scale(${lerp(1.35, 1, easeOut(P(t, a + .45, a + .7))).toFixed(3)})`;
-      scene[k].querySelector("img").style.transform = `rotate(${(Math.sin((t - a) * 9) * 6 * (1 - P(t, a, a + .8))).toFixed(1)}deg) scale(${lerp(.6, 1, backOut(P(t, a, a + .4))).toFixed(3)})`;
+      big.textContent = `${pct > 0 ? "+" : "-"}${Math.round(Math.abs(pct) * easeOut(P(t, a + .04, a + .35)))}%`;
+      big.style.transform = `scale(${lerp(1.35, 1, easeOut(P(t, a + .35, a + .58))).toFixed(3)})`;
+      scene[k].querySelector("img").style.transform = `rotate(${(Math.sin((t - a) * 10) * 6 * (1 - P(t, a, a + .7))).toFixed(1)}deg) scale(${lerp(.6, 1, backOut(P(t, a, a + .32))).toFixed(3)})`;
     });
 
     /* title slam with glare */
-    q("#sgSo").style.opacity = P(t, S.title[0], S.title[0] + .15);
-    q("#sgTitle").style.transform = `scale(${t < T.titleSlam ? 0 : lerp(1.6, 1, easeOut(P(t, T.titleSlam, T.titleSlam + .3))).toFixed(3)})`;
-    glare.style.backgroundPosition = `${lerp(100, 0, ease(P(t, T.titleSlam + .3, T.titleSlam + 1.1)))}% 0`;
+    q("#sgSo").style.opacity = P(t, S.title[0], S.title[0] + .12);
+    q("#sgTitle").style.transform = `scale(${t < T.titleSlam ? 0 : lerp(1.6, 1, easeOut(P(t, T.titleSlam, T.titleSlam + .26))).toFixed(3)})`;
+    glare.style.backgroundPosition = `${lerp(100, 0, ease(P(t, T.titleSlam + .25, T.titleSlam + .95)))}% 0`;
 
     /* map: pick the big day, everything else blurs */
-    const focus = P(t, T.click1 + .05, T.click1 + .35);
+    const focus = P(t, T.click1 + .05, T.click1 + .3);
     squares.forEach((s, i) => {
-      const isStar = i === starI, a = S.map[0] + i * .015;
-      const pop = isStar ? 1 + .25 * Math.sin(Math.PI * P(t, T.click1, T.click1 + .3)) : 1;
-      s.style.transform = `scale(${(pop * backOut(P(t, a, a + .25))).toFixed(3)})`;
+      const isStar = i === starI, a = S.map[0] + i * .012;
+      const pop = isStar ? 1 + .25 * Math.sin(Math.PI * P(t, T.click1, T.click1 + .28)) : 1;
+      s.style.transform = `scale(${(pop * backOut(P(t, a, a + .22))).toFixed(3)})`;
       s.style.opacity = isStar ? 1 : 1 - .65 * focus;
       s.style.filter = !isStar && focus > 0 ? `blur(${(focus * 3).toFixed(2)}px)` : "none";
       s.style.outline = isStar && t > T.click1 ? "4px solid var(--cream)" : "none";
     });
 
     /* morph: the square grows into the card */
-    const m0 = S.card[0] - .4, m = ease(P(t, m0, S.card[0] + .2));
+    const m0 = S.card[0] - .35, m = ease(P(t, m0, S.card[0] + .15));
     morph.style.opacity = t >= m0 && t < S.card[1] ? 1 : 0;
     morph.style.left = lerp(starP.x, CARD.x, m) + "px"; morph.style.top = lerp(starP.y, CARD.y, m) + "px";
     morph.style.width = lerp(SQ, CARD.w, m) + "px"; morph.style.height = lerp(SQ, CARD.h, m) + "px";
     morph.style.background = m < .5 ? `var(${HYPE_COL[star.hype]})` : "var(--panel)";
     morph.style.boxShadow = `0 0 0 ${m < .5 ? 4 : 5}px var(${m < .5 ? "--ink" : "--cream"}), 10px 10px 0 5px var(--ink)`;
     morph.style.transform = scene.card.style.transform;
-    scene.card.querySelector(".sg-card").style.opacity = P(t, S.card[0] + .15, S.card[0] + .35);
-    chips.forEach((c, i) => { const k = backOut(P(t, S.card[0] + .35 + i * .12, S.card[0] + .65 + i * .12)); c.style.opacity = Math.min(1, k); c.style.transform = `translateY(${((1 - k) * 30).toFixed(1)}px)`; });
+    scene.card.querySelector(".sg-card").style.opacity = P(t, S.card[0] + .1, S.card[0] + .28);
+    chips.forEach((c, i) => { const k = backOut(P(t, S.card[0] + .28 + i * .1, S.card[0] + .55 + i * .1)); c.style.opacity = Math.min(1, k); c.style.transform = `translateY(${((1 - k) * 30).toFixed(1)}px)`; });
 
-    /* points */
-    rows.forEach((r, i) => {
-      const k = easeOut(P(t, S.points[0] + i * .06, S.points[0] + .3 + i * .06));
-      r.style.opacity = k; r.style.transform = `translateX(${((1 - k) * -60).toFixed(1)}px)`;
-      const isHot = i === hotRow;
-      r.style.outline = isHot && t > T.grow - .2 ? "4px solid var(--buff)" : "none";
-      if (isHot) {
-        r.querySelector(".bar i").style.width = lerp(barPct(hotPrev), barPct(hot.now), ease(P(t, T.grow, T.grow + .7))) + "%";
-        r.querySelector(".v").textContent = fmtNum(t < T.grow + .7 ? hotPrev : hot.now);
-      }
-    });
-    const hb = q("#sgHotBadge");
-    if (hb) { const k = P(t, T.grow + .7, T.grow + .95); hb.style.opacity = k; hb.style.transform = `scale(${(1 + .35 * Math.sin(Math.PI * k)).toFixed(3)})`; }
+    /* earns / loses points: rows slam in, changed rows grow from old value to new */
+    rowSets.forEach(([rs, a, grow]) => rs.forEach((r, i) => {
+      const k = easeOut(P(t, a + i * .05, a + .26 + i * .05));
+      r.style.opacity = k; r.style.transform = `translateX(${((1 - k) * -70).toFixed(1)}px)`;
+      const f = F[r.dataset.code], c = hotChips.get(f.code);
+      if (!c) return;
+      const g = ease(P(t, grow, grow + .55));
+      r.style.outline = t > grow - .15 ? `4px solid var(${kindCol(c.kind)})` : "none";
+      r.querySelector(".bar i").style.width = lerp(barPct(prevOf(f)), barPct(f.now), g) + "%";
+      r.querySelector(".v").textContent = fmtNum(g < 1 ? prevOf(f) : f.now);
+      const b = r.querySelector(".sg-badge"), bk = P(t, grow + .55, grow + .75);
+      b.style.opacity = bk; b.style.transform = `scale(${(1 + .35 * Math.sin(Math.PI * bk)).toFixed(3)})`;
+    }));
 
     /* high scores flip */
-    const flip = ease(P(t, T.pill + .1, T.pill + .8));
+    const flip = ease(P(t, T.pill + .08, T.pill + .65));
     [[q("#sgPillA"), t < T.pill], [q("#sgPillB"), t >= T.pill]].forEach(([p, on]) => { p.style.background = on ? "var(--cream)" : "transparent"; p.style.color = on ? "var(--ink)" : "var(--muted)"; });
     sRows.forEach(r => {
       const row = scoreRows[+r.dataset.n], ra = rankA.indexOf(row), rb = rankB.indexOf(row);
-      r.style.opacity = easeOut(P(t, S.scores[0] + ra * .07, S.scores[0] + .3 + ra * .07));
+      r.style.opacity = easeOut(P(t, S.scores[0] + ra * .06, S.scores[0] + .26 + ra * .06));
       r.style.top = lerp(scoreY(ra), scoreY(rb), flip) + "px";
       r.querySelector(".rk").textContent = "#" + ((flip < .5 ? ra : rb) + 1);
       const v = lerp(row.a, row.b, flip), s = r.querySelector(".s");
@@ -1293,13 +1302,13 @@ renderScores(false);
     });
 
     /* daily scan */
-    q("#sgTick").style.left = (SW - (t - S.daily[0]) * 260) + "px";
-    const b0 = S.daily[0] + .2, b1 = T.coin, bx = lerp(cellX(0) - 20, cellX(13) + 90, P(t, b0, b1));
-    const beam = q("#sgBeam"); beam.style.left = bx + "px"; beam.style.opacity = t > b0 && t < b1 + .2 ? 1 : 0;
+    q("#sgTick").style.left = (SW - (t - S.daily[0]) * 300) + "px";
+    const b0 = S.daily[0] + .15, b1 = T.coin, bx = lerp(cellX(0) - 20, cellX(13) + 90, P(t, b0, b1));
+    const beam = q("#sgBeam"); beam.style.left = bx + "px"; beam.style.opacity = t > b0 && t < b1 + .15 ? 1 : 0;
     cells.forEach((c, i) => {
-      const k = P(t, b0 + (i / 13) * (b1 - b0), b0 + (i / 13) * (b1 - b0) + .25);
+      const k = P(t, b0 + (i / 13) * (b1 - b0), b0 + (i / 13) * (b1 - b0) + .2);
       let y = 0;
-      if (i === 13 && stripDays[13].has) { const d = P(t, T.coin, T.coin + .5); y = d < 1 ? -70 * (1 - easeOut(d)) * Math.abs(Math.cos(d * Math.PI * 1.5)) : 0; }
+      if (i === 13 && stripDays[13].has) { const d = P(t, T.coin, T.coin + .45); y = d < 1 ? -70 * (1 - easeOut(d)) * Math.abs(Math.cos(d * Math.PI * 1.5)) : 0; }
       c.style.transform = `translateY(${y.toFixed(1)}px) scale(${(1 + .14 * Math.sin(Math.PI * k)).toFixed(3)})`;
       c.style.opacity = t < b0 || bx > cellX(i) + 35 ? 1 : .5;
     });
@@ -1307,7 +1316,7 @@ renderScores(false);
     /* outro press */
     q("#sgStart").style.transform = `translateY(${((P(t, T.press - .1, T.press) - P(t, T.press, T.press + .2)) * 8).toFixed(1)}px)`;
 
-    /* hand, click rings, bursts (clicks and slams) */
+    /* hand, click rings, bursts */
     const [, hx, hy] = handAt(t);
     const down = CLICKS.some(c => t >= c - .05 && t < c + .12);
     hand.style.opacity = t >= S.map[0] ? 1 : 0;
@@ -1319,22 +1328,22 @@ renderScores(false);
       [T.slam, SW / 2, 470, 60], [T.stat1, 820, 330, 50], [T.stat2, 820, 330, 50], [T.titleSlam, SW / 2, 380, 70]
     ];
     bursts.forEach(([c, cx, cy, count], bi) => {
-      const dt = t - c; if (dt < 0 || dt > 1.1) return;
-      fxc.strokeStyle = col("--cream"); fxc.lineWidth = 4; fxc.globalAlpha = Math.max(0, 1 - dt * 2.6);
-      const rr = 10 + dt * 200; fxc.strokeRect(cx - rr, cy - rr, rr * 2, rr * 2);
+      const dt = t - c; if (dt < 0 || dt > 1.0) return;
+      fxc.strokeStyle = col("--cream"); fxc.lineWidth = 4; fxc.globalAlpha = Math.max(0, 1 - dt * 2.8);
+      const rr = 10 + dt * 220; fxc.strokeRect(cx - rr, cy - rr, rr * 2, rr * 2);
       let s = 97 + bi * 31; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-      fxc.globalAlpha = Math.max(0, 1 - dt / 1.1);
+      fxc.globalAlpha = Math.max(0, 1 - dt);
       for (let i = 0; i < count; i++) {
-        const a = r() * Math.PI * 2, sp = 220 + r() * 520, sz = 6 + (r() * 3 | 0) * 3;
+        const a = r() * Math.PI * 2, sp = 240 + r() * 560, sz = 6 + (r() * 3 | 0) * 3;
         fxc.fillStyle = colors[i % colors.length];
-        fxc.fillRect(cx + Math.cos(a) * sp * dt, cy + Math.sin(a) * sp * dt - 300 * dt + 640 * dt * dt, sz, sz);
+        fxc.fillRect(cx + Math.cos(a) * sp * dt, cy + Math.sin(a) * sp * dt - 320 * dt + 700 * dt * dt, sz, sz);
       }
       fxc.globalAlpha = 1;
     });
 
     /* captions */
     const c = CAPS.find(([a, b, txt]) => txt && t >= a && t < b);
-    cap.style.opacity = c ? Math.min(1, P(t, c[0], c[0] + .12)) : 0;
+    cap.style.opacity = c ? Math.min(1, P(t, c[0], c[0] + .1)) : 0;
     if (c && cap.textContent !== c[2]) cap.textContent = c[2];
   }
 
@@ -1345,7 +1354,7 @@ renderScores(false);
   if (location.hash === "#record") { document.documentElement.classList.add("rec"); fit(); render(0); return; }
 
   /* player */
-  let t = 0.9, playing = false, last = 0, autoplayed = false;
+  let t = 0.75, playing = false, last = 0, autoplayed = false;
   const btn = $("#tourPlay"), seek = $("#tourSeek"), time = $("#tourTime"), chBox = $("#tourCh"), tryBtn = $("#tourTry");
   const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   chBox.innerHTML = CH.map((c, i) => `<button class="chipbtn" data-ch="${i}">${i + 1} ${c.name.toUpperCase()}</button>`).join("");
@@ -1369,6 +1378,12 @@ renderScores(false);
   function play() { if (t >= DUR) t = 0; playing = true; last = performance.now(); requestAnimationFrame(frame); ui(); }
   function pause() { playing = false; ui(); }
   btn.onclick = () => playing ? pause() : play();
+  $("#watchTour").onclick = e => {
+    e.preventDefault();
+    autoplayed = true; pause(); t = 0; render(t); ui();
+    wrap.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    setTimeout(play, reduce ? 0 : 650);
+  };
   wrap.onclick = () => playing ? pause() : play();
   seek.max = Math.round(DUR * 10);
   seek.oninput = () => { pause(); t = seek.value / 10; render(t); ui(); };
