@@ -1,0 +1,646 @@
+{
+ "factors": {
+  "ShareViaCopyLinkWeight": {
+   "name": "Copy the link",
+   "icon": "link",
+   "note": "The biggest single move"
+  },
+  "BidirectionalFollowReplyWeightBoost": {
+   "name": "Reply to a mutual",
+   "icon": "mutual",
+   "note": "Bonus on top of Reply when you follow each other"
+  },
+  "ReplyWeight": {
+   "name": "Reply",
+   "icon": "reply"
+  },
+  "QuoteWeight": {
+   "name": "Quote",
+   "icon": "quote"
+  },
+  "ShareViaDmWeight": {
+   "name": "Send it in DMs",
+   "icon": "dm"
+  },
+  "FollowAuthorWeight": {
+   "name": "Follow the author",
+   "icon": "follow"
+  },
+  "ShareWeight": {
+   "name": "Share",
+   "icon": "share"
+  },
+  "RetweetWeight": {
+   "name": "Repost",
+   "icon": "repost"
+  },
+  "VideoCarouselVideoOpenWeight": {
+   "name": "Open a carousel video",
+   "icon": "play",
+   "note": "Only inside the new video row"
+  },
+  "FavoriteWeight": {
+   "name": "Like",
+   "icon": "heart"
+  },
+  "ContClickDwellTimeWeight": {
+   "name": "Time spent after tapping in",
+   "icon": "clock"
+  },
+  "ClickWeight": {
+   "name": "Tap into the post",
+   "icon": "tap"
+  },
+  "OpenLinkWeight": {
+   "name": "Open a link",
+   "icon": "open"
+  },
+  "DwellWeight": {
+   "name": "Stop scrolling to look",
+   "icon": "eye"
+  },
+  "PhotoExpandWeight": {
+   "name": "Open a photo",
+   "icon": "photo"
+  },
+  "QuotedClickWeight": {
+   "name": "Tap the quoted post",
+   "icon": "tap"
+  },
+  "VideoOpenWeight": {
+   "name": "Open a video",
+   "icon": "play"
+  },
+  "PostUnexploredWeight": {
+   "name": "Explore bonus",
+   "icon": "star"
+  },
+  "ContDwellTimeWeight": {
+   "name": "Seconds spent reading",
+   "icon": "clock",
+   "note": "Tiny per second, adds up"
+  },
+  "VqvWeight": {
+   "name": "Actually watch the video",
+   "icon": "play"
+  },
+  "QuotedVqvWeight": {
+   "name": "Watch the quoted video",
+   "icon": "play"
+  },
+  "ProfileClickWeight": {
+   "name": "Visit the profile",
+   "icon": "follow"
+  },
+  "ReactWithVideoWeight": {
+   "name": "Reply with a video",
+   "icon": "camera",
+   "note": "Brand new. Set to 0 for now"
+  },
+  "VideoCarouselImmersiveVqvWeight": {
+   "name": "Watch in the video row",
+   "icon": "play",
+   "note": "Brand new. Set to 0 for now"
+  },
+  "BidirectionalFollowDwellWeightBoost": {
+   "name": "Look at a mutual's post",
+   "icon": "mutual",
+   "note": "Tested in July, never shipped"
+  },
+  "NotDwelledWeight": {
+   "name": "Scroll right past",
+   "icon": "wind"
+  },
+  "BlockAuthorWeight": {
+   "name": "Block",
+   "icon": "block"
+  },
+  "NotInterestedWeight": {
+   "name": "Not interested",
+   "icon": "thumbdown"
+  },
+  "MuteAuthorWeight": {
+   "name": "Mute",
+   "icon": "mute"
+  },
+  "ReportWeight": {
+   "name": "Report",
+   "icon": "skull"
+  },
+  "ContActiveSecs5mResidualNormWeight": {
+   "name": "Active time bonus",
+   "icon": "clock",
+   "note": "Was set to 0, then deleted"
+  }
+ },
+ "days": {
+  "2026-01-20": {
+   "title": "The code goes public",
+   "story": "X posts the For You feed code for anyone to read. An AI built on Grok ranks every post.",
+   "tags": [
+    "big"
+   ],
+   "hype": 4
+  },
+  "2026-05-15": {
+   "title": "Expansion pack",
+   "story": "Adds how ads get placed, spam detectors, and a mini model anyone can run at home.",
+   "tags": [
+    "ads",
+    "safety"
+   ],
+   "hype": 3
+  },
+  "2026-08-13": {
+   "title": "The mega drop",
+   "story": "2,053 files at once. The real scoring weights, the safety filters, and the actual training code.",
+   "extra": [
+    [
+     "Under the Hood",
+     null,
+     "launched",
+     "new"
+    ]
+   ],
+   "tags": [
+    "big",
+    "weights",
+    "safety"
+   ],
+   "hype": 5
+  },
+  "2026-08-14": {
+   "title": "Brazil election filter",
+   "story": "Accounts reported to Brazil's Electoral Court vanish from For You, unless you follow them.",
+   "extra": [
+    [
+     "Election filter",
+     null,
+     "on",
+     "new"
+    ]
+   ],
+   "tags": [
+    "legal"
+   ],
+   "hype": 4
+  },
+  "2026-08-17": {
+   "title": "Spam radar tune-up",
+   "story": "Spam and rule-breaking detectors get retrained. New ad safety check added, switched off.",
+   "tags": [
+    "safety",
+    "ads"
+   ],
+   "hype": 1
+  },
+  "2026-08-18": {
+   "title": "Your follows get checked too",
+   "story": "Posts from people you follow now run their own safety check. Reply spam detector updated.",
+   "tags": [
+    "safety"
+   ],
+   "hype": 2
+  },
+  "2026-08-19": {
+   "title": "Muted words hit harder",
+   "story": "Muted words now also catch text inside quoted posts.",
+   "tags": [
+    "safety"
+   ],
+   "hype": 2
+  },
+  "2026-08-20": {
+   "title": "AI trend switch",
+   "story": "A new switch lets trend feedback shape ranking. Off by default.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-08-21": {
+   "title": "Model plumbing",
+   "story": "Storage and data changes inside the AI. Nothing you would notice.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-08-24": {
+   "title": "Safety tests added",
+   "story": "The safety filter gets a checker that compares old and new answers.",
+   "tags": [
+    "safety",
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-08-25": {
+   "title": "Looking now counts",
+   "story": "Stopping to look at a post now earns points. Video views stop counting, video opens go up.",
+   "extra": [
+    [
+     "AI learns from",
+     "short looks",
+     "long looks",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "weights",
+    "video"
+   ],
+   "hype": 4
+  },
+  "2026-08-26": {
+   "title": "Training upgrades",
+   "story": "Behind-the-scenes work on how the AI learns.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-08-28": {
+   "title": "Smarter ad placement",
+   "story": "A new ad mixer that checks how risky nearby posts are before placing an ad.",
+   "tags": [
+    "ads"
+   ],
+   "hype": 2
+  },
+  "2026-09-01": {
+   "title": "New ad mixer goes live",
+   "story": "The risk-aware ad mixer becomes the default. Safety rules get reorganized.",
+   "extra": [
+    [
+     "Ad placement",
+     "basic",
+     "checks risk",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "safety"
+   ],
+   "hype": 3
+  },
+  "2026-09-02": {
+   "title": "Stranger posts: long looks win",
+   "story": "The AI that finds posts from people you don't follow now learns from long looks too.",
+   "extra": [
+    [
+     "Stranger post AI learns from",
+     "short looks",
+     "long looks",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "discovery"
+   ],
+   "hype": 2
+  },
+  "2026-09-03": {
+   "title": "A stranger's fix got in",
+   "story": "The first outside code fix gets merged. It stops duplicate safety lookups.",
+   "tags": [
+    "community"
+   ],
+   "hype": 2
+  },
+  "2026-09-04": {
+   "title": "Small account boost rewritten",
+   "story": "The code that helps small accounts get seen gets rebuilt from scratch.",
+   "tags": [
+    "creators"
+   ],
+   "hype": 3
+  },
+  "2026-09-08": {
+   "title": "New AI picks stranger posts",
+   "story": "A new model starts picking posts from people you don't follow.",
+   "extra": [
+    [
+     "Stranger post AI",
+     "version 1",
+     "version 2",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "discovery"
+   ],
+   "hype": 3
+  },
+  "2026-09-09": {
+   "title": "Safety filter cleanup",
+   "story": "The final safety check before your feed gets simpler and faster.",
+   "tags": [
+    "safety"
+   ],
+   "hype": 1
+  },
+  "2026-09-10": {
+   "title": "Safety plumbing",
+   "story": "Under the Hood reports and safety data get faster.",
+   "tags": [
+    "safety",
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-09-12": {
+   "title": "Brazil list updated",
+   "story": "The list of election accounts gets updated.",
+   "tags": [
+    "legal"
+   ],
+   "hype": 2
+  },
+  "2026-09-15": {
+   "title": "Feed variety tracker",
+   "story": "X starts measuring how varied each feed is.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-09-16": {
+   "title": "Ad safety check paused",
+   "story": "The newer ad safety check gets switched back off.",
+   "extra": [
+    [
+     "Newer ad safety check",
+     "on",
+     "off",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "ads"
+   ],
+   "hype": 1
+  },
+  "2026-09-17": {
+   "title": "The viral holdout",
+   "story": "A new switch can hide very liked posts from a small slice of people, up to 15%. Off by default.",
+   "extra": [
+    [
+     "Small account boost window",
+     "1 day",
+     "2 days",
+     "buff"
+    ]
+   ],
+   "tags": [
+    "creators",
+    "big"
+   ],
+   "hype": 4
+  },
+  "2026-09-18": {
+   "title": "See legal takedowns",
+   "story": "Under the Hood now shows if a country forced your post to be hidden, and which one.",
+   "extra": [
+    [
+     "Legal takedown info",
+     null,
+     "visible",
+     "new"
+    ]
+   ],
+   "tags": [
+    "legal",
+    "safety"
+   ],
+   "hype": 4
+  },
+  "2026-09-22": {
+   "title": "Ranking gets logged",
+   "story": "More data recorded about which posts were picked and why.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-09-23": {
+   "title": "Final shuffle goes public",
+   "story": "X shares the code that does the last reshuffle of your feed. Small accounts get their own lane.",
+   "extra": [
+    [
+     "Spots for small accounts",
+     "0",
+     "200",
+     "buff"
+    ]
+   ],
+   "tags": [
+    "creators",
+    "discovery"
+   ],
+   "hype": 3
+  },
+  "2026-09-24": {
+   "title": "Scoring moves house",
+   "story": "The scoring math moves into its own file. Same math, new home.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 2
+  },
+  "2026-09-25": {
+   "title": "Safety engine rebuild",
+   "story": "The visibility filter gets rebuilt. It can now tell which region you are in.",
+   "tags": [
+    "safety"
+   ],
+   "hype": 2
+  },
+  "2026-09-26": {
+   "title": "Appeals stick",
+   "story": "If you win an appeal, the same punishment is not put back for a while.",
+   "tags": [
+    "safety"
+   ],
+   "hype": 3
+  },
+  "2026-09-29": {
+   "title": "Clickbait loses points",
+   "story": "Just tapping in is worth less. Actually staying to read is worth way more. Not interested hurts more.",
+   "tags": [
+    "weights",
+    "big"
+   ],
+   "hype": 5
+  },
+  "2026-09-30": {
+   "title": "Small account boost overhaul",
+   "story": "Accounts up to 50K followers now get a boost, but only for a post's first 2 hours.",
+   "extra": [
+    [
+     "Follower limit",
+     "1K",
+     "50K",
+     "buff"
+    ],
+    [
+     "Post age window",
+     "48 hrs",
+     "2 hrs",
+     "nerf"
+    ],
+    [
+     "Boost stops after",
+     "1,000 views",
+     "200 views",
+     "nerf"
+    ],
+    [
+     "Random tryouts for new posts",
+     "off",
+     "on",
+     "new"
+    ]
+   ],
+   "tags": [
+    "creators",
+    "big"
+   ],
+   "hype": 5
+  },
+  "2026-10-01": {
+   "title": "Limits explained",
+   "story": "New text explains why some actions are limited on your account.",
+   "tags": [
+    "safety"
+   ],
+   "hype": 1
+  },
+  "2026-10-02": {
+   "title": "New way to find posts",
+   "story": "A new way to find posts by what they mean. Built, but off for now.",
+   "tags": [
+    "discovery"
+   ],
+   "hype": 2
+  },
+  "2026-10-03": {
+   "title": "Popular posts built",
+   "story": "A shared list of popular posts gets built. Ad safety check comes back on.",
+   "extra": [
+    [
+     "Newer ad safety check",
+     "off",
+     "on",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "discovery",
+    "ads"
+   ],
+   "hype": 3
+  },
+  "2026-10-06": {
+   "title": "Notices instead of deletes",
+   "story": "Safety can now keep a post up with a notice on it instead of hiding it.",
+   "extra": [
+    [
+     "Safety options",
+     "3",
+     "4",
+     "new"
+    ]
+   ],
+   "tags": [
+    "safety"
+   ],
+   "hype": 3
+  },
+  "2026-10-07": {
+   "title": "Popular posts go live",
+   "story": "Popular recent posts from the most followed accounts now join everyone's feed pool.",
+   "extra": [
+    [
+     "Popular posts source",
+     "off",
+     "on",
+     "new"
+    ]
+   ],
+   "tags": [
+    "discovery",
+    "big"
+   ],
+   "hype": 5
+  },
+  "2026-10-08": {
+   "title": "Video row arrives",
+   "story": "A swipeable row of videos at spot 6 in your feed, at most once an hour. Testing.",
+   "extra": [
+    [
+     "Video row",
+     null,
+     "built",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video"
+   ],
+   "hype": 4
+  },
+  "2026-10-09": {
+   "title": "Faster training",
+   "story": "The AI trains faster. Nothing you would notice yet.",
+   "tags": [
+    "tech"
+   ],
+   "hype": 1
+  },
+  "2026-10-13": {
+   "title": "Likes get a boost",
+   "story": "Likes are worth more, video opens worth way less. Brazil list cut to the runoff.",
+   "extra": [
+    [
+     "Enforcement off switch",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "weights",
+    "big"
+   ],
+   "hype": 5
+  },
+  "2026-10-14": {
+   "title": "Likes boosted again",
+   "story": "Second like boost in two days. Not interested hurts a post even more.",
+   "tags": [
+    "weights",
+    "big"
+   ],
+   "hype": 5
+  },
+  "2026-10-15": {
+   "title": "Video row gets a brain",
+   "story": "The video row gets its own scoring AI. Ads now skip risky authors by default.",
+   "extra": [
+    [
+     "Risky author ad check",
+     "off",
+     "on",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "video",
+    "ads"
+   ],
+   "hype": 4
+  }
+ }
+}

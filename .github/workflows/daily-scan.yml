@@ -1,0 +1,34 @@
+name: Daily scan
+
+# Every morning: pull X's algorithm code, rebuild the site, and commit.
+# Each commit makes Vercel redeploy production, so the live site updates daily.
+on:
+  schedule:
+    - cron: "30 12 * * *"   # 8:30 AM New York (EDT)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: daily-scan
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get the latest X algorithm code
+        run: git clone --quiet https://github.com/xai-org/x-algorithm.git .cache/x-algorithm
+
+      - name: Rebuild the site from it
+        run: python3 -I tools/build.py .cache/x-algorithm
+
+      - name: Commit so Vercel redeploys production
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public
+          git commit -m "Daily scan $(date -u +%F)" || echo "Nothing changed"
+          git pull --rebase --quiet
+          git push

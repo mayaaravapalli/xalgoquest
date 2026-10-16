@@ -1,0 +1,13 @@
+{
+  "name": "xalgoquest-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scan": "python3 -I build.py ../.cache/x-algorithm",
+    "record": "node record.mjs",
+    "og": "node record.mjs --og"
+  },
+  "devDependencies": {
+    "puppeteer-core": "23.11.1"
+  }
+}

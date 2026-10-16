@@ -1,0 +1,5 @@
+.cache/
+node_modules/
+artifact.html
+.DS_Store
+.vercel

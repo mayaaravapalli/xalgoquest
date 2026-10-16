@@ -1,0 +1,1501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Every change to the X For You algorithm, turned into a pixel game. Plain words, real numbers from X's code, scanned every day.">
+<link rel="canonical" href="https://xalgoquest.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="X Algo Quest">
+<meta property="og:description" content="Every change to the X For You algorithm, turned into a pixel game. Plain words, real numbers from X's code, scanned every day.">
+<meta property="og:url" content="https://xalgoquest.vercel.app/">
+<meta property="og:image" content="https://xalgoquest.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="X Algo Quest">
+<meta name="twitter:description" content="Every change to the X For You algorithm, turned into a pixel game. Plain words, real numbers from X's code, scanned every day.">
+<meta name="twitter:image" content="https://xalgoquest.vercel.app/og.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>X Algo Quest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@400;600&family=Press+Start+2P&display=swap">
+<style>
+/* Layout: one column arcade cabinet. Hero title screen, world map of patch days, patch viewer, score card, high scores, feed machine, daily scan. */
+:root {
+  --night: #0c0a26;
+  --sky: #16134a;
+  --panel: #221d66;
+  --panel-2: #2c2680;
+  --line: #4a43a8;
+  --cream: #fff4d8;
+  --muted: #d2cdf6;
+  --gold: #ffc83d;
+  --gold-deep: #c98a12;
+  --buff: #55e38d;
+  --nerf: #ff8a3d;
+  --harsh: #ff4d6d;
+  --new: #63d8ff;
+  --ink: #0c0a26;
+  --f-pixel: "Press Start 2P", "Courier New", monospace;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-label: "Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
+  --px: 4px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--night);
+  color: var(--cream);
+  font-family: var(--f-body);
+  font-size: 18px;
+  line-height: 1.5;
+}
+img.spr, canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: var(--new); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.pixel { font-family: var(--f-label); letter-spacing: 0.02em; }
+.box {
+  background: var(--panel);
+  box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--cream),
+    0 var(--px) 0 0 var(--cream),
+    calc(var(--px) * -1) 0 0 0 var(--cream),
+    var(--px) 0 0 0 var(--cream),
+    calc(var(--px) * 2) calc(var(--px) * 2) 0 0 var(--ink);
+  margin: var(--px);
+}
+.btn {
+  font-family: var(--f-label);
+  font-size: 17px; font-weight: 600;
+  background: var(--gold);
+  color: var(--ink);
+  border: 0;
+  padding: 12px 16px;
+  box-shadow: inset -4px -4px 0 0 var(--gold-deep), 0 0 0 4px var(--ink);
+  transition: transform .08s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(2px); box-shadow: inset 4px 4px 0 0 var(--gold-deep), 0 0 0 4px var(--ink); }
+.btn.ghost { background: var(--panel-2); color: var(--cream); box-shadow: inset -4px -4px 0 0 var(--panel), 0 0 0 4px var(--ink); }
+
+/* HUD */
+.hud {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--ink);
+  border-bottom: 4px solid var(--panel-2);
+}
+.hud .wrap { display: flex; align-items: center; gap: 16px; padding-block: 10px; }
+.hud .logo { font-family: var(--f-pixel); font-size: 11px; color: var(--gold); white-space: nowrap; }
+.hud .grow { flex: 1; }
+.hud .scan { font-family: var(--f-label); font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.dot { width: 8px; height: 8px; background: var(--buff); display: inline-block; animation: blink 1.2s steps(2) infinite; }
+@keyframes blink { 50% { opacity: .2; } }
+.hud .snd { font-family: var(--f-label); font-size: 14px; background: none; border: 2px solid var(--line); padding: 6px 8px; }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; border-bottom: 4px solid var(--panel-2); background: var(--sky); }
+#stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero .wrap { position: relative; padding-block: 48px 40px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center; }
+.hero h1 {
+  font-family: var(--f-pixel);
+  font-size: clamp(30px, 6vw, 56px);
+  line-height: 1.15;
+  margin: 0 0 18px;
+  color: var(--gold);
+  text-shadow: 4px 4px 0 var(--harsh), 8px 8px 0 var(--ink);
+  text-wrap: balance;
+}
+.hero h1 span { color: var(--cream); }
+.hero p.tag { font-size: 22px; line-height: 1.4; margin: 0 0 24px; max-width: 26ch; }
+.stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+.stat { background: var(--ink); padding: 10px 12px; min-width: 0; }
+.stat b { display: block; font-family: var(--f-label); font-size: 28px; font-weight: 600; color: var(--new); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 15px; color: var(--muted); }
+.start-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.press { animation: pulse 1s steps(2) infinite; }
+@keyframes pulse { 50% { filter: brightness(1.25); } }
+.latest-card { padding: 20px; min-width: 0; }
+.latest-card .eyebrow { font-family: var(--f-label); font-size: 14px; color: var(--harsh); margin-bottom: 12px; display: flex; gap: 8px; align-items: center; }
+.latest-card h2 { font-family: var(--f-label); font-size: 26px; line-height: 1.2; font-weight: 600; margin: 0 0 10px; text-wrap: balance; }
+.latest-card p { margin: 0 0 14px; font-size: 18px; color: var(--muted); }
+
+section.block { padding-block: 56px 16px; }
+.head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.head h2 { font-family: var(--f-label); font-size: clamp(26px, 3.6vw, 36px); font-weight: 600; line-height: 1.1; margin: 0 0 10px; color: var(--gold); }
+.head p { margin: 0; color: var(--muted); font-size: 19px; max-width: 40ch; }
+
+.tldr { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+.tl { background: var(--panel); padding: 16px; display: grid; grid-template-columns: 36px 1fr; gap: 4px 12px; align-items: start; min-width: 0; }
+.tl img { width: 36px; grid-row: span 3; }
+.tl .big { font-family: var(--f-label); font-size: 28px; font-weight: 600; line-height: 1.05; }
+.tl .big.up { color: var(--buff); }
+.tl .big.down { color: var(--nerf); }
+.tl .big.bad { color: var(--harsh); }
+.tl .what { font-size: 17px; font-weight: 700; line-height: 1.25; }
+.tl .what button { all: unset; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.tl .when { font-size: 14px; color: var(--muted); }
+
+.ticker { position: relative; z-index: 2; background: var(--gold); color: var(--ink); overflow: hidden; border-bottom: 4px solid var(--ink); }
+.tk-in { display: flex; width: max-content; animation: tick var(--tk-dur, 40s) linear infinite; }
+.tk-in span { font-family: var(--f-label); font-size: 18px; font-weight: 600; padding: 10px 0; white-space: nowrap; }
+.tk-in span::after { content: "\2605"; padding: 0 22px; }
+.tk-in .hot { background: var(--ink); color: var(--gold); padding: 10px 14px; margin-right: 22px; }
+.tk-in .hot::after { content: none; }
+@keyframes tick { to { transform: translateX(-50%); } }
+.ticker:hover .tk-in { animation-play-state: paused; }
+.node.recent { animation: glow .9s steps(2) infinite; }
+@keyframes glow { 50% { box-shadow: inset -4px -4px 0 rgba(0,0,0,.28), 0 0 0 3px var(--ink), 0 0 0 7px var(--buff); } }
+.frow.recent { outline: 3px solid var(--buff); outline-offset: -3px; }
+.frow .bar i { transition: width 1.4s steps(14); }
+.frow .bar .ghost { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1px; background: var(--cream); opacity: .8; }
+.frow .when { grid-column: 2 / 4; font-family: var(--f-label); font-size: 14px; color: var(--buff); }
+.tl.recent { outline: 3px solid var(--buff); outline-offset: -3px; }
+.tl .flag { font-family: var(--f-label); font-size: 12px; font-weight: 600; background: var(--buff); color: var(--ink); padding: 2px 6px; margin-left: 8px; vertical-align: 6px; }
+
+/* World map */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.chipbtn { font-family: var(--f-label); font-size: 15px; background: var(--panel); border: 2px solid var(--line); padding: 8px 10px; color: var(--muted); }
+.chipbtn[aria-pressed="true"] { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+.map { padding: 24px 20px 12px; display: grid; gap: 22px; }
+.world { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: start; }
+.world-name { font-family: var(--f-label); font-size: 16px; color: var(--muted); padding-top: 34px; line-height: 1.6; }
+.world-name b { color: var(--cream); display: block; }
+.nodes { display: flex; flex-wrap: wrap; gap: 30px 14px; padding-top: 26px; }
+.node {
+  position: relative;
+  width: 44px; height: 44px;
+  border: 0;
+  font-family: var(--f-label);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--muted);
+  box-shadow: inset -4px -4px 0 rgba(0,0,0,.28), 0 0 0 3px var(--ink);
+  transition: transform .1s, opacity .2s;
+}
+.node:not(:last-child)::after {
+  content: ""; position: absolute; left: 100%; top: 50%; width: 14px; height: 4px; margin-top: -2px;
+  background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+}
+.node[data-h="3"] { background: var(--new); }
+.node[data-h="4"] { background: var(--harsh); color: var(--cream); }
+.node[data-h="5"] { background: var(--gold); }
+.node[data-h="5"]::before {
+  content: ""; position: absolute; left: 50%; top: -14px; width: 12px; height: 10px; margin-left: -6px;
+  background: var(--harsh); clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.node:hover { transform: translateY(-4px); }
+.node.dim { opacity: .18; }
+.node.sel { outline: 3px solid var(--cream); outline-offset: 3px; }
+.node .fresh { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 12px; font-family: var(--f-label); color: var(--buff); white-space: nowrap; animation: blink 1s steps(2) infinite; }
+.player { position: absolute; left: 50%; top: -38px; width: 28px; margin-left: -14px; animation: hop .5s steps(2) infinite alternate; pointer-events: none; }
+@keyframes hop { to { transform: translateY(-5px); } }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; padding: 12px 20px 18px; font-size: 15px; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: -1px; }
+
+/* Patch viewer */
+.viewer { padding: 26px; position: relative; scroll-margin-top: 80px; }
+.viewer.shake { animation: shake .45s steps(6); }
+@keyframes shake {
+  0%,100% { transform: translate(0,0); }
+  20% { transform: translate(calc(var(--amp) * -1), var(--amp)); }
+  40% { transform: translate(var(--amp), calc(var(--amp) * -1)); }
+  60% { transform: translate(calc(var(--amp) * -1), 0); }
+  80% { transform: translate(var(--amp), var(--amp)); }
+}
+.v-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+.v-level { font-family: var(--f-label); font-size: 16px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+.v-level b { color: var(--new); }
+.power { display: flex; gap: 4px; align-items: center; font-family: var(--f-label); font-size: 13px; color: var(--muted); }
+.power i { width: 12px; height: 12px; background: var(--panel-2); display: inline-block; }
+.power i.on { background: var(--gold); }
+.viewer h3 { font-family: var(--f-label); font-size: clamp(28px, 4.6vw, 42px); line-height: 1.1; font-weight: 600; margin: 0 0 14px; text-wrap: balance; }
+.viewer .story { font-size: 21px; line-height: 1.45; margin: 0 0 22px; max-width: 46ch; }
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.chip { background: var(--ink); padding: 12px; display: grid; grid-template-columns: 32px 1fr; gap: 4px 12px; align-items: center; min-width: 0; }
+.chip img { width: 32px; grid-row: span 2; }
+.chip .nm { font-size: 18px; line-height: 1.25; min-width: 0; }
+.chip .vals { font-family: var(--f-label); font-size: 19px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.chip .vals s { color: var(--muted); text-decoration-thickness: 2px; }
+.badge { font-family: var(--f-label); font-size: 13px; font-weight: 600; padding: 4px 6px; color: var(--ink); background: var(--muted); white-space: nowrap; }
+.k-buff, .k-softer { background: var(--buff); }
+.k-nerf { background: var(--nerf); }
+.k-harsher { background: var(--harsh); color: var(--cream); }
+.k-new { background: var(--new); }
+.k-switch { background: var(--gold); }
+.k-gone { background: var(--muted); }
+.v-meta { display: flex; gap: 14px 22px; flex-wrap: wrap; align-items: center; font-size: 16px; color: var(--muted); }
+.v-meta .lines { font-family: var(--f-label); font-size: 16px; }
+.v-meta .lines .p { color: var(--buff); }
+.v-meta .lines .m { color: var(--harsh); }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tagp { font-family: var(--f-label); font-size: 13px; border: 2px solid var(--line); padding: 4px 6px; color: var(--cream); }
+.v-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+.vnav { background: var(--ink); border: 2px solid var(--line); padding: 12px 14px; text-align: left; display: grid; gap: 4px; min-width: 0; }
+.vnav:hover { border-color: var(--gold); }
+.vnav.right { text-align: right; }
+.vnav small { font-family: var(--f-label); font-size: 13px; color: var(--gold); }
+.vnav span { font-size: 17px; font-weight: 700; }
+.vnav-end { align-self: center; font-size: 16px; color: var(--muted); padding: 12px 14px; }
+.v-new { background: var(--buff); color: var(--ink); padding: 0 6px; }
+@media (max-width: 760px) { .v-nav { grid-template-columns: 1fr; } .vnav.right { text-align: left; } }
+.nochips { font-size: 17px; color: var(--muted); margin: 0 0 22px; }
+
+/* Score card */
+.tip { padding: 16px 20px; margin-bottom: 26px; display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: center; background: var(--ink); }
+.tip img { width: 40px; }
+.tip p { margin: 0; font-size: 19px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.col h3 { font-family: var(--f-label); font-size: 21px; font-weight: 600; margin: 0 0 14px; }
+.col.good h3 { color: var(--buff); }
+.col.bad h3 { color: var(--harsh); }
+.rows { display: grid; gap: 8px; }
+.frow { background: var(--panel); border: 0; text-align: left; padding: 10px 12px; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; width: 100%; }
+.frow:hover { background: var(--panel-2); }
+.frow img { width: 28px; grid-row: span 2; }
+.frow .nm { font-size: 18px; line-height: 1.25; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; min-width: 0; }
+.frow .val { font-family: var(--f-label); font-size: 21px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.frow .bar { grid-column: 2 / 4; height: 8px; background: var(--ink); position: relative; }
+.frow .bar i { position: absolute; inset: 0 auto 0 0; background: repeating-linear-gradient(90deg, var(--fill) 0 6px, transparent 6px 8px); }
+.col.good .bar i { --fill: var(--buff); }
+.col.bad .bar i { --fill: var(--harsh); }
+.frow.off { opacity: .55; }
+.frow .note { grid-column: 2 / 4; font-size: 15px; color: var(--muted); }
+.hist { grid-column: 1 / 4; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding-top: 6px; font-family: var(--f-label); font-size: 15px; color: var(--muted); }
+.hist b { color: var(--cream); }
+
+/* High scores */
+.rules { display: flex; gap: 8px; flex-wrap: wrap; }
+.scores { padding: 20px; }
+.srow { display: grid; grid-template-columns: 52px 44px minmax(0, 1fr) 110px; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 2px dashed var(--line); transition: transform .5s; }
+.srow:last-of-type { border-bottom: 0; }
+.srow .rk { font-family: var(--f-label); font-size: 24px; font-weight: 600; color: var(--gold); }
+.srow img { width: 40px; }
+.srow .ttl { font-size: 19px; line-height: 1.25; font-weight: 700; min-width: 0; }
+.srow .why { font-size: 15px; font-weight: 400; color: var(--muted); }
+.srow .sc { font-family: var(--f-label); font-size: 24px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.srow .sc.neg { color: var(--harsh); }
+.srow .sc.pos { color: var(--buff); }
+.srow .dl { display: block; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.fine { font-size: 15px; color: var(--muted); margin: 12px 0 0; }
+
+/* Machine */
+.machine { padding: 20px; }
+#belt { width: 100%; display: block; background: var(--ink); }
+.stations { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.st b { font-family: var(--f-label); font-size: 18px; font-weight: 600; display: block; margin-bottom: 6px; color: var(--gold); }
+.st span { font-size: 15px; line-height: 1.4; color: var(--muted); display: block; }
+
+/* Scanner */
+.scanner { padding: 20px; }
+.strip { display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 6px; margin: 6px 0 16px; }
+.dcell { background: var(--ink); padding: 8px 2px; text-align: center; min-width: 0; }
+.dcell small { display: block; font-family: var(--f-label); font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.dcell img { width: 22px; display: block; margin: 0 auto 4px; }
+.dcell em { font-style: normal; font-size: 16px; font-family: var(--f-label); }
+.dcell.today { outline: 3px solid var(--buff); }
+.dcell.none img { opacity: .25; }
+.scanline { font-family: var(--f-label); font-size: 17px; line-height: 1.6; color: var(--muted); }
+.scanline b { color: var(--buff); }
+
+footer { padding-block: 48px; color: var(--muted); font-size: 15px; }
+footer .wrap { display: grid; gap: 6px; }
+
+/* How-to tour: one timeline drives the on-page player and the recorded MP4. */
+.tour { padding: 16px; }
+.stage-wrap { position: relative; width: 100%; overflow: hidden; background: var(--sky); cursor: pointer; }
+.stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; overflow: hidden; background: var(--sky); color: var(--cream); font-family: var(--f-body); }
+.stage canvas { position: absolute; left: 0; top: 0; }
+.sg-top { position: absolute; left: 40px; right: 40px; top: 26px; display: flex; justify-content: space-between; align-items: center; z-index: 3; }
+.sg-top b { font-family: var(--f-pixel); font-size: 14px; color: var(--gold); font-weight: 400; }
+.sg-top span { font-family: var(--f-label); font-size: 22px; color: var(--muted); }
+.sc { position: absolute; inset: 0; }
+.sg-cap { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: max-content; max-width: 1080px; background: var(--ink); font-weight: 700; font-size: 30px; line-height: 1.3; padding: 14px 26px; text-align: center; z-index: 4; }
+.sg-hand { position: absolute; left: 0; top: 0; width: 60px; z-index: 6; }
+.sg-h1 { font-family: var(--f-pixel); font-size: 84px; line-height: 1.15; color: var(--gold); text-shadow: 6px 6px 0 var(--harsh), 12px 12px 0 var(--ink); }
+.sg-h1 span { color: var(--cream); }
+.sg-glare { position: absolute; inset: 0; color: transparent; text-shadow: none; background: linear-gradient(100deg, transparent 0 42%, rgba(255, 255, 255, .9) 50%, transparent 58% 100%); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; }
+.sg-h1 .sg-glare span { color: transparent; }
+.sg-mini { position: absolute; width: 40px; height: 40px; box-shadow: inset -4px -4px 0 rgba(0, 0, 0, .28), 0 0 0 3px var(--ink); }
+.sg-lbl { font-family: var(--f-label); font-size: 60px; font-weight: 600; line-height: 1.05; }
+.sg-big { font-family: var(--f-body); font-weight: 700; font-size: 190px; line-height: 1; letter-spacing: -.02em; transform-origin: 0 50%; }
+.sg-sq { position: absolute; width: 64px; height: 64px; font-family: var(--f-label); font-size: 22px; font-weight: 600; color: var(--ink); display: grid; place-items: center; box-shadow: inset -5px -5px 0 rgba(0, 0, 0, .28), 0 0 0 4px var(--ink); }
+.sg-head { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--f-label); font-size: 30px; font-weight: 600; color: var(--gold); }
+.sg-morph { position: absolute; z-index: 1; }
+.sg-card { position: absolute; left: 200px; top: 120px; width: 880px; height: 420px; padding: 36px 40px; z-index: 2; }
+.sg-card .d { font-family: var(--f-label); font-size: 22px; color: var(--new); }
+.sg-card h4 { font-family: var(--f-label); font-size: 52px; line-height: 1.05; font-weight: 600; margin: 10px 0 12px; }
+.sg-card p { font-size: 25px; line-height: 1.35; margin: 0 0 22px; color: var(--muted); }
+.sg-chips { display: flex; gap: 14px; }
+.sg-chip { background: var(--ink); padding: 14px 16px; width: 256px; }
+.sg-chip .n { font-size: 21px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.sg-chip .n img { width: 30px; }
+.sg-chip .v { font-family: var(--f-label); font-size: 24px; margin: 8px 0; }
+.sg-chip .v s { color: var(--muted); }
+.sg-badge { display: inline-block; font-family: var(--f-label); font-size: 16px; font-weight: 600; padding: 4px 8px; color: var(--ink); }
+.sg-row { position: absolute; left: 220px; width: 840px; height: 64px; background: var(--panel); display: grid; grid-template-columns: 40px 1fr auto; gap: 0 16px; align-items: center; padding: 0 18px; }
+.sg-row img { width: 36px; }
+.sg-row .n { font-size: 23px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+.sg-row .v { font-family: var(--f-label); font-size: 28px; font-weight: 600; }
+.sg-row .bar { position: absolute; left: 74px; right: 18px; bottom: 9px; height: 8px; background: var(--ink); }
+.sg-row .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: repeating-linear-gradient(90deg, var(--fill) 0 7px, transparent 7px 9px); }
+.sg-row .bar b { position: absolute; top: -4px; bottom: -4px; width: 3px; background: var(--cream); }
+.sg-pill { position: absolute; top: 118px; font-family: var(--f-label); font-size: 22px; padding: 10px 16px; border: 3px solid var(--line); }
+.sg-score { position: absolute; left: 240px; width: 800px; height: 70px; display: grid; grid-template-columns: 70px 50px 1fr 130px; gap: 16px; align-items: center; padding: 0 18px; background: var(--panel); }
+.sg-score .rk { font-family: var(--f-label); font-size: 30px; font-weight: 600; color: var(--gold); }
+.sg-score img { width: 44px; }
+.sg-score .t { font-size: 25px; font-weight: 700; }
+.sg-score .s { font-family: var(--f-label); font-size: 32px; font-weight: 600; text-align: right; }
+.sg-cell { position: absolute; top: 290px; width: 70px; height: 100px; background: var(--ink); text-align: center; padding-top: 10px; }
+.sg-cell small { display: block; font-family: var(--f-label); font-size: 14px; color: var(--muted); }
+.sg-cell img { width: 32px; display: block; margin: 8px auto 4px; }
+.sg-cell em { font-style: normal; font-family: var(--f-label); font-size: 22px; }
+.sg-beam { position: absolute; top: 270px; width: 8px; height: 140px; background: var(--buff); }
+.sg-tick { position: absolute; left: 0; right: 0; top: 150px; height: 56px; background: var(--gold); color: var(--ink); overflow: hidden; }
+.sg-tick div { position: absolute; top: 0; white-space: nowrap; font-family: var(--f-label); font-size: 26px; font-weight: 600; line-height: 56px; }
+.sg-btn { position: absolute; font-family: var(--f-label); font-size: 40px; font-weight: 600; background: var(--gold); color: var(--ink); padding: 20px 34px; box-shadow: inset -6px -6px 0 var(--gold-deep), 0 0 0 6px var(--ink); }
+.player-ui { display: grid; gap: 12px; margin-top: 14px; }
+.pl-row { display: flex; align-items: center; gap: 14px; }
+.pl-play { font-family: var(--f-label); font-size: 17px; font-weight: 600; background: var(--gold); color: var(--ink); border: 0; padding: 10px 14px; min-width: 96px; box-shadow: inset -4px -4px 0 var(--gold-deep); }
+#tourSeek { flex: 1; min-width: 0; accent-color: var(--gold); }
+.pl-time { font-family: var(--f-label); font-size: 16px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pl-ch { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pl-ch .chipbtn[aria-current="true"] { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+.pl-try { margin-left: auto; }
+.pl-dl { font-size: 16px; }
+html.rec, html.rec body { background: var(--sky); overflow: hidden; }
+html.rec body > :not(main), html.rec main > :not(#howto), html.rec #howto .head, html.rec .player-ui { display: none !important; }
+html.rec #howto { padding: 0 !important; margin: 0; max-width: none; }
+html.rec .tour { padding: 0; margin: 0; box-shadow: none; }
+html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
+@media (max-width: 760px) {
+  .pl-try { margin-left: 0; }
+}
+
+/* Digits read better in the body face: the pixel face draws 5 like an S. */
+.v-level, .latest-card .eyebrow, .world-name b, .hud .scan, .scanline, .tk-in span, .sg-tick div, .sg-card .d, .sg-pill, .sg-top span, .node, .stat b, .frow .val, .srow .sc, .srow .rk, .tl .big, .chip .vals, .dcell em, .hist, .pl-time,
+.sg-sq, .sg-cell em, .sg-row .v, .sg-score .s, .sg-score .rk, .sg-chip .v, .sg-num { font-family: var(--f-body); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+.float { position: fixed; z-index: 51; font-family: var(--f-pixel); font-size: 20px; pointer-events: none; text-shadow: 3px 3px 0 var(--ink); animation: rise 1.2s ease-out forwards; white-space: nowrap; }
+@keyframes rise { from { transform: translate(-50%, 0) scale(.6); opacity: 1; } 30% { transform: translate(-50%, -30px) scale(1.15); } to { transform: translate(-50%, -90px) scale(1); opacity: 0; } }
+#flash { position: fixed; inset: 0; background: var(--cream); opacity: 0; pointer-events: none; z-index: 49; }
+#flash.go { animation: flash .35s steps(3); }
+@keyframes flash { 0% { opacity: .55; } 100% { opacity: 0; } }
+
+@media (max-width: 760px) {
+  body { font-size: 17px; }
+  .viewer .story { font-size: 19px; }
+  .hero .wrap { grid-template-columns: 1fr; padding-block: 32px; }
+  .cols { grid-template-columns: 1fr; }
+  .world { grid-template-columns: 1fr; gap: 0; }
+  .world-name { padding-top: 0; }
+  .world-name b { display: inline; margin-right: 8px; }
+  .stations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .strip { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .srow { grid-template-columns: 40px 32px minmax(0, 1fr) 84px; gap: 8px; }
+  .srow img { width: 30px; }
+  .hud .logo { font-size: 9px; }
+  .hud .scan .lbl { display: none; }
+  .viewer { padding: 20px 16px; }
+  .chips { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .tk-in { animation: none; flex-wrap: wrap; width: auto; padding-inline: 16px; }
+  .tk-in span:nth-child(n+8) { display: none; }
+  .node.recent { animation: none; box-shadow: inset -4px -4px 0 rgba(0,0,0,.28), 0 0 0 3px var(--ink), 0 0 0 7px var(--buff); }
+  .frow .bar i { transition: none; }
+  .press, .dot, .player, .node .fresh { animation: none; }
+  .viewer.shake { animation: none; }
+}
+</style>
+
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="flash" aria-hidden="true"></div>
+
+<header class="hud">
+  <div class="wrap">
+    <div class="logo">X ALGO QUEST</div>
+    <div class="grow"></div>
+    <div class="scan"><i class="dot"></i><span class="lbl">SCANNED</span> <span id="hudScan"></span></div>
+    <button class="snd" id="snd" aria-pressed="true">SOUND ON</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="ticker" id="ticker" aria-label="Latest changes"><div class="tk-in" id="tkIn"></div></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <h1>X ALGO<br><span>QUEST</span></h1>
+      <p class="tag">Every change to the X For You algorithm, turned into a game. Scanned every day.</p>
+      <div class="stats" id="stats"></div>
+      <div class="start-row">
+        <button class="btn press" id="start">PRESS START</button>
+        <a class="btn ghost" href="#howto">WATCH THE TOUR</a>
+      </div>
+    </div>
+    <div class="box latest-card" id="latestCard"></div>
+  </div>
+</div>
+
+<main>
+  <section class="block wrap" id="howto">
+    <div class="head"><div><h2>HOW IT WORKS</h2><p>A 25 second tour. Pause anytime, jump to a chapter, or try each part for real.</p></div></div>
+    <div class="box tour">
+      <div class="stage-wrap" id="stageWrap" aria-label="Animated tour of X Algo Quest. Click to play or pause."><div class="stage" id="stage"></div></div>
+      <div class="player-ui">
+        <div class="pl-row">
+          <button class="pl-play" id="tourPlay">PLAY</button>
+          <input type="range" id="tourSeek" min="0" max="245" value="9" aria-label="Tour position">
+          <span class="pl-time" id="tourTime">0:00 / 0:24</span>
+        </div>
+        <div class="pl-ch">
+          <span class="pl-ch" id="tourCh"></span>
+          <button class="btn pl-try" id="tourTry" hidden>TRY IT</button>
+          <a class="pl-dl" id="tourDl" href="xalgoquest-tour.mp4" download hidden>Download the video</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="short">
+    <div class="head"><div><h2>THE SHORT VERSION</h2><p>The biggest changes to your feed since X shared its scoring.</p></div></div>
+    <div class="tldr" id="tldr"></div>
+  </section>
+
+  <section class="block wrap" id="map">
+    <div class="head">
+      <div>
+        <h2>WORLD MAP</h2>
+        <p>Each square is a day X changed its feed code. Gold means a huge change. Tap any square.</p>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="box">
+      <div class="map" id="worlds"></div>
+      <div class="legend">
+        <span><i style="background:var(--gold)"></i>Huge change</span>
+        <span><i style="background:var(--harsh)"></i>Big</span>
+        <span><i style="background:var(--new)"></i>Medium</span>
+        <span><i style="background:var(--muted)"></i>Behind the scenes</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <div class="head"><div><h2>WHAT CHANGED</h2><p>Pick any day on the map. Here is what it means for you.</p></div></div>
+    <article class="box viewer" id="viewer" aria-live="polite"></article>
+  </section>
+
+  <section class="block wrap" id="score">
+    <div class="head">
+      <div>
+        <h2>WHAT EARNS POINTS</h2>
+        <p>Every post in your feed gets a score. Here is what pushes it up or down, straight from X's code.</p>
+      </div>
+    </div>
+    <div class="box tip"><img class="spr" data-spr="unknown" alt=""><p id="tipText"></p></div>
+    <div class="cols">
+      <div class="col good"><h3>PUSHES A POST UP</h3><div class="rows" id="good"></div></div>
+      <div class="col bad"><h3>PUSHES A POST DOWN</h3><div class="rows" id="bad"></div></div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="hiscores">
+    <div class="head">
+      <div>
+        <h2>HIGH SCORES</h2>
+        <p>Four example posts, scored with X's real points. Switch between old and new rules to see the difference.</p>
+      </div>
+      <div class="rules" id="rules"></div>
+    </div>
+    <div class="box scores" id="scores"></div>
+    <p class="fine">The odds are made up for the demo. The points are real.</p>
+  </section>
+
+  <section class="block wrap">
+    <div class="head"><div><h2>HOW YOUR FEED IS BUILT</h2><p>Every time you open For You, posts run this gauntlet.</p></div></div>
+    <div class="box machine">
+      <canvas id="belt" aria-label="Animation of posts moving through five stations; some get tossed"></canvas>
+      <div class="stations">
+        <div class="st"><b>1 GRAB</b><span>Fresh posts from people you follow, strangers, and popular lists</span></div>
+        <div class="st"><b>2 TOSS</b><span>Old, already seen, muted, or blocked posts get dropped</span></div>
+        <div class="st"><b>3 SCORE</b><span>The AI guesses what you would do and adds up points</span></div>
+        <div class="st"><b>4 SAFETY</b><span>Each post gets kept, warned, or hidden</span></div>
+        <div class="st"><b>5 FEED</b><span>Top scores win. Ads and follow tips get slotted in</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="scan">
+    <div class="head"><div><h2>DAILY SCAN</h2><p>A bot checks X's code every morning and adds any new patch here.</p></div></div>
+    <div class="box scanner">
+      <div class="strip" id="strip"></div>
+      <div class="scanline" id="scanline"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Fan made. Not affiliated with X. Every number comes from the public code at <a href="https://github.com/xai-org/x-algorithm" target="_blank" rel="noopener">github.com/xai-org/x-algorithm</a>.</div>
+    <div>Switches marked off can still be tested on some people.</div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener("error", e => {
+  let box = document.getElementById("xaq-err");
+  if (!box) {
+    box = document.createElement("div"); box.id = "xaq-err";
+    box.style.cssText = "position:fixed;left:16px;right:16px;bottom:16px;z-index:99;background:#ff4d6d;color:#0c0a26;padding:12px 16px;font:16px system-ui,sans-serif";
+    document.body.appendChild(box);
+  }
+  box.textContent = "Something broke while loading: " + (e.message || "unknown error");
+});
+(function () {
+const D = {"repo":"https://github.com/xai-org/x-algorithm","checkedAt":"2026-10-15T22:20-04:00","latest":"2026-10-15","days":[{"date":"2026-01-20","sha":"aaa167b","url":"https://github.com/xai-org/x-algorithm/commit/aaa167b3de8a674587c53545a43c90eaad360010","commits":1,"files":79,"plus":8816,"minus":0,"chips":[],"title":"The code goes public","story":"X posts the For You feed code for anyone to read. An AI built on Grok ranks every post.","extra":[],"tags":["big"],"hype":4,"needsCopy":false},{"date":"2026-05-15","sha":"0bfc279","url":"https://github.com/xai-org/x-algorithm/commit/0bfc2795d308f90032544322747caacd535f75ae","commits":2,"files":188,"plus":18265,"minus":928,"chips":[],"title":"Expansion pack","story":"Adds how ads get placed, spam detectors, and a mini model anyone can run at home.","extra":[],"tags":["ads","safety"],"hype":3,"needsCopy":false},{"date":"2026-08-13","sha":"a389166","url":"https://github.com/xai-org/x-algorithm/commit/a389166f6cf5da70a286b568c87695d4dcdce3a1","commits":2,"files":2054,"plus":363246,"minus":11642,"chips":[],"title":"The mega drop","story":"2,053 files at once. The real scoring weights, the safety filters, and the actual training code.","extra":[["Under the Hood",null,"launched","new"]],"tags":["big","weights","safety"],"hype":5,"needsCopy":false},{"date":"2026-08-14","sha":"c65aa17","url":"https://github.com/xai-org/x-algorithm/commit/c65aa179db7bdd61e2c2821eac87f208a105c053","commits":1,"files":21,"plus":2271,"minus":32,"chips":[],"title":"Brazil election filter","story":"Accounts reported to Brazil's Electoral Court vanish from For You, unless you follow them.","extra":[["Election filter",null,"on","new"]],"tags":["legal"],"hype":4,"needsCopy":false},{"date":"2026-08-17","sha":"b089ce6","url":"https://github.com/xai-org/x-algorithm/commit/b089ce64891f9c50fab73aa00dbe65acb82f198f","commits":1,"files":34,"plus":751,"minus":162,"chips":[],"title":"Spam radar tune-up","story":"Spam and rule-breaking detectors get retrained. New ad safety check added, switched off.","extra":[],"tags":["safety","ads"],"hype":1,"needsCopy":false},{"date":"2026-08-18","sha":"11a71f8","url":"https://github.com/xai-org/x-algorithm/commit/11a71f87d6a7fc4c1e8159dad8f3c5ff90a0f7ed","commits":1,"files":14,"plus":208,"minus":70,"chips":[],"title":"Your follows get checked too","story":"Posts from people you follow now run their own safety check. Reply spam detector updated.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-08-19","sha":"aad7179","url":"https://github.com/xai-org/x-algorithm/commit/aad7179773944e17eb8798bbbf0231d6cd6c1ffc","commits":1,"files":79,"plus":3303,"minus":651,"chips":[],"title":"Muted words hit harder","story":"Muted words now also catch text inside quoted posts.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-08-20","sha":"d0cef2f","url":"https://github.com/xai-org/x-algorithm/commit/d0cef2f943084ee0d4310378031c9c2c37d67f12","commits":1,"files":14,"plus":479,"minus":200,"chips":[],"title":"AI trend switch","story":"A new switch lets trend feedback shape ranking. Off by default.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-21","sha":"28e414f","url":"https://github.com/xai-org/x-algorithm/commit/28e414f535e4b5a50ca12ee87674e7649e50c7ad","commits":1,"files":35,"plus":856,"minus":152,"chips":[],"title":"Model plumbing","story":"Storage and data changes inside the AI. Nothing you would notice.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-24","sha":"d011592","url":"https://github.com/xai-org/x-algorithm/commit/d011592a1c8c4bfb23781ff15577a68dc08bdde1","commits":1,"files":19,"plus":1418,"minus":117,"chips":[],"title":"Safety tests added","story":"The safety filter gets a checker that compares old and new answers.","extra":[],"tags":["safety","tech"],"hype":1,"needsCopy":false},{"date":"2026-08-25","sha":"0d3cdd8","url":"https://github.com/xai-org/x-algorithm/commit/0d3cdd806c405f04db7030f720b48687aa304061","commits":1,"files":47,"plus":5850,"minus":586,"chips":[{"factor":"VideoOpenWeight","from":0.05,"to":0.07,"kind":"buff"},{"factor":"VqvWeight","from":0.05,"to":0.0,"kind":"nerf"},{"factor":"DwellWeight","from":0.0,"to":0.05,"kind":"buff"}],"title":"Looking now counts","story":"Stopping to look at a post now earns points. Video views stop counting, video opens go up.","extra":[["AI learns from","short looks","long looks","switch"]],"tags":["weights","video"],"hype":4,"needsCopy":false},{"date":"2026-08-26","sha":"45b48ba","url":"https://github.com/xai-org/x-algorithm/commit/45b48ba6baa40e212f6dcbaf8fe9fdc8d9da722e","commits":1,"files":36,"plus":873,"minus":525,"chips":[],"title":"Training upgrades","story":"Behind-the-scenes work on how the AI learns.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-08-28","sha":"bc8e5f0","url":"https://github.com/xai-org/x-algorithm/commit/bc8e5f0f07b31337bfdcaf690121498e00199b64","commits":2,"files":65,"plus":4021,"minus":1440,"chips":[],"title":"Smarter ad placement","story":"A new ad mixer that checks how risky nearby posts are before placing an ad.","extra":[],"tags":["ads"],"hype":2,"needsCopy":false},{"date":"2026-09-01","sha":"2a38187","url":"https://github.com/xai-org/x-algorithm/commit/2a38187dbffa67ae1c81781db7e048a5f461ab13","commits":3,"files":105,"plus":5213,"minus":3596,"chips":[],"title":"New ad mixer goes live","story":"The risk-aware ad mixer becomes the default. Safety rules get reorganized.","extra":[["Ad placement","basic","checks risk","switch"]],"tags":["ads","safety"],"hype":3,"needsCopy":false},{"date":"2026-09-02","sha":"85ac72a","url":"https://github.com/xai-org/x-algorithm/commit/85ac72a1bba41f21615e3f0bca56da75970a6633","commits":1,"files":34,"plus":1081,"minus":525,"chips":[],"title":"Stranger posts: long looks win","story":"The AI that finds posts from people you don't follow now learns from long looks too.","extra":[["Stranger post AI learns from","short looks","long looks","switch"]],"tags":["discovery"],"hype":2,"needsCopy":false},{"date":"2026-09-03","sha":"e4dcedd","url":"https://github.com/xai-org/x-algorithm/commit/e4dcedd3b2db8b7a9cc244c2b616d04a0ee2c353","commits":1,"files":1,"plus":2,"minus":0,"chips":[],"title":"A stranger's fix got in","story":"The first outside code fix gets merged. It stops duplicate safety lookups.","extra":[],"tags":["community"],"hype":2,"needsCopy":false},{"date":"2026-09-04","sha":"902a06f","url":"https://github.com/xai-org/x-algorithm/commit/902a06fd616ed815f660e5546d16d492fa1ca825","commits":2,"files":98,"plus":2434,"minus":2105,"chips":[],"title":"Small account boost rewritten","story":"The code that helps small accounts get seen gets rebuilt from scratch.","extra":[],"tags":["creators"],"hype":3,"needsCopy":false},{"date":"2026-09-08","sha":"49815da","url":"https://github.com/xai-org/x-algorithm/commit/49815da255010f2468fb87b8bdd1283c2a507ca8","commits":1,"files":78,"plus":10938,"minus":982,"chips":[],"title":"New AI picks stranger posts","story":"A new model starts picking posts from people you don't follow.","extra":[["Stranger post AI","version 1","version 2","switch"]],"tags":["discovery"],"hype":3,"needsCopy":false},{"date":"2026-09-09","sha":"75d93d9","url":"https://github.com/xai-org/x-algorithm/commit/75d93d9b6c7d08124173c513a727c37460ed5b04","commits":1,"files":28,"plus":801,"minus":252,"chips":[],"title":"Safety filter cleanup","story":"The final safety check before your feed gets simpler and faster.","extra":[],"tags":["safety"],"hype":1,"needsCopy":false},{"date":"2026-09-10","sha":"fee1d0f","url":"https://github.com/xai-org/x-algorithm/commit/fee1d0f3e99c25e4c10499e1aba4061c8d1cc86d","commits":1,"files":33,"plus":1587,"minus":391,"chips":[],"title":"Safety plumbing","story":"Under the Hood reports and safety data get faster.","extra":[],"tags":["safety","tech"],"hype":1,"needsCopy":false},{"date":"2026-09-12","sha":"6bb4594","url":"https://github.com/xai-org/x-algorithm/commit/6bb4594253cdfa9ea19983a54a401d5ce8f8275d","commits":1,"files":24,"plus":1397,"minus":338,"chips":[],"title":"Brazil list updated","story":"The list of election accounts gets updated.","extra":[],"tags":["legal"],"hype":2,"needsCopy":false},{"date":"2026-09-15","sha":"2d4a03c","url":"https://github.com/xai-org/x-algorithm/commit/2d4a03c2dbfb1214571d8098077c53f4ee8a9dc1","commits":1,"files":17,"plus":594,"minus":9,"chips":[],"title":"Feed variety tracker","story":"X starts measuring how varied each feed is.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-09-16","sha":"fad2f71","url":"https://github.com/xai-org/x-algorithm/commit/fad2f71edc780ab14e4cfaebbb8b221385782e43","commits":1,"files":26,"plus":552,"minus":233,"chips":[],"title":"Ad safety check paused","story":"The newer ad safety check gets switched back off.","extra":[["Newer ad safety check","on","off","switch"]],"tags":["ads"],"hype":1,"needsCopy":false},{"date":"2026-09-17","sha":"42266f3","url":"https://github.com/xai-org/x-algorithm/commit/42266f3e2be54d8a3c4d2228aac2e8f8d1c1f034","commits":1,"files":64,"plus":2288,"minus":3627,"chips":[],"title":"The viral holdout","story":"A new switch can hide very liked posts from a small slice of people, up to 15%. Off by default.","extra":[["Small account boost window","1 day","2 days","buff"]],"tags":["creators","big"],"hype":4,"needsCopy":false},{"date":"2026-09-18","sha":"8b25829","url":"https://github.com/xai-org/x-algorithm/commit/8b25829717a4f104dd04403ee7d0253c5fedb1b7","commits":2,"files":71,"plus":4368,"minus":1982,"chips":[],"title":"See legal takedowns","story":"Under the Hood now shows if a country forced your post to be hidden, and which one.","extra":[["Legal takedown info",null,"visible","new"]],"tags":["legal","safety"],"hype":4,"needsCopy":false},{"date":"2026-09-22","sha":"3aa0fa3","url":"https://github.com/xai-org/x-algorithm/commit/3aa0fa336c4a20e4149b6151629b6050897bb8a5","commits":1,"files":72,"plus":5588,"minus":2601,"chips":[],"title":"Ranking gets logged","story":"More data recorded about which posts were picked and why.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-09-23","sha":"1b3fec2","url":"https://github.com/xai-org/x-algorithm/commit/1b3fec20bc3fd9879bc3e9f3d9c42753cdc3fede","commits":1,"files":92,"plus":4993,"minus":3132,"chips":[],"title":"Final shuffle goes public","story":"X shares the code that does the last reshuffle of your feed. Small accounts get their own lane.","extra":[["Spots for small accounts","0","200","buff"]],"tags":["creators","discovery"],"hype":3,"needsCopy":false},{"date":"2026-09-24","sha":"44d37eb","url":"https://github.com/xai-org/x-algorithm/commit/44d37ebf87f2185b949cd37b710d410c2a77d21f","commits":1,"files":63,"plus":2569,"minus":2257,"chips":[{"factor":"ContActiveSecs5mResidualNormWeight","from":0.0,"to":null,"kind":"gone"}],"title":"Scoring moves house","story":"The scoring math moves into its own file. Same math, new home.","extra":[],"tags":["tech"],"hype":2,"needsCopy":false},{"date":"2026-09-25","sha":"bf7db1b","url":"https://github.com/xai-org/x-algorithm/commit/bf7db1becb6590152fba79b8c3bf0555752f7b14","commits":1,"files":87,"plus":7780,"minus":5759,"chips":[],"title":"Safety engine rebuild","story":"The visibility filter gets rebuilt. It can now tell which region you are in.","extra":[],"tags":["safety"],"hype":2,"needsCopy":false},{"date":"2026-09-26","sha":"4c5cfe8","url":"https://github.com/xai-org/x-algorithm/commit/4c5cfe8f07f1c76d4f04277e803f20e6039f5191","commits":1,"files":80,"plus":9130,"minus":2652,"chips":[],"title":"Appeals stick","story":"If you win an appeal, the same punishment is not put back for a while.","extra":[],"tags":["safety"],"hype":3,"needsCopy":false},{"date":"2026-09-29","sha":"a707cc2","url":"https://github.com/xai-org/x-algorithm/commit/a707cc27ba36d3fa79450c9cffcc48a82d080b02","commits":1,"files":89,"plus":9552,"minus":2325,"chips":[{"factor":"ClickWeight","from":0.4,"to":0.3,"kind":"nerf"},{"factor":"ContClickDwellTimeWeight","from":0.0,"to":0.4,"kind":"buff"},{"factor":"NotInterestedWeight","from":-43.2,"to":-47.52,"kind":"harsher"}],"title":"Clickbait loses points","story":"Just tapping in is worth less. Actually staying to read is worth way more. Not interested hurts more.","extra":[],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-09-30","sha":"77d431a","url":"https://github.com/xai-org/x-algorithm/commit/77d431aabf409ca1c1eed9bec7e2183f7c914e23","commits":1,"files":69,"plus":3306,"minus":1489,"chips":[],"title":"Small account boost overhaul","story":"Accounts up to 50K followers now get a boost, but only for a post's first 2 hours.","extra":[["Follower limit","1K","50K","buff"],["Post age window","48 hrs","2 hrs","nerf"],["Boost stops after","1,000 views","200 views","nerf"],["Random tryouts for new posts","off","on","new"]],"tags":["creators","big"],"hype":5,"needsCopy":false},{"date":"2026-10-01","sha":"b79b947","url":"https://github.com/xai-org/x-algorithm/commit/b79b947ce9283c786822274ef8fe208c33c585b2","commits":1,"files":47,"plus":2490,"minus":506,"chips":[],"title":"Limits explained","story":"New text explains why some actions are limited on your account.","extra":[],"tags":["safety"],"hype":1,"needsCopy":false},{"date":"2026-10-02","sha":"76843a5","url":"https://github.com/xai-org/x-algorithm/commit/76843a5eea278ced444b21372d4e6d6909f5c35e","commits":1,"files":105,"plus":5227,"minus":756,"chips":[],"title":"New way to find posts","story":"A new way to find posts by what they mean. Built, but off for now.","extra":[],"tags":["discovery"],"hype":2,"needsCopy":false},{"date":"2026-10-03","sha":"b412112","url":"https://github.com/xai-org/x-algorithm/commit/b412112d03f27acbfd668e0cc040abcafa1080c1","commits":1,"files":148,"plus":9128,"minus":2356,"chips":[],"title":"Popular posts built","story":"A shared list of popular posts gets built. Ad safety check comes back on.","extra":[["Newer ad safety check","off","on","switch"]],"tags":["discovery","ads"],"hype":3,"needsCopy":false},{"date":"2026-10-06","sha":"e62790c","url":"https://github.com/xai-org/x-algorithm/commit/e62790c99484b51424c2eccc488ed4e7517e8778","commits":1,"files":103,"plus":6916,"minus":1393,"chips":[],"title":"Notices instead of deletes","story":"Safety can now keep a post up with a notice on it instead of hiding it.","extra":[["Safety options","3","4","new"]],"tags":["safety"],"hype":3,"needsCopy":false},{"date":"2026-10-07","sha":"78460ca","url":"https://github.com/xai-org/x-algorithm/commit/78460ca8b65c57ddd3a05f9217c8aaeba214b628","commits":1,"files":22,"plus":775,"minus":681,"chips":[{"factor":"PostUnexploredWeight","from":0.02,"to":0.015,"kind":"nerf"}],"title":"Popular posts go live","story":"Popular recent posts from the most followed accounts now join everyone's feed pool.","extra":[["Popular posts source","off","on","new"]],"tags":["discovery","big"],"hype":5,"needsCopy":false},{"date":"2026-10-08","sha":"35650fb","url":"https://github.com/xai-org/x-algorithm/commit/35650fb89f3b14dc6234312535f642779d891d88","commits":1,"files":173,"plus":15160,"minus":2465,"chips":[],"title":"Video row arrives","story":"A swipeable row of videos at spot 6 in your feed, at most once an hour. Testing.","extra":[["Video row",null,"built","new"]],"tags":["video"],"hype":4,"needsCopy":false},{"date":"2026-10-09","sha":"cb45b55","url":"https://github.com/xai-org/x-algorithm/commit/cb45b5501423126adfc508052116c2d67c0e3fec","commits":1,"files":16,"plus":1228,"minus":218,"chips":[],"title":"Faster training","story":"The AI trains faster. Nothing you would notice yet.","extra":[],"tags":["tech"],"hype":1,"needsCopy":false},{"date":"2026-10-13","sha":"e1a0375","url":"https://github.com/xai-org/x-algorithm/commit/e1a0375a903899984545c663bb0bccb3cdcdf046","commits":1,"files":179,"plus":26532,"minus":5971,"chips":[{"factor":"FavoriteWeight","from":0.5,"to":0.6,"kind":"buff"},{"factor":"VideoOpenWeight","from":0.07,"to":0.02,"kind":"nerf"},{"factor":"ReactWithVideoWeight","from":null,"to":0.0,"kind":"new"},{"factor":"ContDwellTimeWeight","from":0.004,"to":0.006,"kind":"buff"}],"title":"Likes get a boost","story":"Likes are worth more, video opens worth way less. Brazil list cut to the runoff.","extra":[["Enforcement off switch",null,"added","new"]],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-10-14","sha":"17c96bf","url":"https://github.com/xai-org/x-algorithm/commit/17c96bf346df3d62b90f1bb01830d432dba74485","commits":1,"files":52,"plus":7745,"minus":6964,"chips":[{"factor":"FavoriteWeight","from":0.6,"to":0.66,"kind":"buff"},{"factor":"NotInterestedWeight","from":-47.52,"to":-52.272,"kind":"harsher"}],"title":"Likes boosted again","story":"Second like boost in two days. Not interested hurts a post even more.","extra":[],"tags":["weights","big"],"hype":5,"needsCopy":false},{"date":"2026-10-15","sha":"92f0918","url":"https://github.com/xai-org/x-algorithm/commit/92f0918f6cb52837cb53a8c790c68f906b2c0db1","commits":1,"files":57,"plus":7145,"minus":2959,"chips":[{"factor":"VideoCarouselVideoOpenWeight","from":null,"to":1.0,"kind":"new"},{"factor":"VideoCarouselImmersiveVqvWeight","from":null,"to":0.0,"kind":"new"}],"title":"Video row gets a brain","story":"The video row gets its own scoring AI. Ads now skip risky authors by default.","extra":[["Risky author ad check","off","on","switch"]],"tags":["video","ads"],"hype":4,"needsCopy":false}],"factors":[{"code":"FavoriteWeight","since":"2026-08-13","history":[["2026-08-13",0.5],["2026-10-13",0.6],["2026-10-14",0.66]],"name":"Like","note":"","icon":"heart","now":0.66},{"code":"ReplyWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Reply","note":"","icon":"reply","now":5.0},{"code":"BidirectionalFollowReplyWeightBoost","since":"2026-08-13","history":[["2026-08-13",15.0]],"name":"Reply to a mutual","note":"Bonus on top of Reply when you follow each other","icon":"mutual","now":15.0},{"code":"BidirectionalFollowDwellWeightBoost","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Look at a mutual's post","note":"Tested in July, never shipped","icon":"mutual","now":0.0},{"code":"RetweetWeight","since":"2026-08-13","history":[["2026-08-13",1.0]],"name":"Repost","note":"","icon":"repost","now":1.0},{"code":"PhotoExpandWeight","since":"2026-08-13","history":[["2026-08-13",0.05]],"name":"Open a photo","note":"","icon":"photo","now":0.05},{"code":"VideoOpenWeight","since":"2026-08-13","history":[["2026-08-13",0.05],["2026-08-25",0.07],["2026-10-13",0.02]],"name":"Open a video","note":"","icon":"play","now":0.02},{"code":"ClickWeight","since":"2026-08-13","history":[["2026-08-13",0.4],["2026-09-29",0.3]],"name":"Tap into the post","note":"","icon":"tap","now":0.3},{"code":"OpenLinkWeight","since":"2026-08-13","history":[["2026-08-13",0.2]],"name":"Open a link","note":"","icon":"open","now":0.2},{"code":"ProfileClickWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Visit the profile","note":"","icon":"follow","now":0.0},{"code":"VqvWeight","since":"2026-08-13","history":[["2026-08-13",0.05],["2026-08-25",0.0]],"name":"Actually watch the video","note":"","icon":"play","now":0.0},{"code":"ShareWeight","since":"2026-08-13","history":[["2026-08-13",2.0]],"name":"Share","note":"","icon":"share","now":2.0},{"code":"ShareViaDmWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Send it in DMs","note":"","icon":"dm","now":5.0},{"code":"ShareViaCopyLinkWeight","since":"2026-08-13","history":[["2026-08-13",20.0]],"name":"Copy the link","note":"The biggest single move","icon":"link","now":20.0},{"code":"DwellWeight","since":"2026-08-13","history":[["2026-08-13",0.0],["2026-08-25",0.05]],"name":"Stop scrolling to look","note":"","icon":"eye","now":0.05},{"code":"QuoteWeight","since":"2026-08-13","history":[["2026-08-13",5.0]],"name":"Quote","note":"","icon":"quote","now":5.0},{"code":"QuotedClickWeight","since":"2026-08-13","history":[["2026-08-13",0.05]],"name":"Tap the quoted post","note":"","icon":"tap","now":0.05},{"code":"QuotedVqvWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"name":"Watch the quoted video","note":"","icon":"play","now":0.0},{"code":"FollowAuthorWeight","since":"2026-08-13","history":[["2026-08-13",4.0]],"name":"Follow the author","note":"","icon":"follow","now":4.0},{"code":"PostUnexploredWeight","since":"2026-08-13","history":[["2026-08-13",0.02],["2026-10-07",0.015]],"name":"Explore bonus","note":"","icon":"star","now":0.015},{"code":"ContDwellTimeWeight","since":"2026-08-13","history":[["2026-08-13",0.004],["2026-10-13",0.006]],"name":"Seconds spent reading","note":"Tiny per second, adds up","icon":"clock","now":0.006},{"code":"ContClickDwellTimeWeight","since":"2026-08-13","history":[["2026-08-13",0.0],["2026-09-29",0.4]],"name":"Time spent after tapping in","note":"","icon":"clock","now":0.4},{"code":"ContActiveSecs5mResidualNormWeight","since":"2026-08-13","history":[["2026-08-13",0.0]],"gone":"2026-09-24","name":"Active time bonus","note":"Was set to 0, then deleted","icon":"clock","now":0.0},{"code":"NotInterestedWeight","since":"2026-08-13","history":[["2026-08-13",-43.2],["2026-09-29",-47.52],["2026-10-14",-52.272]],"name":"Not interested","note":"","icon":"thumbdown","now":-52.272},{"code":"BlockAuthorWeight","since":"2026-08-13","history":[["2026-08-13",-31.2]],"name":"Block","note":"","icon":"block","now":-31.2},{"code":"MuteAuthorWeight","since":"2026-08-13","history":[["2026-08-13",-58.8]],"name":"Mute","note":"","icon":"mute","now":-58.8},{"code":"ReportWeight","since":"2026-08-13","history":[["2026-08-13",-234.0]],"name":"Report","note":"","icon":"skull","now":-234.0},{"code":"NotDwelledWeight","since":"2026-08-13","history":[["2026-08-13",-0.02]],"name":"Scroll right past","note":"","icon":"wind","now":-0.02},{"code":"ReactWithVideoWeight","since":"2026-10-13","history":[["2026-10-13",0.0]],"name":"Reply with a video","note":"Brand new. Set to 0 for now","icon":"camera","now":0.0},{"code":"VideoCarouselVideoOpenWeight","since":"2026-10-15","history":[["2026-10-15",1.0]],"name":"Open a carousel video","note":"Only inside the new video row","icon":"play","now":1.0},{"code":"VideoCarouselImmersiveVqvWeight","since":"2026-10-15","history":[["2026-10-15",0.0]],"name":"Watch in the video row","note":"Brand new. Set to 0 for now","icon":"play","now":0.0}]};
+
+/* ---------- pixel sprites ---------- */
+const SPR = {
+  heart: ["........",".aa.aa..","aaaaaaa.","acaaaaa.","aaaaaaa.",".aaaaa..","..aaa...","...a...."],
+  reply: ["........",".aaaaaa.","aaaaaaaa","abaabaab","aaaaaaaa",".aaaaaa.",".aa.....","a......."],
+  repost: ["..a.....",".aaaaaa.","..a...a.","..a...a.",".a...a..",".a...a..",".aaaaaa.",".....a.."],
+  quote: ["........",".aa..aa.",".aa..aa.","..a...a.",".a...a..","........","........","........"],
+  share: ["...a....","..aaa...",".a.a.a..","...a....","a..a..a.","a.....a.","a.....a.","aaaaaaa."],
+  dm: ["........","aaaaaaaa","aa....aa","a.a..a.a","a..aa..a","a......a","aaaaaaaa","........"],
+  link: ["........","....aaa.","...a...a","..a.a..a","a..a.a..","a...a...",".aaa....","........"],
+  follow: ["..aa....",".aaaa...",".aaaa.b.","..aa.bbb",".aaaa.b.","aaaaaa..","aaaaaa..","........"],
+  mutual: [".aa..bb.","aaaabbbb","aaaabbbb",".aa..bb.","aaaabbbb","aaaabbbb","aaaabbbb","........"],
+  tap: ["..a.....","..a.....","..aaaa..","..aaaaa.","aaaaaaa.",".aaaaaa.","..aaaa..","..aaaa.."],
+  clock: ["..aaaa..",".a..b.a.","a...b..a","a...bb.a","a......a","a......a",".a....a.","..aaaa.."],
+  eye: ["........","..aaaa..",".a.bb.a.","a.bbbb.a","a.bbbb.a",".a.bb.a.","..aaaa..","........"],
+  photo: ["........","aaaaaaaa","a.....ca","a......a","a..b...a","a.bbb.ba","abbbbbba","aaaaaaaa"],
+  play: ["........",".a......",".aaa....",".aaaaa..",".aaaaaa.",".aaaaa..",".aaa....",".a......"],
+  star: ["...a....","...a....","..aaa...","aaaaaaa.",".aaaaa..","..aaa...",".aa.aa..",".a...a.."],
+  camera: ["........","..aaa...","aaaaaaaa","aa.bb.aa","aab..baa","aa.bb.aa","aaaaaaaa","........"],
+  open: ["....aaaa","......aa",".....a.a","aaa.a..a","a..a....","a.......","a.....a.","aaaaaaa."],
+  wind: ["a......a",".a....a.","..a..a..","...aa...","a......a",".a....a.","..a..a..","...aa..."],
+  block: ["..aaaa..",".a...aa.","a...a..a","a..a...a","a.a....a","aa....a.",".aaaaa..","........"],
+  thumbdown: ["........","aaaa.bbb","aaaa.bbb","aaaaabbb","aaaaabbb",".aaa....","..aa....","...a...."],
+  mute: ["...a....","..aa....","aaaa.b.b","aaaa..b.","aaaa.b.b","..aa....","...a....","........"],
+  skull: [".aaaaaa.","aaaaaaaa","abbaabba","abbaabba","aaaaaaaa",".aaaaaa.",".a.a.a..","........"],
+  unknown: [".aaaaa..","aa...aa.",".....aa.","...aaa..","...aa...","........","...aa...","........"],
+  hero: ["..aaaa..",".aaaaaa.",".cbcbc..",".cccccc.","..bbbb..",".abbbba.","..b..b..",".bb..bb."],
+  coin: ["..aaaa..",".acaaaa.","aacaabaa","aacaabaa","aacaabaa","aaaaabaa",".aaabba.","..aaaa.."],
+  switch: ["......a.",".....a..","....a...","...a....","bbbbbbbb","bccccccb","bbbbbbbb","........"],
+  post: ["aaaaaaaa","abbbbbba","acccccca","abbbbbba","acccccca","abbbbbba","acccca.a","aaaaaaaa"],
+  shield: ["aaaaaaaa","abbbbbba","abbccbba","abccccba","abbccbba",".abbbba.","..abba..","...aa..."],
+  bin: ["..aaaa..","aaaaaaaa",".abbbba.",".ababba.",".ababba.",".ababba.",".abbbba.","..aaaa.."],
+  brain: [".aa.aa..","abbabba.","abbbbbba","abbabbba","abbbbbba",".abbbba.","..aa.a..","........"],
+  phone: [".aaaaaa.",".abbbba.",".abccba.",".abbbba.",".abccba.",".abbbba.",".aaaaaa.","...aa..."],
+  hand: ["..aa....",".abba...",".abbaaa.",".abbbbba","aabbbbba","abbbbbba",".abbbba.","..aaaa.."]
+};
+const CSS = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const PAL = {
+  heart: ["--harsh", "--ink", "--cream"], reply: ["--new", "--ink"], repost: ["--buff"], quote: ["--cream"],
+  share: ["--new"], dm: ["--cream"], link: ["--gold"], follow: ["--new", "--buff"], mutual: ["--new", "--gold"],
+  tap: ["--cream"], clock: ["--cream", "--gold"], eye: ["--cream", "--new"], photo: ["--cream", "--buff", "--gold"],
+  play: ["--harsh"], star: ["--gold"], camera: ["--new", "--ink"], open: ["--new"], wind: ["--muted"],
+  block: ["--harsh"], thumbdown: ["--nerf", "--cream"], mute: ["--cream", "--harsh"], skull: ["--cream", "--ink"],
+  unknown: ["--gold"], hero: ["--harsh", "--new", "--cream"], coin: ["--gold", "--gold-deep", "--cream"],
+  switch: ["--gold", "--cream", "--harsh"], post: ["--cream", "--panel-2", "--muted"], shield: ["--new", "--panel", "--cream"],
+  bin: ["--muted", "--panel"], brain: ["--gold", "--harsh"], phone: ["--cream", "--panel", "--new"], hand: ["--ink", "--cream"]
+};
+const sprCache = {};
+function sprCanvas(name) {
+  if (sprCache[name]) return sprCache[name];
+  const rows = SPR[name] || SPR.unknown, pal = (PAL[name] || PAL.unknown).map(CSS);
+  const c = document.createElement("canvas"); c.width = 8; c.height = 8;
+  const x = c.getContext("2d");
+  rows.forEach((r, y) => [...r].forEach((ch, i) => {
+    const k = "abc".indexOf(ch); if (k < 0) return;
+    x.fillStyle = pal[k] || pal[0]; x.fillRect(i, y, 1, 1);
+  }));
+  return (sprCache[name] = c);
+}
+const sprURL = n => sprCanvas(n).toDataURL();
+const img = (n, alt = "") => `<img class="spr" src="${sprURL(n)}" alt="${alt}">`;
+function paintSprites(root = document) { root.querySelectorAll("img[data-spr]").forEach(i => { i.src = sprURL(i.dataset.spr); }); }
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const pd = s => { const [y, m, d] = s.split("-").map(Number); return { y, m, d }; };
+const fmtDate = s => { const p = pd(s); return `${MON[p.m - 1]} ${p.d}, ${p.y}`; };
+const fmtShort = s => { const p = pd(s); return `${MON[p.m - 1]} ${p.d}`; };
+const fmtNum = v => {
+  if (v === null || v === undefined) return "none";
+  const a = Math.abs(v);
+  const s = a >= 10 ? (+v.toFixed(2)).toString() : (+v.toFixed(3)).toString();
+  return (v > 0 ? "+" : "") + s;
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const comma = n => n.toLocaleString("en-US");
+const BADGE = { buff: "WORTH MORE", nerf: "WORTH LESS", harsher: "HURTS MORE", softer: "HURTS LESS", new: "NEW", gone: "REMOVED", switch: "CHANGED" };
+const KIND_ICON = { new: "star", switch: "switch", buff: "coin", nerf: "wind", gone: "bin", harsher: "skull", softer: "heart" };
+const TAG_NAME = { big: "BIG ONE", weights: "POINTS", safety: "SAFETY", ads: "ADS", creators: "SMALL ACCOUNTS", discovery: "POSTS FROM STRANGERS", video: "VIDEO", legal: "LAW", tech: "BEHIND THE SCENES", community: "COMMUNITY" };
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function pctWord(from, to, kind) {
+  if (kind === "new") return to === 0 ? "NEW, SET TO 0" : "NEW";
+  if (kind === "gone") return "REMOVED";
+  if (!from) return to ? "NOW COUNTS" : "TURNED OFF";
+  if (!to) return "TURNED OFF";
+  const pct = Math.round(Math.abs((to - from) / from) * 100);
+  const up = Math.abs(to) > Math.abs(from);
+  return (from < 0 || to < 0) ? `HURTS ${pct}% ${up ? "MORE" : "LESS"}` : `WORTH ${pct}% ${up ? "MORE" : "LESS"}`;
+}
+
+const F = Object.fromEntries(D.factors.map(f => [f.code, f]));
+const days = D.days;
+const firstSnap = D.factors.reduce((m, f) => f.since < m ? f.since : m, "9999");
+const daysBetween = (a, b) => (Date.UTC(...Object.values(pd(b)).map((v, i) => i === 1 ? v - 1 : v)) - Date.UTC(...Object.values(pd(a)).map((v, i) => i === 1 ? v - 1 : v))) / 864e5;
+const weightAt = (code, date) => { let v = null; for (const [d, w] of F[code].history) if (d <= date) v = w; return v; };
+const today = D.checkedAt.slice(0, 10);
+const RECENT_DAYS = 7;
+const isRecent = date => { const n = daysBetween(date, today); return n >= 0 && n <= RECENT_DAYS; };
+const lastChange = f => f.history[f.history.length - 1][0];
+const factorRecent = f => !f.gone && (f.history.length > 1 || f.since > firstSnap) && isRecent(lastChange(f));
+
+/* ---------- sound ---------- */
+let sound = true, ac = null;
+try { sound = localStorage.getItem("xaq-sound") !== "off"; } catch (e) {}
+function tone(freq, t0, dur, type = "square", vol = .05) {
+  if (!sound) return;
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, ac.currentTime + t0);
+    g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + t0 + dur);
+    o.connect(g).connect(ac.destination);
+    o.start(ac.currentTime + t0); o.stop(ac.currentTime + t0 + dur + .02);
+  } catch (e) {}
+}
+const SFX = {
+  blip: () => tone(660, 0, .06),
+  tick: f => tone(f || 660, 0, .04, "square", .03),
+  up: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .07, .12)),
+  down: () => [784, 622, 523, 392].forEach((f, i) => tone(f, i * .08, .14, "sawtooth", .035)),
+  coin: () => { tone(988, 0, .08); tone(1319, .08, .3); },
+  mega: () => [392, 523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, i * .085, .16)),
+  start: () => [262, 330, 392, 523, 392, 523, 659].forEach((f, i) => tone(f, i * .09, .15))
+};
+function setSound(on) {
+  sound = on; const b = $("#snd");
+  b.textContent = on ? "SOUND ON" : "SOUND OFF"; b.setAttribute("aria-pressed", on);
+  try { localStorage.setItem("xaq-sound", on ? "on" : "off"); } catch (e) {}
+}
+$("#snd").onclick = () => { setSound(!sound); SFX.blip(); };
+setSound(sound);
+
+/* ---------- particles ---------- */
+const fx = $("#fx"), fxx = fx.getContext("2d");
+let parts = [], fxOn = false;
+function sizeFx() { fx.width = innerWidth; fx.height = innerHeight; }
+addEventListener("resize", sizeFx); sizeFx();
+function burst(x, y, n, colors) {
+  if (reduce) return;
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, s = 2 + Math.random() * 7;
+    parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 4, life: 50 + Math.random() * 30, c: colors[i % colors.length], s: 4 + (Math.random() * 3 | 0) * 2 });
+  }
+  if (!fxOn) { fxOn = true; requestAnimationFrame(stepFx); }
+}
+function stepFx() {
+  fxx.clearRect(0, 0, fx.width, fx.height);
+  parts = parts.filter(p => p.life-- > 0);
+  for (const p of parts) { p.vy += .3; p.x += p.vx; p.y += p.vy; fxx.fillStyle = p.c; fxx.fillRect(p.x | 0, p.y | 0, p.s, p.s); }
+  if (parts.length) requestAnimationFrame(stepFx); else { fxOn = false; fxx.clearRect(0, 0, fx.width, fx.height); }
+}
+function floatText(text, x, y, color) {
+  if (reduce) return;
+  const el = document.createElement("div");
+  el.className = "float"; el.textContent = text; el.style.left = x + "px"; el.style.top = y + "px"; el.style.color = color;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 1300);
+}
+
+/* ---------- hero ---------- */
+const weightChanges = days.reduce((n, d) => n + d.chips.filter(c => ["buff", "nerf", "harsher", "softer"].includes(c.kind)).length, 0);
+const liveFactors = D.factors.filter(f => !f.gone);
+$("#stats").innerHTML = [
+  [days.length, "days the code changed"],
+  [liveFactors.length, "things that earn points"],
+  [weightChanges, "point changes"]
+].map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+const latest = days[days.length - 1];
+$("#latestCard").innerHTML = `
+  <div class="eyebrow"><i class="dot" style="background:var(--harsh)"></i>LATEST PATCH · ${fmtShort(latest.date)}</div>
+  <h2>${esc(latest.title)}</h2>
+  <p>${esc(latest.story)}</p>
+  <button class="btn" id="playLatest">PLAY IT</button>`;
+const checked = D.checkedAt.slice(0, 10);
+(function ticker() {
+  let seen = null;
+  try { seen = localStorage.getItem("xaq-seen"); localStorage.setItem("xaq-seen", latest.date); } catch (e) {}
+  const fresh = seen ? days.filter(d => d.date > seen).length : 0;
+  const recent = days.filter(d => isRecent(d.date)).reverse();
+  const items = [];
+  for (const d of recent) {
+    items.push(`${fmtShort(d.date)}: ${d.title}`);
+    for (const c of d.chips) if (c.factor && c.kind !== "gone") items.push(`${F[c.factor].name} ${pctWord(c.from, c.to, c.kind).toLowerCase()}`);
+  }
+  if (!items.length) items.push(`No new patch this week`, `Last change ${fmtShort(latest.date)}: ${latest.title}`);
+  const lead = fresh ? `${fresh} NEW SINCE YOUR LAST VISIT` : recent.length ? `NEW THIS WEEK` : `ALL QUIET`;
+  const once = `<span class="hot">${esc(lead)}</span>` + items.map(t => `<span>${esc(t)}</span>`).join("");
+  const el = $("#tkIn");
+  el.innerHTML = once + once.replace('class="hot"', 'class="hot" aria-hidden="true"');
+  el.style.setProperty("--tk-dur", Math.max(25, items.length * 5) + "s");
+})();
+$("#hudScan").textContent = fmtShort(checked);
+
+(function stars() {
+  const c = $("#stars"), x = c.getContext("2d");
+  let W, H, pts = [];
+  function size() {
+    W = c.width = Math.ceil(c.clientWidth / 4); H = c.height = Math.ceil(c.clientHeight / 4);
+    pts = Array.from({ length: Math.round(W * H / 90) }, () => ({ x: Math.random() * W, y: Math.random() * H, z: Math.random(), t: Math.random() * 6 }));
+  }
+  size(); addEventListener("resize", size);
+  const cream = CSS("--cream"), gold = CSS("--gold"), sky = CSS("--sky");
+  let shoot = null;
+  function draw(time) {
+    x.fillStyle = sky; x.fillRect(0, 0, W, H);
+    for (const p of pts) {
+      if (!reduce) p.x -= p.z * .06; if (p.x < 0) p.x += W;
+      const tw = Math.sin(time / 500 + p.t) > .2;
+      x.fillStyle = p.z > .85 ? gold : cream; x.globalAlpha = tw ? .9 : .35;
+      x.fillRect(p.x | 0, p.y | 0, 1, 1);
+    }
+    x.globalAlpha = 1;
+    if (!reduce) {
+      if (!shoot && Math.random() < .004) shoot = { x: W * Math.random(), y: 0, l: 0 };
+      if (shoot) {
+        shoot.x -= 1.4; shoot.y += .7; shoot.l++;
+        for (let i = 0; i < 6; i++) { x.globalAlpha = 1 - i / 6; x.fillStyle = cream; x.fillRect((shoot.x + i * 2) | 0, (shoot.y - i) | 0, 1, 1); }
+        x.globalAlpha = 1; if (shoot.l > 80) shoot = null;
+      }
+      requestAnimationFrame(draw);
+    }
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ---------- world map ---------- */
+const worlds = [];
+days.forEach((d, i) => {
+  const key = d.date.slice(0, 7);
+  let w = worlds[worlds.length - 1];
+  if (!w || w.key !== key) worlds.push(w = { key, items: [] });
+  d.idx = i; d.world = worlds.length; d.level = w.items.length + 1;
+  w.items.push(d);
+});
+const FILTERS = [["all", "ALL"], ["big", "BIG ONES"], ["weights", "POINTS"], ["creators", "SMALL ACCOUNTS"], ["safety", "SAFETY"], ["ads", "ADS"], ["video", "VIDEO"]];
+let filt = "all", sel = days.length - 1;
+$("#filters").innerHTML = FILTERS.map(([k, l]) => `<button class="chipbtn" data-f="${k}" aria-pressed="${k === "all"}">${l}</button>`).join("");
+$("#filters").onclick = e => {
+  const b = e.target.closest("[data-f]"); if (!b) return;
+  filt = b.dataset.f; SFX.blip();
+  document.querySelectorAll("#filters .chipbtn").forEach(x => x.setAttribute("aria-pressed", x === b));
+  document.querySelectorAll(".node").forEach(n => {
+    const d = days[n.dataset.i];
+    const hit = filt === "all" || (filt === "big" ? d.hype >= 4 : d.tags.includes(filt) || (filt === "weights" && d.chips.length));
+    n.classList.toggle("dim", !hit);
+  });
+};
+$("#worlds").innerHTML = worlds.map((w, wi) => {
+  const p = pd(w.items[0].date);
+  return `<div class="world"><div class="world-name">WORLD ${wi + 1} <b>${MON[p.m - 1]} ${p.y}</b></div><div class="nodes">${
+    w.items.map(d => `<button class="node ${isRecent(d.date) ? "recent" : ""}" data-i="${d.idx}" data-h="${d.hype}" aria-label="${fmtDate(d.date)}: ${esc(d.title)}${isRecent(d.date) ? " (new this week)" : ""}">${pd(d.date).d}${
+      isRecent(d.date) || d.idx === days.length - 1 ? '<span class="fresh">NEW</span>' : ""}</button>`).join("")
+  }</div></div>`;
+}).join("");
+$("#worlds").onclick = e => {
+  const n = e.target.closest(".node"); if (!n) return;
+  jumpTo(+n.dataset.i);
+};
+function jumpTo(i) {
+  show(i, false);
+  $("#viewer").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  setTimeout(() => celebrate(days[sel], $("#viewer")), reduce ? 0 : 450);
+}
+function placePlayer() {
+  document.querySelectorAll(".player").forEach(p => p.remove());
+  document.querySelectorAll(".node").forEach(n => n.classList.toggle("sel", +n.dataset.i === sel));
+  const n = document.querySelector(`.node[data-i="${sel}"]`);
+  if (n) n.insertAdjacentHTML("beforeend", `<img class="spr player" src="${sprURL("hero")}" alt="">`);
+}
+
+/* ---------- patch viewer ---------- */
+function chipHTML(c) {
+  if (c.factor) {
+    const f = F[c.factor];
+    const vals = c.kind === "new" ? `<b>${fmtNum(c.to)}</b>` : c.kind === "gone" ? `<s>${fmtNum(c.from)}</s>` : `<s>${fmtNum(c.from)}</s> <span>&gt;</span> <b>${fmtNum(c.to)}</b>`;
+    const label = c.kind === "new" ? "New thing that scores: " + f.name : f.name;
+    return `<div class="chip">${img(f.icon)}<div class="nm">${esc(label)}</div><div class="vals">${vals}<span class="badge k-${c.kind}">${pctWord(c.from, c.to, c.kind)}</span></div></div>`;
+  }
+  const [label, from, to, kind] = c;
+  const vals = from === null ? `<b>${esc(to)}</b>` : `<s>${esc(from)}</s> <span>&gt;</span> <b>${esc(to)}</b>`;
+  return `<div class="chip">${img(KIND_ICON[kind] || "switch")}<div class="nm">${esc(label)}</div><div class="vals">${vals}<span class="badge k-${kind}">${BADGE[kind]}</span></div></div>`;
+}
+function show(i, loud) {
+  sel = Math.max(0, Math.min(days.length - 1, i));
+  const d = days[sel], v = $("#viewer");
+  const chips = [...d.chips.map(chipHTML), ...d.extra.map(chipHTML)];
+  v.innerHTML = `
+    <div class="v-top">
+      <div class="v-level"><b>${fmtDate(d.date)}</b><span>Change ${sel + 1} of ${days.length}</span>${sel === days.length - 1 ? "<span class=\"v-new\">NEWEST</span>" : ""}</div>
+      <div class="power">SIZE ${[1, 2, 3, 4, 5].map(k => `<i class="${k <= d.hype ? "on" : ""}"></i>`).join("")}</div>
+    </div>
+    <h3>${esc(d.title)}</h3>
+    <p class="story">${esc(d.story)}</p>
+    ${chips.length ? `<div class="chips">${chips.join("")}</div>` : `<p class="nochips">Points stayed the same this day.</p>`}
+    <div class="v-meta">
+      <span class="lines">${d.files ? comma(d.files) + " code files changed" : "Merged a fix"}</span>
+      <span class="tags">${d.tags.map(t => `<span class="tagp">${TAG_NAME[t] || t.toUpperCase()}</span>`).join("")}</span>
+      <a href="${d.url}" target="_blank" rel="noopener">See the code</a>
+    </div>
+    <div class="v-nav">
+      ${sel > 0 ? `<button class="vnav" id="prev"><small>&lt; OLDER</small><span>${fmtShort(days[sel - 1].date)}: ${esc(days[sel - 1].title)}</span></button>` : `<span class="vnav-end">This is the first change</span>`}
+      ${sel < days.length - 1 ? `<button class="vnav right" id="next"><small>NEWER &gt;</small><span>${fmtShort(days[sel + 1].date)}: ${esc(days[sel + 1].title)}</span></button>` : `<span class="vnav-end">This is the newest change. Come back tomorrow.</span>`}
+    </div>`;
+  if ($("#prev")) $("#prev").onclick = () => show(sel - 1, true);
+  if ($("#next")) $("#next").onclick = () => show(sel + 1, true);
+  placePlayer();
+  if (loud) celebrate(d, v);
+}
+function celebrate(d, v) {
+  const kinds = [...d.chips.map(c => c.kind), ...d.extra.map(c => c[3])];
+  const main = kinds.includes("buff") ? "buff" : kinds.includes("harsher") ? "harsher" : kinds.includes("new") ? "new" : kinds.includes("nerf") ? "nerf" : kinds[0];
+  const r = v.getBoundingClientRect(), cx = r.left + r.width / 2, cy = Math.max(80, r.top + 60);
+  const col = { buff: "--buff", harsher: "--harsh", nerf: "--nerf", new: "--new", switch: "--gold" }[main] || "--gold";
+  if (!reduce) {
+    v.style.setProperty("--amp", (d.hype * 2) + "px");
+    v.classList.remove("shake"); void v.offsetWidth; v.classList.add("shake");
+  }
+  burst(cx, cy, d.hype * 14, [CSS(col), CSS("--gold"), CSS("--cream")]);
+  const word = d.hype >= 5 ? "HUGE CHANGE!" : d.hype >= 4 ? "BIG CHANGE!" : main ? BADGE[main] : "SMALL CHANGE";
+  floatText(word, cx, cy, CSS(col));
+  if (d.hype >= 5) { const f = $("#flash"); if (!reduce) { f.classList.remove("go"); void f.offsetWidth; f.classList.add("go"); } SFX.mega(); }
+  else if (main === "buff" || main === "new") SFX.up();
+  else if (main === "harsher" || main === "nerf") SFX.down();
+  else SFX.coin();
+}
+addEventListener("keydown", e => {
+  if (e.target.closest("input, textarea")) return;
+  if (e.key === "ArrowLeft") show(sel - 1, true);
+  if (e.key === "ArrowRight") show(sel + 1, true);
+});
+show(sel, false);
+$("#start").onclick = () => { SFX.start(); jumpTo(days.length - 1); };
+$("#playLatest").onclick = $("#start").onclick;
+
+/* ---------- score card ---------- */
+const like = F.FavoriteWeight ? F.FavoriteWeight.now : null, rep = F.ReportWeight ? F.ReportWeight.now : null;
+$("#tipText").textContent = like && rep
+  ? `How it works: the AI guesses how likely YOU are to do each thing below. Each guess times its points, all added up, is the post's score. Highest scores go to the top. So it is not "1 report cancels ${Math.round(-rep / like)} likes". It is about your odds.`
+  : "How it works: the AI guesses how likely YOU are to do each thing below. Each guess times its points, added up, is the post's score.";
+function status(f) {
+  if (f.gone) return ["gone", "GONE"];
+  if (f.since > firstSnap && daysBetween(f.since, D.latest) <= 14 && f.history.length === 1) return ["new", "NEW!"];
+  if (f.history.length > 1) {
+    const [, a] = f.history[f.history.length - 2], b = f.now;
+    const k = (a < 0 || b < 0) ? (b < a ? "harsher" : "softer") : (b > a ? "buff" : "nerf");
+    return [k, pctWord(a, b, k)];
+  }
+  if (f.now === 0) return ["off", "OFF"];
+  return null;
+}
+const maxAbs = Math.max(...D.factors.map(f => Math.abs(f.now || 0)));
+function barPct(v) { if (!v) return 0; return Math.max(4, Math.min(100, (Math.log10(Math.abs(v)) + 3) / (Math.log10(maxAbs) + 3) * 100)); }
+function factorRow(f) {
+  const st = status(f);
+  const badge = st && st[0] !== "off" ? `<span class="badge k-${st[0]}">${st[1]}</span>` : st ? `<span class="badge">OFF</span>` : "";
+  const hot = factorRecent(f);
+  const prev = f.history.length > 1 ? f.history[f.history.length - 2][1] : null;
+  const start = hot && prev !== null ? barPct(prev) : barPct(f.now);
+  const ghost = hot && prev !== null ? `<b class="ghost" style="left:${barPct(prev)}%" title="Before: ${fmtNum(prev)}"></b>` : "";
+  return `<button class="frow ${f.now === 0 ? "off" : ""} ${hot ? "recent" : ""}" data-code="${f.code}" aria-expanded="false">
+    ${img(f.icon)}<span class="nm">${esc(f.name)} ${badge}</span><span class="val">${f.now === 0 ? "0" : fmtNum(f.now)}</span>
+    <span class="bar"><i style="width:${start}%" data-to="${barPct(f.now)}"></i>${ghost}</span>
+    ${hot ? `<span class="when">CHANGED ${fmtShort(lastChange(f))}${prev !== null ? `, WAS ${fmtNum(prev)}` : ""}</span>` : ""}
+    ${f.note ? `<span class="note">${esc(f.note)}</span>` : ""}</button>`;
+}
+const live = D.factors.filter(f => !f.gone);
+const good = live.filter(f => f.now >= 0).sort((a, b) => b.now - a.now);
+const bad = live.filter(f => f.now < 0).sort((a, b) => a.now - b.now);
+$("#good").innerHTML = good.map(factorRow).join("");
+$("#bad").innerHTML = bad.map(factorRow).join("");
+const growBars = new IntersectionObserver((es, ob) => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  ob.unobserve(e.target);
+  setTimeout(() => { e.target.style.width = e.target.dataset.to + "%"; }, 250);
+}), { threshold: 1 });
+document.querySelectorAll(".frow.recent .bar i").forEach(i => growBars.observe(i));
+document.querySelectorAll(".rows").forEach(r => r.onclick = e => {
+  const b = e.target.closest(".frow"); if (!b) return;
+  const open = b.getAttribute("aria-expanded") === "true";
+  b.setAttribute("aria-expanded", !open); SFX.blip();
+  const h = b.querySelector(".hist"); if (h) { h.remove(); return; }
+  const f = F[b.dataset.code];
+  const steps = f.history.map(([d, w]) => `<span>${fmtShort(d)} <b>${fmtNum(w)}</b></span>`).join("<span>&gt;</span>");
+  b.insertAdjacentHTML("beforeend", `<span class="hist">${f.history.length > 1 ? steps : `SAME SINCE ${fmtShort(f.since)}: <b>${fmtNum(f.now)}</b>`}</span>`);
+});
+
+/* ---------- high scores ---------- */
+const POSTS = [
+  { name: "Your friend's life update", icon: "mutual", why: "You follow each other, so replies get a big bonus", odds: { FavoriteWeight: .3, ReplyWeight: .1, BidirectionalFollowReplyWeightBoost: .1, DwellWeight: .6, ClickWeight: .15, NotInterestedWeight: .002 } },
+  { name: "Cute dog video", icon: "play", why: "Lots of likes, sends, and link copies", odds: { FavoriteWeight: .25, RetweetWeight: .05, ShareViaDmWeight: .05, ShareViaCopyLinkWeight: .02, VideoOpenWeight: .4, VqvWeight: .5, DwellWeight: .7, FollowAuthorWeight: .01, NotInterestedWeight: .005 } },
+  { name: "Spicy hot take", icon: "quote", why: "Gets replies, but also mutes and reports", odds: { FavoriteWeight: .15, ReplyWeight: .06, QuoteWeight: .04, DwellWeight: .5, ClickWeight: .1, NotInterestedWeight: .03, MuteAuthorWeight: .01, BlockAuthorWeight: .006, ReportWeight: .002 } },
+  { name: "Spammy link post", icon: "link", why: "Almost nobody wants it", odds: { FavoriteWeight: .01, OpenLinkWeight: .05, ClickWeight: .02, NotInterestedWeight: .06, ReportWeight: .01, MuteAuthorWeight: .01, NotDwelledWeight: .9 } }
+];
+const RULES = [[firstSnap, `${fmtShort(firstSnap)} RULES`], [D.latest, "TODAY'S RULES"]];
+let ruleDate = D.latest;
+$("#rules").innerHTML = RULES.map(([d, l]) => `<button class="chipbtn" data-d="${d}" aria-pressed="${d === ruleDate}">${l}</button>`).join("");
+function scoreOf(p, date) {
+  let s = 0;
+  for (const [k, o] of Object.entries(p.odds)) if (F[k]) s += (weightAt(k, date) || 0) * o;
+  return s;
+}
+function renderScores(animate) {
+  const prevPos = {};
+  document.querySelectorAll(".srow").forEach(r => prevPos[r.dataset.n] = r.getBoundingClientRect().top);
+  const ranked = POSTS.map((p, n) => ({ p, n, s: scoreOf(p, ruleDate), o: scoreOf(p, ruleDate === D.latest ? firstSnap : D.latest) }))
+    .sort((a, b) => b.s - a.s);
+  $("#scores").innerHTML = ranked.map((r, i) => {
+    const delta = r.s - r.o, dTxt = Math.abs(delta) < .005 ? "NO CHANGE" : `${delta > 0 ? "UP" : "DOWN"} ${Math.abs(delta).toFixed(2)} VS ${ruleDate === D.latest ? fmtShort(firstSnap) : "TODAY"}`;
+    return `<div class="srow" data-n="${r.n}"><span class="rk">#${i + 1}</span>${img(r.p.icon)}<div class="ttl">${esc(r.p.name)}<div class="why">${esc(r.p.why)}</div></div><div class="sc ${r.s < 0 ? "neg" : "pos"}" data-v="${r.s}">${r.s.toFixed(2)}<span class="dl">${dTxt}</span></div></div>`;
+  }).join("");
+  if (animate && !reduce) document.querySelectorAll(".srow").forEach(r => {
+    const old = prevPos[r.dataset.n]; if (old === undefined) return;
+    const dy = old - r.getBoundingClientRect().top;
+    if (dy) { r.style.transition = "none"; r.style.transform = `translateY(${dy}px)`; requestAnimationFrame(() => { r.style.transition = ""; r.style.transform = ""; }); }
+  });
+}
+$("#rules").onclick = e => {
+  const b = e.target.closest("[data-d]"); if (!b) return;
+  ruleDate = b.dataset.d; SFX.coin();
+  document.querySelectorAll("#rules .chipbtn").forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderScores(true);
+  const r = $("#scores").getBoundingClientRect();
+  burst(r.left + r.width - 60, r.top + 30, 18, [CSS("--gold"), CSS("--cream")]);
+};
+renderScores(false);
+
+/* ---------- how-to tour (player + MP4 share one timeline) ---------- */
+(function tour() {
+  const wrap = $("#stageWrap"), host = $("#stage");
+  const SW = 1280, SH = 720, DUR = 24.5;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const backOut = x => 1 + 2.7 * Math.pow(x - 1, 3) + 1.7 * Math.pow(x - 1, 2);
+  const P = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const HYPE_COL = { 1: "--muted", 2: "--muted", 3: "--new", 4: "--harsh", 5: "--gold" };
+  const kindCol = k => ({ buff: "--buff", softer: "--buff", nerf: "--nerf", harsher: "--harsh", new: "--new", gone: "--muted", switch: "--gold" }[k] || "--gold");
+
+  /* scenes: [start, end]; hard cuts between them */
+  const S = { count: [0, 2.4], stat1: [2.4, 4.3], stat2: [4.3, 6.1], title: [6.1, 8.3], map: [8.3, 11.0], card: [11.0, 13.8], points: [13.8, 16.8], scores: [16.8, 19.6], daily: [19.6, 21.8], outro: [21.8, 24.5] };
+  const ORDER = Object.keys(S);
+
+  /* real data for each scene */
+  const changed = D.factors.filter(f => !f.gone && f.history.length > 1 && f.history[0][1] && f.now)
+    .map(f => ({ f, pct: Math.round((Math.abs(f.now) - Math.abs(f.history[0][1])) / Math.abs(f.history[0][1]) * 100) }))
+    .sort((a, b) => (b.f.code === "FavoriteWeight") - (a.f.code === "FavoriteWeight") || Math.abs(b.pct) - Math.abs(a.pct));
+  const stats = changed.slice(0, 2);
+  const weightDays = days.filter(d => d.chips.some(c => c.factor && ["buff", "nerf", "harsher", "softer"].includes(c.kind)));
+  const star = weightDays[weightDays.length - 1] || days[days.length - 1];
+  const start = clamp(star.idx - 15, 0, Math.max(0, days.length - 21));
+  const win = days.slice(start, start + 21);
+  const starChips = [...star.chips.filter(c => c.factor && c.kind !== "gone"), ...star.extra].slice(0, 3);
+  const hotChip = star.chips.find(c => c.factor && ["buff", "nerf", "harsher", "softer"].includes(c.kind));
+  const hot = hotChip ? F[hotChip.factor] : F.FavoriteWeight;
+  const pos = D.factors.filter(f => !f.gone && f.now > 0).sort((a, b) => b.now - a.now);
+  const neg = D.factors.filter(f => !f.gone && f.now < 0).sort((a, b) => a.now - b.now);
+  let rowsF = pos.slice(0, 3);
+  rowsF.push(rowsF.includes(hot) || hot.now < 0 ? pos[3] : hot);
+  rowsF = rowsF.sort((a, b) => b.now - a.now);
+  const negPick = neg.includes(hot) ? [hot, neg.find(f => f !== hot)] : neg.slice(0, 2);
+  rowsF = [...rowsF, ...negPick.sort((a, b) => b.now - a.now)].filter(Boolean).slice(0, 6);
+  const hotRow = rowsF.indexOf(hot);
+  const hotPrev = hot.history.length > 1 ? hot.history[hot.history.length - 2][1] : hot.now;
+  const oldRules = firstSnap, newRules = D.latest;
+  const scoreRows = POSTS.map((p, n) => ({ p, n, a: scoreOf(p, oldRules), b: scoreOf(p, newRules) }));
+  const rankA = [...scoreRows].sort((x, y) => y.a - x.a), rankB = [...scoreRows].sort((x, y) => y.b - x.b);
+  const patchSet = new Set(days.map(d => d.date)), stripDays = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(new Date(today + "T12:00:00Z") - i * 864e5), iso = d.toISOString().slice(0, 10);
+    stripDays.push({ mon: MON[d.getUTCMonth()], day: d.getUTCDate(), has: patchSet.has(iso) });
+  }
+  const tickText = days.filter(d => isRecent(d.date)).reverse().map(d => `${fmtShort(d.date)}: ${d.title}`).join("   ★   ") || `Last change ${fmtShort(latest.date)}: ${latest.title}`;
+  const SITE = "xalgoquest.vercel.app";
+
+  /* layout */
+  const MINI = 40, MG = 10, MCOLS = 14, mRows = Math.ceil(days.length / MCOLS);
+  const miniX = i => (SW - (MCOLS * MINI + (MCOLS - 1) * MG)) / 2 + (i % MCOLS) * (MINI + MG);
+  const miniY = i => 230 + Math.floor(i / MCOLS) * (MINI + MG);
+  const SQ = 64, GAP = 18, COLS = 7;
+  const gridX = (SW - (COLS * SQ + (COLS - 1) * GAP)) / 2, gridY = 190;
+  const sqPos = i => ({ x: gridX + (i % COLS) * (SQ + GAP), y: gridY + Math.floor(i / COLS) * (SQ + GAP) });
+  const starI = Math.max(0, win.indexOf(star)), starP = sqPos(starI);
+  const CARD = { x: 200, y: 120, w: 880, h: 420 };
+  const rowY = i => 150 + i * 74;
+  const scoreY = r => 196 + r * 82;
+  const cellX = i => 85 + i * 80;
+  const pillOld = { x: 380, w: 230 }, pillNew = { x: 630, w: 270 };
+
+  const CH = [
+    { t: 0, name: "Hook", go: null }, { t: S.map[0], name: "The map", go: "#map" }, { t: S.card[0], name: "What changed", go: "#viewer" },
+    { t: S.points[0], name: "Points", go: "#score" }, { t: S.scores[0], name: "High scores", go: "#hiscores" },
+    { t: S.daily[0], name: "Daily scan", go: "#scan" }, { t: S.outro[0], name: "Start", go: "start" }
+  ];
+  const CAPS = [
+    [S.stat1[0] + .1, S.stat1[1], stats[0] ? `${stats[0].f.name} is worth ${Math.abs(stats[0].pct)}% ${stats[0].pct > 0 ? "more" : "less"} since ${fmtShort(stats[0].f.history[0][0])}.` : ""],
+    [S.stat2[0] + .1, S.stat2[1], stats[1] ? `${stats[1].f.name} is worth ${Math.abs(stats[1].pct)}% ${stats[1].pct > 0 ? "more" : "less"}.` : ""],
+    [S.map[0] + .2, S.map[1], "Every square is a day X changed the code."],
+    [S.card[0] + .1, S.card[1], "Tap one. See what changed, in plain words."],
+    [S.points[0] + .1, S.points[1], "See what pushes a post up or down."],
+    [S.scores[0] + .1, S.scores[1], "Flip old vs new rules. Watch scores move."],
+    [S.daily[0] + .1, S.daily[1], "Checked every morning. New changes light up."],
+    [S.outro[0] + .2, DUR, "Free. Updated every day."]
+  ];
+  const T = {
+    slam: 1.15, stat1: S.stat1[0] + .45, stat2: S.stat2[0] + .45, titleSlam: S.title[0] + .55,
+    click1: S.map[0] + 1.3, grow: S.points[0] + .8, pill: S.scores[0] + 1.0, coin: S.daily[0] + 1.4, press: S.outro[0] + 1.4
+  };
+  const CLICKS = [T.click1, T.pill, T.press];
+  const SHAKES = [[T.slam, 14], [T.stat1, 10], [T.stat2, 10], [T.titleSlam, 12], [T.click1, 5], [T.press, 6]];
+  const SOUNDS = [
+    ...days.slice(0, 18).map((d, i) => [i * .055, "tick", 330 + i * 38]),
+    [T.slam, "mega"], [T.stat1, "up"], [T.stat2, "down"], [T.titleSlam, "start"],
+    [T.click1, "coin"], [S.card[0] + .3, "up"], [T.grow + .7, "up"], [T.pill, "coin"], [T.coin, "coin"], [T.press, "mega"]
+  ];
+  const hotC = { x: 640, y: rowY(Math.max(0, hotRow)) + 30 };
+  const HAND = [
+    [S.map[0] + .1, 1300, 760], [S.map[0] + 1.1, starP.x + 34, starP.y + 36], [S.card[0] - .1, starP.x + 34, starP.y + 36],
+    [S.card[0] + .7, 330, 470], [S.points[0], 330, 470], [S.points[0] + .6, hotC.x, hotC.y], [S.scores[0] + .3, hotC.x, hotC.y],
+    [T.pill - .15, pillNew.x + 140, 142], [T.pill + .3, pillNew.x + 140, 142], [S.daily[0] - .2, 1130, 600],
+    [S.daily[0] + 1.1, cellX(13) + 40, 350], [S.outro[0] + .2, cellX(13) + 40, 350], [T.press - .2, 660, 360], [DUR, 660, 360]
+  ];
+
+  /* build the stage once */
+  const col = n => CSS(n);
+  const chipBlock = c => {
+    if (c.factor) {
+      const f = F[c.factor];
+      const v = c.kind === "new" ? `<b>${fmtNum(c.to)}</b>` : `<s>${fmtNum(c.from)}</s> &gt; <b>${fmtNum(c.to)}</b>`;
+      return `<div class="sg-chip"><div class="n">${img(f.icon)}${esc(f.name)}</div><div class="v">${v}</div><span class="sg-badge" style="background:var(${kindCol(c.kind)})">${pctWord(c.from, c.to, c.kind)}</span></div>`;
+    }
+    const [label, from, to, kind] = c;
+    const v = from === null ? `<b>${esc(to)}</b>` : `<s>${esc(from)}</s> &gt; <b>${esc(to)}</b>`;
+    return `<div class="sg-chip"><div class="n">${img(KIND_ICON[kind] || "switch")}${esc(label)}</div><div class="v">${v}</div><span class="sg-badge" style="background:var(${kindCol(kind)})">${BADGE[kind]}</span></div>`;
+  };
+  const statScene = (id, s) => s ? `<div class="sc" id="${id}">
+      <img class="spr" src="${sprURL(s.f.icon)}" alt="" style="position:absolute;left:230px;top:200px;width:240px">
+      <div style="position:absolute;left:540px;top:170px">
+        <div class="sg-lbl">${esc(s.f.name.toUpperCase())}</div>
+        <div class="sg-big" data-pct="${s.pct}" style="color:var(${s.pct > 0 ? "--buff" : "--harsh"})"></div>
+      </div></div>` : `<div class="sc" id="${id}"></div>`;
+  host.innerHTML = `
+    <canvas id="sgStars" width="${SW}" height="${SH}"></canvas>
+    <div class="sg-top"><b>X ALGO QUEST</b><span id="sgCh"></span></div>
+    <div id="sgCam" style="position:absolute;inset:0">
+    <div class="sc" id="sc-count">
+      <div style="position:absolute;left:0;right:0;top:120px;text-align:center" class="sg-lbl" id="sgCountTop">X UPDATED ITS ALGORITHM</div>
+      ${days.map((d, i) => `<div class="sg-mini" style="left:${miniX(i)}px;top:${miniY(i)}px;background:var(${HYPE_COL[d.hype]})"></div>`).join("")}
+      <div style="position:absolute;left:0;right:0;top:${miniY(0) + mRows * (MINI + MG) + 40}px;text-align:center"><span class="sg-h1" id="sgCount" style="font-size:76px;display:inline-block">0 TIMES</span></div>
+    </div>
+    ${statScene("sc-stat1", stats[0])}
+    ${statScene("sc-stat2", stats[1])}
+    <div class="sc" id="sc-title">
+      <div style="position:absolute;left:0;right:0;top:170px;text-align:center;color:var(--muted)" class="sg-lbl" id="sgSo">SO WE MADE IT A GAME</div>
+      <div style="position:absolute;left:0;right:0;top:270px;text-align:center">
+        <div class="sg-h1" id="sgTitle" style="position:relative;display:inline-block">X ALGO<br><span>QUEST</span><div class="sg-glare" id="sgGlare">X ALGO<br><span>QUEST</span></div></div>
+      </div>
+    </div>
+    <div class="sc" id="sc-map">
+      <div class="sg-head" style="top:110px">WORLD MAP</div>
+      ${win.map((d, i) => { const p = sqPos(i); return `<div class="sg-sq" data-i="${i}" style="left:${p.x}px;top:${p.y}px;background:var(${HYPE_COL[d.hype]});${d.hype === 4 ? "color:var(--cream)" : ""}">${pd(d.date).d}</div>`; }).join("")}
+      <div style="position:absolute;left:0;right:0;top:${gridY + 3 * (SQ + GAP) + 6}px;text-align:center;font-size:22px;color:var(--muted)">${fmtShort(win[0].date)} to ${fmtShort(win[win.length - 1].date)}</div>
+    </div>
+    <div class="sg-morph" id="sgMorph"></div>
+    <div class="sc" id="sc-card" style="z-index:2"><div class="sg-card">
+      <div class="d">${fmtDate(star.date)}</div>
+      <h4>${esc(star.title)}</h4>
+      <p>${esc(star.story)}</p>
+      <div class="sg-chips">${starChips.map(chipBlock).join("")}</div>
+    </div></div>
+    <div class="sc" id="sc-points">
+      <div class="sg-head" style="top:92px">WHAT EARNS POINTS</div>
+      ${rowsF.map((f, i) => `<div class="sg-row" style="top:${rowY(i)}px;--fill:var(${f.now < 0 ? "--harsh" : "--buff"})">${img(f.icon)}<div class="n">${esc(f.name)}${f === hot ? `<span class="sg-badge" id="sgHotBadge" style="background:var(${kindCol(hotChip ? hotChip.kind : "buff")})">${hotChip ? pctWord(hotChip.from, hotChip.to, hotChip.kind) : ""}</span>` : ""}</div><div class="v">${fmtNum(f.now)}</div><div class="bar"><i style="width:${barPct(f.now)}%"></i>${f === hot ? `<b style="left:${barPct(hotPrev)}%"></b>` : ""}</div></div>`).join("")}
+    </div>
+    <div class="sc" id="sc-scores">
+      <div class="sg-head" style="top:64px">HIGH SCORES</div>
+      <div class="sg-pill" id="sgPillA" style="left:${pillOld.x}px;width:${pillOld.w}px">${fmtShort(oldRules)} RULES</div>
+      <div class="sg-pill" id="sgPillB" style="left:${pillNew.x}px;width:${pillNew.w}px">TODAY'S RULES</div>
+      ${scoreRows.map(r => `<div class="sg-score" data-n="${r.n}"><span class="rk"></span>${img(r.p.icon)}<span class="t">${esc(r.p.name)}</span><span class="s"></span></div>`).join("")}
+    </div>
+    <div class="sc" id="sc-daily">
+      <div class="sg-tick"><div id="sgTick">${esc(tickText)}</div></div>
+      <div class="sg-head" style="top:228px;font-size:26px;color:var(--cream)">DAILY SCAN</div>
+      ${stripDays.map((d, i) => `<div class="sg-cell" style="left:${cellX(i)}px;${i === 13 ? "outline:4px solid var(--buff)" : ""}"><small>${d.mon}</small>${img(d.has ? "coin" : "post")}<em>${d.day}</em></div>`).join("")}
+      <div class="sg-beam" id="sgBeam"></div>
+    </div>
+    <div class="sc" id="sc-outro">
+      <div class="sg-btn" id="sgStart" style="left:470px;top:260px">PRESS START</div>
+      <div style="position:absolute;left:0;right:0;top:410px;text-align:center;font-family:var(--f-label);font-size:44px;font-weight:600;color:var(--gold)">${SITE}</div>
+    </div>
+    </div>
+    <canvas id="sgFx" width="${SW}" height="${SH}" style="z-index:5"></canvas>
+    <div id="sgFlash" style="position:absolute;inset:0;background:var(--cream);z-index:7;pointer-events:none"></div>
+    <img class="spr sg-hand" id="sgHand" src="${sprURL("hand")}" alt="">
+    <div class="sg-cap" id="sgCap"></div>`;
+
+  (function stars() {
+    const x = $("#sgStars").getContext("2d");
+    x.fillStyle = col("--sky"); x.fillRect(0, 0, SW, SH);
+    let s = 11; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 160; i++) { x.fillStyle = r() > .85 ? col("--gold") : col("--cream"); x.globalAlpha = .25 + r() * .6; const z = r() > .9 ? 6 : 3; x.fillRect((r() * SW) | 0, (r() * SH) | 0, z, z); }
+    x.globalAlpha = 1;
+  })();
+
+  const q = s => host.querySelector(s), qa = s => [...host.querySelectorAll(s)];
+  const scene = Object.fromEntries(ORDER.map(k => [k, q("#sc-" + k)]));
+  const minis = qa(".sg-mini"), squares = qa(".sg-sq"), rows = qa(".sg-row"), sRows = qa(".sg-score"), cells = qa(".sg-cell"), chips = qa(".sg-chip");
+  const hand = q("#sgHand"), cap = q("#sgCap"), fxc = q("#sgFx").getContext("2d"), cam = q("#sgCam"), flash = q("#sgFlash");
+  const morph = q("#sgMorph"), glare = q("#sgGlare"), chLabel = q("#sgCh");
+
+  function handAt(t) {
+    if (t <= HAND[0][0]) return HAND[0];
+    for (let i = 1; i < HAND.length; i++) {
+      const [t1, x1, y1] = HAND[i], [t0, x0, y0] = HAND[i - 1];
+      if (t <= t1) { const k = ease(P(t, t0, t1)); return [t, lerp(x0, x1, k), lerp(y0, y1, k)]; }
+    }
+    return HAND[HAND.length - 1];
+  }
+
+  function render(t) {
+    /* hard cuts with a whip-in: each scene lands slightly big and snaps to size */
+    ORDER.forEach(k => {
+      const [a, b] = S[k], el = scene[k];
+      const on = t >= a && t < b + (k === "map" ? .5 : 0);
+      el.style.visibility = on ? "visible" : "hidden";
+      el.style.opacity = on ? 1 : 0;
+      const w = easeOut(P(t, a, a + .28));
+      el.style.transform = a === 0 ? "none" : `scale(${lerp(1.18, 1, w).toFixed(3)})`;
+      el.style.filter = "none";
+    });
+    const cutFlash = ORDER.slice(1, 4).map(k => S[k][0]).some(a => t >= a && t < a + .07);
+    flash.style.opacity = cutFlash ? .5 : 0;
+
+    /* camera shake on slams */
+    let sx = 0, sy = 0;
+    SHAKES.forEach(([s, amp], i) => { const d = t - s; if (d >= 0 && d < .35) { const k = amp * (1 - d / .35); sx += Math.sin(d * 90 + i) * k; sy += Math.cos(d * 70 + i * 2) * k; } });
+    if (reduce) sx = sy = 0;
+    cam.style.transform = `translate(${sx.toFixed(1)}px, ${sy.toFixed(1)}px)`;
+
+    const ci = CH.reduce((m, c, i) => t >= c.t ? i : m, 0);
+    chLabel.textContent = `${ci + 1}/${CH.length}  ${CH[ci].name.toUpperCase()}`;
+
+    /* count: squares rain in from frame one, counter races, then slams */
+    minis.forEach((m, i) => {
+      const s0 = -0.25 + i * .026, k = P(t, s0, s0 + .35);
+      m.style.transform = `translateY(${((1 - backOut(k)) * -340).toFixed(1)}px)`;
+      m.style.opacity = k > 0 ? 1 : 0;
+    });
+    const n = Math.round(days.length * easeOut(P(t, 0, T.slam)));
+    const cnt = q("#sgCount");
+    cnt.textContent = `${n} TIMES`;
+    const sl = P(t, T.slam, T.slam + .25);
+    cnt.style.transform = `scale(${t < T.slam ? .9 : lerp(1.45, 1, easeOut(sl)).toFixed(3)})`;
+    q("#sgCountTop").style.opacity = P(t, 0, .2);
+
+    /* stat cards: number counts up and slams */
+    [["stat1", 0], ["stat2", 1]].forEach(([k, i]) => {
+      const big = scene[k].querySelector(".sg-big"); if (!big) return;
+      const pct = +big.dataset.pct, a = S[k][0];
+      const v = Math.round(Math.abs(pct) * easeOut(P(t, a + .05, a + .45)));
+      big.textContent = `${pct > 0 ? "+" : "-"}${v}%`;
+      big.style.transform = `scale(${lerp(1.35, 1, easeOut(P(t, a + .45, a + .7))).toFixed(3)})`;
+      scene[k].querySelector("img").style.transform = `rotate(${(Math.sin((t - a) * 9) * 6 * (1 - P(t, a, a + .8))).toFixed(1)}deg) scale(${lerp(.6, 1, backOut(P(t, a, a + .4))).toFixed(3)})`;
+    });
+
+    /* title slam with glare */
+    q("#sgSo").style.opacity = P(t, S.title[0], S.title[0] + .15);
+    q("#sgTitle").style.transform = `scale(${t < T.titleSlam ? 0 : lerp(1.6, 1, easeOut(P(t, T.titleSlam, T.titleSlam + .3))).toFixed(3)})`;
+    glare.style.backgroundPosition = `${lerp(100, 0, ease(P(t, T.titleSlam + .3, T.titleSlam + 1.1)))}% 0`;
+
+    /* map: pick the big day, everything else blurs */
+    const focus = P(t, T.click1 + .05, T.click1 + .35);
+    squares.forEach((s, i) => {
+      const isStar = i === starI, a = S.map[0] + i * .015;
+      const pop = isStar ? 1 + .25 * Math.sin(Math.PI * P(t, T.click1, T.click1 + .3)) : 1;
+      s.style.transform = `scale(${(pop * backOut(P(t, a, a + .25))).toFixed(3)})`;
+      s.style.opacity = isStar ? 1 : 1 - .65 * focus;
+      s.style.filter = !isStar && focus > 0 ? `blur(${(focus * 3).toFixed(2)}px)` : "none";
+      s.style.outline = isStar && t > T.click1 ? "4px solid var(--cream)" : "none";
+    });
+
+    /* morph: the square grows into the card */
+    const m0 = S.card[0] - .4, m = ease(P(t, m0, S.card[0] + .2));
+    morph.style.opacity = t >= m0 && t < S.card[1] ? 1 : 0;
+    morph.style.left = lerp(starP.x, CARD.x, m) + "px"; morph.style.top = lerp(starP.y, CARD.y, m) + "px";
+    morph.style.width = lerp(SQ, CARD.w, m) + "px"; morph.style.height = lerp(SQ, CARD.h, m) + "px";
+    morph.style.background = m < .5 ? `var(${HYPE_COL[star.hype]})` : "var(--panel)";
+    morph.style.boxShadow = `0 0 0 ${m < .5 ? 4 : 5}px var(${m < .5 ? "--ink" : "--cream"}), 10px 10px 0 5px var(--ink)`;
+    morph.style.transform = scene.card.style.transform;
+    scene.card.querySelector(".sg-card").style.opacity = P(t, S.card[0] + .15, S.card[0] + .35);
+    chips.forEach((c, i) => { const k = backOut(P(t, S.card[0] + .35 + i * .12, S.card[0] + .65 + i * .12)); c.style.opacity = Math.min(1, k); c.style.transform = `translateY(${((1 - k) * 30).toFixed(1)}px)`; });
+
+    /* points */
+    rows.forEach((r, i) => {
+      const k = easeOut(P(t, S.points[0] + i * .06, S.points[0] + .3 + i * .06));
+      r.style.opacity = k; r.style.transform = `translateX(${((1 - k) * -60).toFixed(1)}px)`;
+      const isHot = i === hotRow;
+      r.style.outline = isHot && t > T.grow - .2 ? "4px solid var(--buff)" : "none";
+      if (isHot) {
+        r.querySelector(".bar i").style.width = lerp(barPct(hotPrev), barPct(hot.now), ease(P(t, T.grow, T.grow + .7))) + "%";
+        r.querySelector(".v").textContent = fmtNum(t < T.grow + .7 ? hotPrev : hot.now);
+      }
+    });
+    const hb = q("#sgHotBadge");
+    if (hb) { const k = P(t, T.grow + .7, T.grow + .95); hb.style.opacity = k; hb.style.transform = `scale(${(1 + .35 * Math.sin(Math.PI * k)).toFixed(3)})`; }
+
+    /* high scores flip */
+    const flip = ease(P(t, T.pill + .1, T.pill + .8));
+    [[q("#sgPillA"), t < T.pill], [q("#sgPillB"), t >= T.pill]].forEach(([p, on]) => { p.style.background = on ? "var(--cream)" : "transparent"; p.style.color = on ? "var(--ink)" : "var(--muted)"; });
+    sRows.forEach(r => {
+      const row = scoreRows[+r.dataset.n], ra = rankA.indexOf(row), rb = rankB.indexOf(row);
+      r.style.opacity = easeOut(P(t, S.scores[0] + ra * .07, S.scores[0] + .3 + ra * .07));
+      r.style.top = lerp(scoreY(ra), scoreY(rb), flip) + "px";
+      r.querySelector(".rk").textContent = "#" + ((flip < .5 ? ra : rb) + 1);
+      const v = lerp(row.a, row.b, flip), s = r.querySelector(".s");
+      s.textContent = v.toFixed(2); s.style.color = v < 0 ? "var(--harsh)" : "var(--buff)";
+    });
+
+    /* daily scan */
+    q("#sgTick").style.left = (SW - (t - S.daily[0]) * 260) + "px";
+    const b0 = S.daily[0] + .2, b1 = T.coin, bx = lerp(cellX(0) - 20, cellX(13) + 90, P(t, b0, b1));
+    const beam = q("#sgBeam"); beam.style.left = bx + "px"; beam.style.opacity = t > b0 && t < b1 + .2 ? 1 : 0;
+    cells.forEach((c, i) => {
+      const k = P(t, b0 + (i / 13) * (b1 - b0), b0 + (i / 13) * (b1 - b0) + .25);
+      let y = 0;
+      if (i === 13 && stripDays[13].has) { const d = P(t, T.coin, T.coin + .5); y = d < 1 ? -70 * (1 - easeOut(d)) * Math.abs(Math.cos(d * Math.PI * 1.5)) : 0; }
+      c.style.transform = `translateY(${y.toFixed(1)}px) scale(${(1 + .14 * Math.sin(Math.PI * k)).toFixed(3)})`;
+      c.style.opacity = t < b0 || bx > cellX(i) + 35 ? 1 : .5;
+    });
+
+    /* outro press */
+    q("#sgStart").style.transform = `translateY(${((P(t, T.press - .1, T.press) - P(t, T.press, T.press + .2)) * 8).toFixed(1)}px)`;
+
+    /* hand, click rings, bursts (clicks and slams) */
+    const [, hx, hy] = handAt(t);
+    const down = CLICKS.some(c => t >= c - .05 && t < c + .12);
+    hand.style.opacity = t >= S.map[0] ? 1 : 0;
+    hand.style.transform = `translate(${(hx - 12).toFixed(1)}px, ${(hy - 4).toFixed(1)}px) scale(${down ? .85 : 1})`;
+    fxc.clearRect(0, 0, SW, SH);
+    const colors = [col("--gold"), col("--cream"), col("--buff"), col("--harsh")];
+    const bursts = [
+      ...CLICKS.map(c => [c, ...handAt(c).slice(1), 34]),
+      [T.slam, SW / 2, 470, 60], [T.stat1, 820, 330, 50], [T.stat2, 820, 330, 50], [T.titleSlam, SW / 2, 380, 70]
+    ];
+    bursts.forEach(([c, cx, cy, count], bi) => {
+      const dt = t - c; if (dt < 0 || dt > 1.1) return;
+      fxc.strokeStyle = col("--cream"); fxc.lineWidth = 4; fxc.globalAlpha = Math.max(0, 1 - dt * 2.6);
+      const rr = 10 + dt * 200; fxc.strokeRect(cx - rr, cy - rr, rr * 2, rr * 2);
+      let s = 97 + bi * 31; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+      fxc.globalAlpha = Math.max(0, 1 - dt / 1.1);
+      for (let i = 0; i < count; i++) {
+        const a = r() * Math.PI * 2, sp = 220 + r() * 520, sz = 6 + (r() * 3 | 0) * 3;
+        fxc.fillStyle = colors[i % colors.length];
+        fxc.fillRect(cx + Math.cos(a) * sp * dt, cy + Math.sin(a) * sp * dt - 300 * dt + 640 * dt * dt, sz, sz);
+      }
+      fxc.globalAlpha = 1;
+    });
+
+    /* captions */
+    const c = CAPS.find(([a, b, txt]) => txt && t >= a && t < b);
+    cap.style.opacity = c ? Math.min(1, P(t, c[0], c[0] + .12)) : 0;
+    if (c && cap.textContent !== c[2]) cap.textContent = c[2];
+  }
+
+  function fit() { const s = wrap.clientWidth / SW; host.style.transform = `scale(${s})`; wrap.style.height = Math.round(SH * s) + "px"; }
+  addEventListener("resize", fit); fit();
+
+  window.__xaqTour = { seek: t => { render(t); return true; }, dur: DUR, sounds: SOUNDS };
+  if (location.hash === "#record") { document.documentElement.classList.add("rec"); fit(); render(0); return; }
+
+  /* player */
+  let t = 0.9, playing = false, last = 0, autoplayed = false;
+  const btn = $("#tourPlay"), seek = $("#tourSeek"), time = $("#tourTime"), chBox = $("#tourCh"), tryBtn = $("#tourTry");
+  const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  chBox.innerHTML = CH.map((c, i) => `<button class="chipbtn" data-ch="${i}">${i + 1} ${c.name.toUpperCase()}</button>`).join("");
+  function ui() {
+    btn.textContent = playing ? "PAUSE" : t >= DUR ? "REPLAY" : "PLAY";
+    seek.value = Math.round(t * 10);
+    time.textContent = `${mmss(t)} / ${mmss(DUR)}`;
+    const ci = CH.reduce((m, c, i) => t >= c.t ? i : m, 0);
+    chBox.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-current", i === ci));
+    tryBtn.hidden = !CH[ci].go; tryBtn.dataset.go = CH[ci].go || "";
+  }
+  function frame(now) {
+    if (!playing) return;
+    const prev = t;
+    t = Math.min(DUR, t + (now - last) / 1000); last = now;
+    SOUNDS.forEach(([s, name, arg]) => { if (prev < s && t >= s && SFX[name]) SFX[name](arg); });
+    render(t); ui();
+    if (t >= DUR) { playing = false; ui(); return; }
+    requestAnimationFrame(frame);
+  }
+  function play() { if (t >= DUR) t = 0; playing = true; last = performance.now(); requestAnimationFrame(frame); ui(); }
+  function pause() { playing = false; ui(); }
+  btn.onclick = () => playing ? pause() : play();
+  wrap.onclick = () => playing ? pause() : play();
+  seek.max = Math.round(DUR * 10);
+  seek.oninput = () => { pause(); t = seek.value / 10; render(t); ui(); };
+  chBox.onclick = e => { const b = e.target.closest("[data-ch]"); if (!b) return; t = CH[+b.dataset.ch].t + .01; render(t); play(); };
+  tryBtn.onclick = () => {
+    pause();
+    const go = tryBtn.dataset.go;
+    if (go === "start") { jumpTo(days.length - 1); return; }
+    if (go === "#viewer") { jumpTo(star.idx); return; }
+    const target = document.querySelector(go);
+    if (target) target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  };
+  if (!reduce) new IntersectionObserver(es => {
+    if (es[0].isIntersecting && !autoplayed) { autoplayed = true; t = 0; play(); }
+    else if (!es[0].isIntersecting && playing) pause();
+  }, { threshold: .6 }).observe(wrap);
+  render(t); ui();
+
+  fetch("xalgoquest-tour.mp4", { method: "HEAD" }).then(r => { if (r.ok) $("#tourDl").hidden = false; }).catch(() => {});
+})();
+
+/* ---------- feed machine ---------- */
+(function machine() {
+  const c = $("#belt"), x = c.getContext("2d");
+  let W, H, posts = [], fed = 0, tossed = 0, hidden = 0, last = 0, spawnT = 0, visible = true;
+  function size() {
+    W = c.width = c.clientWidth < 640 ? 240 : 420; H = c.height = 84;
+    c.style.height = Math.round(c.clientWidth * H / W) + "px";
+  }
+  size(); addEventListener("resize", size);
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(c);
+  const icons = ["phone", "bin", "brain", "shield", "coin"];
+  const col = n => CSS(n);
+  function spawn() {
+    const r = Math.random();
+    posts.push({ x: -10, y: 0, vy: 0, fate: r < .3 ? "toss" : r < .4 ? "hide" : "pass", dead: false, scored: false, pop: 0, sc: (Math.random() * 6 - 1).toFixed(1) });
+  }
+  function frame(t) {
+    const dt = Math.min(50, t - last); last = t;
+    if (visible) {
+      spawnT += dt; if (spawnT > 650) { spawnT = 0; spawn(); }
+      const belt = H - 14, st = [.1, .3, .5, .7, .9].map(f => f * W);
+      x.fillStyle = col("--ink"); x.fillRect(0, 0, W, H);
+      x.fillStyle = col("--panel-2"); x.fillRect(0, belt, W, 4);
+      x.fillStyle = col("--line");
+      for (let i = -(t / 40 % 6); i < W; i += 6) x.fillRect(i | 0, belt + 1, 3, 2);
+      st.forEach((sx, i) => {
+        x.fillStyle = col("--panel"); x.fillRect((sx - 12) | 0, belt - 34, 24, 34);
+        x.fillStyle = col("--line"); x.fillRect((sx - 12) | 0, belt - 34, 24, 2);
+        x.drawImage(sprCanvas(icons[i]), (sx - 8) | 0, belt - 30, 16, 16);
+      });
+      for (const p of posts) {
+        if (!p.dead) {
+          p.x += dt * .05;
+          if (p.fate === "toss" && p.x >= st[1]) { p.dead = true; p.vy = -2.2; tossed++; }
+          if (!p.scored && p.x >= st[2]) { p.scored = true; p.pop = 1; }
+          if (p.fate === "hide" && p.x >= st[3]) { p.dead = true; p.vy = -2.2; hidden++; }
+          if (p.x >= st[4]) { p.done = true; fed++; }
+          x.drawImage(sprCanvas("post"), p.x | 0, belt - 10, 8, 8);
+        } else {
+          p.vy += .18; p.y += p.vy; p.x += .4;
+          x.globalAlpha = Math.max(0, 1 - p.y / 30);
+          x.fillStyle = col("--harsh"); x.fillRect(p.x | 0, (belt - 10 + p.y) | 0, 8, 8);
+          x.globalAlpha = 1;
+          if (p.y > 40) p.done = true;
+        }
+        if (p.pop > 0 && p.pop < 40) {
+          p.pop++;
+          x.fillStyle = col("--gold"); x.font = "8px 'Press Start 2P', monospace";
+          x.fillText("+" + p.sc, (st[2] - 12) | 0, (belt - 40 - p.pop / 4) | 0);
+        }
+      }
+      posts = posts.filter(p => !p.done);
+      x.font = "8px 'Press Start 2P', monospace";
+      x.fillStyle = col("--buff"); x.fillText("FEED " + fed, 4, 12);
+      x.fillStyle = col("--harsh"); x.fillText("TOSSED " + (tossed + hidden), W - 4 - x.measureText("TOSSED " + (tossed + hidden)).width, 12);
+    }
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  if (reduce) { for (let i = 0; i < 8; i++) { spawn(); posts[i].x = i * W / 8; } }
+  requestAnimationFrame(t => { last = t; frame(t); });
+})();
+
+/* ---------- short version ---------- */
+(function tldr() {
+  const cards = [];
+  for (const f of D.factors) {
+    if (f.gone || f.history.length < 2) continue;
+    const first = f.history[0][1], now = f.now, since = f.history[0][0];
+    if (first === now) continue;
+    let big, cls, what;
+    if (!first) { big = "NEW"; cls = "up"; what = `${f.name} now earns points`; }
+    else if (!now) { big = "OFF"; cls = "down"; what = `${f.name} no longer earns points`; }
+    else {
+      const pct = Math.round(Math.abs((now - first) / first) * 100), up = Math.abs(now) > Math.abs(first);
+      if (now < 0) { big = `${pct}% ${up ? "HARSHER" : "SOFTER"}`; cls = "bad"; what = `${f.name} hurts a post ${up ? "more" : "less"}`; }
+      else { big = `${up ? "+" : "-"}${pct}%`; cls = up ? "up" : "down"; what = `${f.name} is worth ${up ? "more" : "less"}`; }
+    }
+    const hot = isRecent(lastChange(f));
+    cards.push({ icon: f.icon, big, cls, what, hot, when: hot ? `latest change ${fmtShort(lastChange(f))}` : `since ${fmtShort(since)}`, w: (hot ? 10 : 0) + (f.code === "FavoriteWeight" ? 9 : Math.abs(first ? (now - first) / first : 1)) });
+  }
+  cards.sort((a, b) => b.w - a.w);
+  const boss = days.filter(d => d.hype >= 5 && !d.tags.includes("weights")).slice(-3).reverse()
+    .map(d => ({ icon: "star", big: fmtShort(d.date), cls: "up", what: d.title, when: d.story, i: d.idx, hot: isRecent(d.date) }));
+  $("#tldr").innerHTML = [...cards.slice(0, 6), ...boss].map(c => `<div class="tl ${c.hot ? "recent" : ""}">${img(c.icon)}<div class="big ${c.cls}">${esc(c.big)}${c.hot ? '<span class="flag">THIS WEEK</span>' : ""}</div><div class="what">${c.i !== undefined ? `<button data-i="${c.i}">${esc(c.what)}</button>` : esc(c.what)}</div><div class="when">${esc(c.when)}</div></div>`).join("");
+  $("#tldr").onclick = e => { const b = e.target.closest("button[data-i]"); if (b) jumpTo(+b.dataset.i); };
+})();
+
+/* ---------- daily scan ---------- */
+(function scan() {
+  const patchDays = new Set(days.map(d => d.date));
+  const end = new Date(checked + "T12:00:00Z"), cells = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(end - i * 864e5), iso = d.toISOString().slice(0, 10);
+    const has = patchDays.has(iso);
+    cells.push(`<div class="dcell ${has ? "" : "none"} ${i === 0 ? "today" : ""}" title="${fmtDate(iso)}: ${has ? "new patch" : "no change"}"><small>${MON[d.getUTCMonth()]}</small>${img(has ? "coin" : "post")}<em>${d.getUTCDate()}</em></div>`);
+  }
+  $("#strip").innerHTML = cells.join("");
+  const t = new Date(D.checkedAt);
+  const when = isNaN(t) ? fmtDate(checked) : t.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).toUpperCase();
+  const foundToday = patchDays.has(checked);
+  $("#scanline").innerHTML = `LAST SCAN: <b>${when}</b><br>RESULT: <b>${foundToday ? "NEW PATCH FOUND" : "NO NEW PATCH"}</b><br>COINS = DAYS THE CODE CHANGED`;
+})();
+
+paintSprites();
+})();
+</script>
+
+</body>
+</html>
