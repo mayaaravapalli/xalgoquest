@@ -374,6 +374,42 @@ html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
 .v-level, .latest-card .eyebrow, .world-name b, .hud .scan, .scanline, .tk-in span, .sg-tick div, .sg-card .d, .sg-pill, .sg-top span, .node, .stat b, .frow .val, .srow .sc, .srow .rk, .tl .big, .chip .vals, .dcell em, .hist, .pl-time,
 .sg-sq, .sg-cell em, .sg-row .v, .sg-score .s, .sg-score .rk, .sg-chip .v, .sg-num { font-family: var(--f-body); font-weight: 700; font-variant-numeric: tabular-nums; }
 
+/* X promo (square, #promo): giant type, one idea per beat. */
+html.promo, html.promo body { background: var(--sky); overflow: hidden; }
+html.promo body > :not(#promoStage) { display: none !important; }
+#promoStage { position: fixed; left: 0; top: 0; width: 1080px; height: 1080px; transform-origin: 0 0; overflow: hidden; background: var(--sky); color: var(--cream); font-family: var(--f-body); }
+#promoStage canvas { position: absolute; left: 0; top: 0; }
+#pmCam, .pm-sc { position: absolute; inset: 0; }
+#pmFx { z-index: 5; } #pmFlash { z-index: 7; } #pmHand { z-index: 8; } #pmBrand, #pmUrl { z-index: 4; }
+.pm-t { position: absolute; left: 40px; right: 40px; text-align: center; font-family: var(--f-label); font-weight: 600; line-height: 1.02; text-wrap: balance; }
+.pm-num { font-family: var(--f-body); font-weight: 700; font-variant-numeric: tabular-nums; }
+.pm-mcard { position: absolute; width: 440px; height: 330px; background: var(--panel); box-shadow: 0 0 0 6px var(--ink), 12px 12px 0 6px var(--ink); padding: 30px 34px; transform-origin: 50% 0; }
+.pm-mcard img { width: 84px; }
+.pm-mcard .nm { font-family: var(--f-label); font-weight: 600; font-size: 44px; margin: 10px 0 2px; }
+.pm-mcard .pm-num { font-size: 118px; line-height: 1; }
+.pm-mini { position: absolute; width: 76px; height: 76px; box-shadow: inset -6px -6px 0 rgba(0, 0, 0, .28), 0 0 0 4px var(--ink); }
+.pm-sq { position: absolute; width: 130px; height: 130px; display: grid; place-items: center; font-family: var(--f-body); font-weight: 700; font-size: 46px; color: var(--ink); box-shadow: inset -8px -8px 0 rgba(0, 0, 0, .28), 0 0 0 5px var(--ink); }
+.pm-card { position: absolute; left: 80px; top: 150px; width: 920px; padding: 56px; background: var(--panel); box-shadow: 0 0 0 8px var(--cream), 18px 18px 0 8px var(--ink); }
+.pm-chip { background: var(--ink); padding: 24px 28px; margin-top: 22px; display: grid; grid-template-columns: 70px auto 1fr; gap: 12px 22px; align-items: center; }
+.pm-chip img { width: 64px; grid-row: span 2; }
+.pm-chip .n { grid-column: 2 / 4; }
+.pm-chip .n { font-size: 46px; font-weight: 700; }
+.pm-chip .v { font-size: 46px; }
+.pm-chip .v s { color: var(--muted); }
+.pm-chip .pm-badge { justify-self: start; }
+.pm-badge { font-family: var(--f-label); font-weight: 600; font-size: 30px; color: var(--ink); padding: 4px 12px; }
+.pm-row { position: absolute; left: 70px; width: 940px; height: 96px; background: var(--panel); display: grid; grid-template-columns: 60px 1fr auto; gap: 0 20px; align-items: center; padding: 0 26px 12px; }
+.pm-row img { width: 54px; }
+.pm-row .n { font-size: 42px; font-weight: 700; display: flex; align-items: center; gap: 14px; }
+.pm-row .pm-badge { font-size: 24px; }
+.pm-row .v { font-family: var(--f-body); font-weight: 700; font-size: 54px; }
+.pm-row .bar { position: absolute; left: 106px; right: 26px; bottom: 12px; height: 10px; background: var(--ink); }
+.pm-row .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: repeating-linear-gradient(90deg, var(--fill) 0 9px, transparent 9px 12px); }
+.pm-cell { position: absolute; top: 400px; width: 120px; height: 210px; background: var(--ink); text-align: center; padding-top: 18px; }
+.pm-cell small { display: block; font-family: var(--f-label); font-size: 26px; color: var(--muted); }
+.pm-cell img { width: 64px; display: block; margin: 16px auto 8px; }
+.pm-cell em { font-style: normal; font-size: 46px; }
+
 #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
 .float { position: fixed; z-index: 51; font-family: var(--f-pixel); font-size: 20px; pointer-events: none; text-shadow: 3px 3px 0 var(--ink); animation: rise 1.2s ease-out forwards; white-space: nowrap; }
 @keyframes rise { from { transform: translate(-50%, 0) scale(.6); opacity: 1; } 30% { transform: translate(-50%, -30px) scale(1.15); } to { transform: translate(-50%, -90px) scale(1); opacity: 0; } }
@@ -453,6 +489,7 @@ html.rec .stage-wrap { position: fixed; left: 0; top: 0; width: 100vw; }
           <span class="pl-ch" id="tourCh"></span>
           <button class="btn pl-try" id="tourTry" hidden>TRY IT</button>
           <a class="pl-dl" id="tourDl" href="xalgoquest-tour.mp4" download hidden>Download the video</a>
+          <a class="pl-dl" id="tourDlX" href="xalgoquest-x.mp4" download hidden>Square cut for X</a>
         </div>
       </div>
     </div>
@@ -1384,6 +1421,282 @@ renderScores(false);
   render(t); ui();
 
   fetch("xalgoquest-tour.mp4", { method: "HEAD" }).then(r => { if (r.ok) $("#tourDl").hidden = false; }).catch(() => {});
+  fetch("xalgoquest-x.mp4", { method: "HEAD" }).then(r => { if (r.ok) $("#tourDlX").hidden = false; }).catch(() => {});
+})();
+
+/* ---------- X promo: square, muted-first, hook in frame one (open the page with #promo) ---------- */
+(function promo() {
+  if (location.hash !== "#promo") return;
+  const N = 1080;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const backOut = x => 1 + 2.7 * Math.pow(x - 1, 3) + 1.7 * Math.pow(x - 1, 2);
+  const P = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const HYPE_COL = { 1: "--muted", 2: "--muted", 3: "--new", 4: "--harsh", 5: "--gold" };
+  const kindCol = k => ({ buff: "--buff", softer: "--buff", nerf: "--nerf", harsher: "--harsh", new: "--new" }[k] || "--gold");
+  const col = n => CSS(n);
+
+  /* beats at 100 bpm: every cut lands on the music */
+  const BEAT = .6;
+  const S = { score: [0, 1.2], math: [1.2, 2.4], ratio: [2.4, 3.6], change: [3.6, 4.8], count: [4.8, 6.0], game: [6.0, 7.8], map: [7.8, 9.0], card: [9.0, 10.2], points: [10.2, 11.4], daily: [11.4, 12.6], cta: [12.6, 15.6] };
+  const ORDER = Object.keys(S), DUR = S.cta[1];
+
+  /* real numbers */
+  const W = c => (F[c] ? F[c].now : 0);
+  const like = W("FavoriteWeight") || 1, link = W("ShareViaCopyLinkWeight");
+  const ratio = Math.round(link / like);
+  const friend = POSTS[0], friendScore = scoreOf(friend, D.latest);
+  const MOVES = ["buff", "nerf", "harsher", "softer"];
+  const changed = D.factors.filter(f => !f.gone && f.history.length > 1 && f.history[0][1] && f.now)
+    .map(f => ({ f, pct: Math.round((Math.abs(f.now) - Math.abs(f.history[0][1])) / Math.abs(f.history[0][1]) * 100) }))
+    .sort((a, b) => (b.f.code === "FavoriteWeight") - (a.f.code === "FavoriteWeight") || Math.abs(b.pct) - Math.abs(a.pct));
+  const big = changed[0];
+  const weightDays = days.filter(d => d.chips.some(c => c.factor && MOVES.includes(c.kind)));
+  const star = weightDays[weightDays.length - 1] || days[days.length - 1];
+  const hotChips = new Map(star.chips.filter(c => c.factor && MOVES.includes(c.kind)).map(c => [c.factor, c]));
+  const win = days.slice(Math.max(0, Math.min(star.idx - 14, days.length - 20)), Math.max(0, Math.min(star.idx - 14, days.length - 20)) + 20);
+  const starI = Math.max(0, win.indexOf(star));
+  const live = D.factors.filter(f => !f.gone);
+  const earn = live.filter(f => f.now > 0).sort((a, b) => b.now - a.now).slice(0, 2);
+  const lose = live.filter(f => f.now < 0).sort((a, b) => a.now - b.now).slice(0, 2);
+  live.filter(f => hotChips.has(f.code)).forEach(f => { if (f.now > 0 && !earn.includes(f)) earn.push(f); if (f.now < 0 && !lose.includes(f)) lose.push(f); });
+  const prevOf = f => f.history.length > 1 ? f.history[f.history.length - 2][1] : f.now;
+  const firstMonth = MON[pd(days[0].date).m - 1];
+  const patchSet = new Set(days.map(d => d.date)), week = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(new Date(today + "T12:00:00Z") - i * 864e5), iso = d.toISOString().slice(0, 10); week.push({ mon: MON[d.getUTCMonth()], day: d.getUTCDate(), has: patchSet.has(iso) }); }
+  const MATH = [["FavoriteWeight", "Like"], ["ReplyWeight", "Reply"], ["ShareViaCopyLinkWeight", "Copy link"], ["ReportWeight", "Report"]].filter(([c]) => F[c]);
+  const T = { scoreLand: .95, ratioSlam: S.ratio[0] + .5, changeSlam: S.change[0] + .35, countEnd: S.count[0] + .75, gameSlam: S.game[0] + .35, click: S.map[0] + .55, press: S.cta[0] + 1.0 };
+
+  /* stage */
+  document.documentElement.classList.add("promo");
+  const st = document.createElement("div");
+  st.id = "promoStage";
+  const tx = (s, x) => `<div class="pm-t" style="${s}">${x}</div>`;
+  const row = (f, i, y, fill) => {
+    const c = hotChips.get(f.code);
+    return `<div class="pm-row" data-code="${f.code}" style="top:${y}px;--fill:var(${fill})">${img(f.icon)}<span class="n">${esc(f.name)}${c ? `<span class="pm-badge" style="background:var(${kindCol(c.kind)})">${pctWord(c.from, c.to, c.kind)}</span>` : ""}</span><span class="v">${fmtNum(f.now)}</span><span class="bar"><i style="width:${barPct(f.now)}%"></i></span></div>`;
+  };
+  st.innerHTML = `
+    <canvas id="pmStars" width="${N}" height="${N}"></canvas>
+    <div id="pmCam">
+    <div class="pm-sc" id="pm-score">
+      ${tx("top:96px;font-size:92px;color:var(--cream)", "EVERY POST ON X")}
+      ${tx("top:196px;font-size:92px;color:var(--gold)", "GETS A SCORE")}
+      <div id="pmCard" style="position:absolute;left:170px;top:380px;width:740px;height:360px;background:var(--cream);box-shadow:0 0 0 10px var(--ink),18px 18px 0 10px var(--ink)">
+        <div style="position:absolute;left:36px;top:36px;width:96px;height:96px;background:var(--new);box-shadow:inset -8px -8px 0 rgba(0,0,0,.25)"></div>
+        <div style="position:absolute;left:160px;top:48px;width:260px;height:26px;background:var(--ink)"></div>
+        <div style="position:absolute;left:160px;top:92px;width:170px;height:20px;background:var(--muted)"></div>
+        <div style="position:absolute;left:36px;top:168px;width:600px;height:20px;background:var(--muted)"></div>
+        <div style="position:absolute;left:36px;top:206px;width:520px;height:20px;background:var(--muted)"></div>
+        <div style="position:absolute;left:36px;top:244px;width:380px;height:20px;background:var(--muted)"></div>
+        <div id="pmScore" class="pm-num" style="position:absolute;right:-40px;bottom:-60px;background:var(--ink);color:var(--buff);font-size:132px;padding:6px 26px;box-shadow:0 0 0 8px var(--buff)">+0.00</div>
+      </div>
+    </div>
+    <div class="pm-sc" id="pm-math">
+      ${tx("top:96px;font-size:84px;color:var(--gold)", "X'S ACTUAL MATH")}
+      ${MATH.map(([c, name], i) => { const v = W(c), x = 80 + (i % 2) * 480, y = 250 + Math.floor(i / 2) * 370; return `<div class="pm-mcard" style="left:${x}px;top:${y}px">${img(F[c].icon)}<div class="nm">${name.toUpperCase()}</div><div class="pm-num" style="color:var(${v < 0 ? "--harsh" : "--buff"})">&times;${fmtNum(v).replace("+", "")}</div></div>`; }).join("")}
+    </div>
+    <div class="pm-sc" id="pm-ratio">
+      ${tx("top:150px;font-size:88px;color:var(--cream)", "X WEIGHS A COPIED LINK")}
+      <div class="pm-num" id="pmRatio" style="position:absolute;left:0;right:0;top:300px;text-align:center;font-size:420px;line-height:1;color:var(--gold)">${ratio}&times;</div>
+      ${tx("top:790px;font-size:88px;color:var(--cream)", "MORE THAN A LIKE")}
+    </div>
+    <div class="pm-sc" id="pm-change">
+      ${tx("top:140px;font-size:72px;color:var(--muted)", "AND X KEEPS CHANGING IT")}
+      <img class="spr" id="pmHeart" src="${sprURL(big ? big.f.icon : "heart")}" alt="" style="position:absolute;left:80px;top:400px;width:250px">
+      <div style="position:absolute;left:380px;top:360px">
+        <div class="pm-t" style="position:static;text-align:left;font-size:100px">${esc(big ? (big.f.code === "FavoriteWeight" ? "LIKES" : big.f.name.toUpperCase()) : "")}</div>
+        <div class="pm-num" id="pmPct" style="font-size:215px;line-height:1;color:var(${big && big.pct < 0 ? "--harsh" : "--buff"})"></div>
+      </div>
+      ${tx("top:820px;font-size:54px;color:var(--muted)", big ? `SINCE ${fmtShort(big.f.history[0][0])}` : "")}
+    </div>
+    <div class="pm-sc" id="pm-count">
+      <div class="pm-t" id="pmCount" style="top:90px;font-size:130px;color:var(--gold)">0 CHANGES</div>
+      ${tx("top:250px;font-size:60px;color:var(--cream)", `SINCE ${firstMonth}`)}
+      ${days.map((d, i) => `<div class="pm-mini" style="left:${226 + (i % 7) * 92}px;top:${380 + Math.floor(i / 7) * 92}px;background:var(${HYPE_COL[d.hype]})"></div>`).join("")}
+    </div>
+    <div class="pm-sc" id="pm-game">
+      ${tx("top:250px;font-size:68px;color:var(--muted)", "SO WE MADE IT A GAME")}
+      <div style="position:absolute;left:0;right:0;top:420px;text-align:center">
+        <div class="sg-h1" id="pmTitle" style="position:relative;display:inline-block;font-size:110px">X ALGO<br><span>QUEST</span><div class="sg-glare" id="pmGlare">X ALGO<br><span>QUEST</span></div></div>
+      </div>
+    </div>
+    <div class="pm-sc" id="pm-map">
+      ${tx("top:120px;font-size:80px;color:var(--gold)", "TAP ANY DAY")}
+      ${win.map((d, i) => `<div class="pm-sq" style="left:${171 + (i % 5) * 152}px;top:${280 + Math.floor(i / 5) * 152}px;background:var(${HYPE_COL[d.hype]});${d.hype === 4 ? "color:var(--cream)" : ""}">${pd(d.date).d}</div>`).join("")}
+    </div>
+    <div class="pm-sc" id="pm-card">
+      <div class="pm-card">
+        <div class="pm-num" style="font-size:40px;color:var(--new)">${fmtDate(star.date)}</div>
+        <div class="pm-t" style="position:static;text-align:left;font-size:84px;margin:14px 0 18px">${esc(star.title)}</div>
+        ${[...hotChips.values()].slice(0, 2).map(c => { const f = F[c.factor]; return `<div class="pm-chip">${img(f.icon)}<span class="n">${esc(f.name)}</span><span class="pm-num v"><s>${fmtNum(c.from)}</s> &gt; ${fmtNum(c.to)}</span><span class="pm-badge" style="background:var(${kindCol(c.kind)})">${pctWord(c.from, c.to, c.kind)}</span></div>`; }).join("")}
+      </div>
+    </div>
+    <div class="pm-sc" id="pm-points">
+      ${tx("top:70px;font-size:62px;color:var(--buff)", "WHAT EARNS POINTS")}
+      ${earn.slice(0, 3).map((f, i) => row(f, i, 160 + i * 112, "--buff")).join("")}
+      ${tx("top:530px;font-size:62px;color:var(--harsh)", "WHAT LOSES POINTS")}
+      ${lose.slice(0, 3).map((f, i) => row(f, i, 620 + i * 112, "--harsh")).join("")}
+    </div>
+    <div class="pm-sc" id="pm-daily">
+      ${tx("top:150px;font-size:80px;color:var(--gold)", "CHECKED EVERY MORNING")}
+      ${week.map((d, i) => `<div class="pm-cell" style="left:${66 + i * 138}px;${i === 6 ? "outline:6px solid var(--buff)" : ""}"><small>${d.mon}</small>${img(d.has ? "coin" : "post")}<em class="pm-num">${d.day}</em></div>`).join("")}
+      <div id="pmBeam" style="position:absolute;top:360px;width:12px;height:300px;background:var(--buff)"></div>
+      ${tx("top:740px;font-size:58px;color:var(--muted)", "NEW CHANGES LIGHT UP")}
+    </div>
+    <div class="pm-sc" id="pm-cta">
+      <div class="sg-btn" id="pmStart" style="left:50%;top:340px;font-size:84px;padding:30px 50px;white-space:nowrap;transform:translateX(-50%)">PRESS START</div>
+      ${tx("top:600px;font-size:66px;color:var(--gold)", "xalgoquest.vercel.app")}
+      <div class="pm-num" style="position:absolute;left:0;right:0;top:720px;text-align:center;font-size:44px;color:var(--muted)">Free. Updated every day.</div>
+    </div>
+    </div>
+    <div id="pmBrand" style="position:absolute;left:44px;top:40px;font-family:var(--f-pixel);font-size:18px;color:var(--gold)">X ALGO QUEST</div>
+    <div id="pmUrl" class="pm-num" style="position:absolute;right:44px;bottom:36px;font-size:26px;color:var(--muted)">xalgoquest.vercel.app</div>
+    <canvas id="pmFx" width="${N}" height="${N}"></canvas>
+    <div id="pmFlash" style="position:absolute;inset:0;background:var(--cream);pointer-events:none"></div>
+    <img class="spr" id="pmHand" src="${sprURL("hand")}" alt="" style="position:absolute;left:0;top:0;width:96px">`;
+  document.body.appendChild(st);
+
+  (function stars() {
+    const x = $("#pmStars").getContext("2d");
+    x.fillStyle = col("--sky"); x.fillRect(0, 0, N, N);
+    let s = 23; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 150; i++) { x.fillStyle = r() > .85 ? col("--gold") : col("--cream"); x.globalAlpha = .2 + r() * .55; const z = r() > .9 ? 7 : 4; x.fillRect((r() * N) | 0, (r() * N) | 0, z, z); }
+    x.globalAlpha = 1;
+  })();
+
+  const q = s => st.querySelector(s), qa = s => [...st.querySelectorAll(s)];
+  const scene = Object.fromEntries(ORDER.map(k => [k, q("#pm-" + k)]));
+  const cam = q("#pmCam"), flash = q("#pmFlash"), fx = q("#pmFx").getContext("2d"), hand = q("#pmHand");
+  const SHAKES = [[T.scoreLand, 22], [T.ratioSlam, 26], [T.changeSlam, 20], [T.countEnd, 14], [T.gameSlam, 24], [T.click, 10], [T.press, 14]];
+  const BURSTS = [[T.scoreLand, 820, 760, 70], [T.ratioSlam, 540, 520, 110], [T.changeSlam, 700, 520, 80], [T.gameSlam, 540, 560, 120], [T.click, 0, 0, 50], [T.press, 540, 420, 90]];
+  const sqXY = i => [171 + (i % 5) * 152 + 65, 280 + Math.floor(i / 5) * 152 + 65];
+  BURSTS[4][1] = sqXY(starI)[0]; BURSTS[4][2] = sqXY(starI)[1];
+  const glitch = (el, t, at) => { const k = 1 - P(t, at, at + .18); el.style.textShadow = t >= at && k > 0 ? `${(-10 * k).toFixed(1)}px 0 var(--new), ${(10 * k).toFixed(1)}px 0 var(--harsh)` : ""; };
+
+  function render(t) {
+    ORDER.forEach(k => {
+      const [a, b] = S[k], on = t >= a && t < b;
+      scene[k].style.visibility = on ? "visible" : "hidden";
+      scene[k].style.transform = a === 0 ? "none" : `scale(${lerp(1.22, 1, easeOut(P(t, a, a + .2))).toFixed(3)})`;
+    });
+    flash.style.opacity = ORDER.slice(1).some(k => t >= S[k][0] && t < S[k][0] + .05) ? .35 : (t >= T.gameSlam && t < T.gameSlam + .06 ? .7 : 0);
+    let sx = 0, sy = 0;
+    SHAKES.forEach(([s, amp], i) => { const d = t - s; if (d >= 0 && d < .3) { const k = amp * (1 - d / .3); sx += Math.sin(d * 95 + i) * k; sy += Math.cos(d * 75 + i * 2) * k; } });
+    cam.style.transform = `translate(${sx.toFixed(1)}px, ${sy.toFixed(1)}px)`;
+    q("#pmUrl").style.opacity = t < S.cta[0] ? 1 : 0;
+
+    /* 1. a post gets scored: slot digits spin from frame one */
+    const card = q("#pmCard"), ck = easeOut(P(t, -.15, .3));
+    card.style.transform = `scale(${lerp(1.9, 1, ck).toFixed(3)}) rotate(${lerp(-8, -2, ck).toFixed(2)}deg)`;
+    const sc = q("#pmScore");
+    if (t < T.scoreLand) { const f = Math.floor(t * 30); sc.textContent = `+${(((f * 7919) % 900) / 100 + .1).toFixed(2)}`; sc.style.transform = "scale(1)"; }
+    else { sc.textContent = `+${friendScore.toFixed(2)}`; sc.style.transform = `scale(${lerp(1.5, 1, easeOut(P(t, T.scoreLand, T.scoreLand + .2))).toFixed(3)})`; }
+
+    /* 2. the real weights flip in */
+    qa(".pm-mcard").forEach((c, i) => { const k = P(t, S.math[0] + .04 + i * .13, S.math[0] + .26 + i * .13); c.style.transform = `scaleY(${backOut(k).toFixed(3)})`; c.style.opacity = k > 0 ? 1 : 0; });
+
+    /* 3. the ratio slams */
+    const rt = q("#pmRatio");
+    rt.textContent = `${Math.max(1, Math.round(ratio * easeOut(P(t, S.ratio[0] + .05, T.ratioSlam))))}×`;
+    rt.style.transform = `scale(${t < T.ratioSlam ? .85 : lerp(1.4, 1, easeOut(P(t, T.ratioSlam, T.ratioSlam + .2))).toFixed(3)})`;
+    glitch(rt, t, T.ratioSlam);
+
+    /* 4. it keeps changing */
+    if (big) {
+      const pct = q("#pmPct"), a = S.change[0];
+      pct.textContent = `${big.pct > 0 ? "+" : "-"}${Math.round(Math.abs(big.pct) * easeOut(P(t, a + .03, T.changeSlam)))}%`;
+      pct.style.transform = `scale(${lerp(1.35, 1, easeOut(P(t, T.changeSlam, T.changeSlam + .2))).toFixed(3)})`;
+      pct.style.transformOrigin = "0 50%";
+      glitch(pct, t, T.changeSlam);
+      q("#pmHeart").style.transform = `scale(${(1 + .18 * Math.max(0, Math.sin((t - a) * Math.PI / BEAT * 2))).toFixed(3)})`;
+    }
+
+    /* 5. every change, counted */
+    q("#pmCount").textContent = `${Math.round(days.length * easeOut(P(t, S.count[0], T.countEnd)))} CHANGES`;
+    q("#pmCount").style.transform = `scale(${t < T.countEnd ? 1 : lerp(1.25, 1, easeOut(P(t, T.countEnd, T.countEnd + .18))).toFixed(3)})`;
+    qa(".pm-mini").forEach((m, i) => { const s0 = S.count[0] + i * .016, k = P(t, s0, s0 + .22); m.style.transform = `translateY(${((1 - backOut(k)) * -500).toFixed(1)}px)`; m.style.opacity = k > 0 ? 1 : 0; });
+
+    /* 6. the game */
+    q("#pmTitle").style.transform = `scale(${t < T.gameSlam ? 0 : lerp(1.8, 1, easeOut(P(t, T.gameSlam, T.gameSlam + .25))).toFixed(3)})`;
+    q("#pmGlare").style.backgroundPosition = `${lerp(100, 0, ease(P(t, T.gameSlam + .3, T.gameSlam + 1.0)))}% 0`;
+
+    /* 7. tap a day */
+    const focus = P(t, T.click + .03, T.click + .2);
+    qa(".pm-sq").forEach((s, i) => {
+      const isStar = i === starI, k = P(t, S.map[0] + i * .01, S.map[0] + .18 + i * .01);
+      const pop = isStar ? 1 + .3 * Math.sin(Math.PI * P(t, T.click, T.click + .25)) : 1;
+      s.style.transform = `scale(${(backOut(k) * pop).toFixed(3)})`;
+      s.style.opacity = isStar ? 1 : 1 - .7 * focus;
+      s.style.filter = !isStar && focus ? `blur(${(focus * 4).toFixed(1)}px)` : "none";
+      s.style.outline = isStar && t > T.click ? "6px solid var(--cream)" : "none";
+    });
+
+    /* 8. what changed */
+    qa(".pm-chip").forEach((c, i) => { const k = backOut(P(t, S.card[0] + .2 + i * .14, S.card[0] + .45 + i * .14)); c.style.transform = `translateY(${((1 - k) * 60).toFixed(1)}px)`; c.style.opacity = Math.min(1, k); });
+
+    /* 9. earns / loses */
+    qa(".pm-row").forEach((r, i) => {
+      const k = easeOut(P(t, S.points[0] + i * .045, S.points[0] + .2 + i * .045));
+      r.style.transform = `translateX(${((1 - k) * (i < 3 ? -90 : 90)).toFixed(1)}px)`; r.style.opacity = k;
+      const f = F[r.dataset.code], c = hotChips.get(f.code); if (!c) return;
+      const g = ease(P(t, S.points[0] + .4, S.points[0] + .8));
+      r.querySelector(".bar i").style.width = lerp(barPct(prevOf(f)), barPct(f.now), g) + "%";
+      r.querySelector(".v").textContent = fmtNum(g < 1 ? prevOf(f) : f.now);
+      r.style.outline = t > S.points[0] + .35 ? `5px solid var(${kindCol(c.kind)})` : "none";
+    });
+
+    /* 10. daily scan */
+    const b0 = S.daily[0] + .1, b1 = S.daily[0] + .75, bx = lerp(40, 1040, P(t, b0, b1));
+    q("#pmBeam").style.left = bx + "px"; q("#pmBeam").style.opacity = t > b0 && t < b1 + .1 ? 1 : 0;
+    qa(".pm-cell").forEach((c, i) => {
+      let y = 0;
+      if (i === 6 && week[6].has) { const d = P(t, b1, b1 + .35); y = d < 1 ? -90 * (1 - easeOut(d)) * Math.abs(Math.cos(d * Math.PI * 1.5)) : 0; }
+      c.style.transform = `translateY(${y.toFixed(1)}px)`; c.style.opacity = t < b0 || bx > 66 + i * 138 + 60 ? 1 : .45;
+    });
+
+    /* 11. call to action */
+    const pr = P(t, T.press - .08, T.press) - P(t, T.press, T.press + .18);
+    q("#pmStart").style.transform = `translateX(-50%) translateY(${(pr * 12).toFixed(1)}px) scale(${(1 + .04 * Math.sin((t - S.cta[0]) * Math.PI / BEAT)).toFixed(3)})`;
+
+    /* hand */
+    const hp = t < S.cta[0] ? (() => { const [x, y] = sqXY(starI), k = ease(P(t, S.map[0], T.click - .05)); return [lerp(1150, x, k), lerp(1150, y, k)]; })() : [lerp(1150, 790, ease(P(t, S.cta[0] + .2, T.press - .05))), lerp(1150, 500, ease(P(t, S.cta[0] + .2, T.press - .05)))];
+    const showHand = (t >= S.map[0] && t < S.map[1]) || t >= S.cta[0];
+    hand.style.opacity = showHand ? 1 : 0;
+    const down = [T.click, T.press].some(c => t >= c - .04 && t < c + .1);
+    hand.style.transform = `translate(${(hp[0] - 18).toFixed(1)}px, ${(hp[1] - 6).toFixed(1)}px) scale(${down ? .85 : 1})`;
+
+    /* bursts */
+    fx.clearRect(0, 0, N, N);
+    const colors = [col("--gold"), col("--cream"), col("--buff"), col("--harsh"), col("--new")];
+    BURSTS.forEach(([c, cx, cy, count], bi) => {
+      const dt = t - c; if (dt < 0 || dt > .9) return;
+      fx.strokeStyle = col("--cream"); fx.lineWidth = 6; fx.globalAlpha = Math.max(0, 1 - dt * 3);
+      const rr = 14 + dt * 380; fx.strokeRect(cx - rr, cy - rr, rr * 2, rr * 2);
+      let s = 131 + bi * 37; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+      fx.globalAlpha = Math.max(0, 1 - dt / .9);
+      for (let i = 0; i < count; i++) {
+        const a = r() * Math.PI * 2, sp = 300 + r() * 900, sz = 8 + (r() * 3 | 0) * 5;
+        fx.fillStyle = colors[i % colors.length];
+        fx.fillRect(cx + Math.cos(a) * sp * dt, cy + Math.sin(a) * sp * dt - 400 * dt + 900 * dt * dt, sz, sz);
+      }
+      fx.globalAlpha = 1;
+    });
+  }
+
+  const SOUNDS = [
+    ...Array.from({ length: 14 }, (_, i) => [i * .065, "tick", 420 + i * 45]),
+    [T.scoreLand, "coin"], ...MATH.map((m, i) => [S.math[0] + .1 + i * .13, "tick", 700 + i * 120]),
+    [T.ratioSlam, "slam"], [T.changeSlam, big && big.pct < 0 ? "down" : "up"], [T.countEnd, "coin"],
+    [S.game[0] - .5, "riser"], [T.gameSlam, "slam"], [T.gameSlam + .05, "start"], [T.click, "coin"], [S.card[0] + .25, "up"],
+    [S.points[0] + .8, "up"], [S.daily[0] + .85, "coin"], [T.press, "mega"]
+  ];
+  function fit() { const s = innerWidth / N; st.style.transform = `scale(${s})`; }
+  addEventListener("resize", fit); fit();
+  window.__xaqPromo = { seek: t => { render(t); return true; }, dur: DUR, sounds: SOUNDS, music: { bpm: 100, kick: true, until: S.cta[0] + 1.6 } };
+  render(0);
 })();
 
 /* ---------- feed machine ---------- */

@@ -17,7 +17,7 @@ Every change to the X For You algorithm, turned into a pixel game. Plain words, 
 | `template.html` | The page: styles, layout, game logic, and the how-to tour |
 | `copy.json` | Hand-written titles and stories per day, names for each factor |
 | `tools/build.py` | Reads the algorithm repo, merges `copy.json`, writes `public/index.html` |
-| `tools/record.mjs` | Records the tour to `public/xalgoquest-tour.mp4` and `public/og.png` |
+| `tools/record.mjs` | Records the site tour (`public/xalgoquest-tour.mp4`), the square X cut (`--promo`, `public/xalgoquest-x.mp4`), and `public/og.png` |
 | `DAILY.md` | Step-by-step for the daily notes job and the writing rules |
 
 ## Run it locally
