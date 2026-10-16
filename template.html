@@ -416,6 +416,54 @@ html.promo body > :not(#promoStage) { display: none !important; }
 .pm-cell img { width: 64px; display: block; margin: 16px auto 8px; }
 .pm-cell em { font-style: normal; font-size: 46px; }
 
+/* Game: Beat the Algorithm */
+.game { padding: 18px; }
+.game.shake { animation: shake .45s steps(6); }
+.g-top { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.g-lives { display: flex; gap: 4px; }
+.g-lives img { width: 28px; }
+.g-stat { background: var(--ink); padding: 6px 12px; font-size: 14px; font-weight: 700; color: var(--muted); }
+.g-stat b { color: var(--gold); font-size: 20px; margin-left: 8px; font-variant-numeric: tabular-nums; }
+.g-timer { flex: 1 1 140px; height: 14px; background: var(--ink); position: relative; }
+.g-timer i { position: absolute; inset: 0 auto 0 0; width: 100%; background: var(--buff); }
+.g-timer.low i { background: var(--harsh); }
+.g-stage { min-height: 380px; }
+.g-intro { text-align: center; padding: 28px 8px; display: grid; gap: 18px; justify-items: center; }
+.g-intro h3 { font-family: var(--f-pixel); font-size: clamp(20px, 4.4vw, 34px); line-height: 1.4; color: var(--gold); margin: 0; text-shadow: 3px 3px 0 var(--harsh); }
+.g-intro ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 19px; }
+.g-rules { font-size: 15px; color: var(--muted); }
+.g-round { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; align-items: stretch; }
+.g-q { grid-column: 1 / -1; text-align: center; font-weight: 700; font-size: 20px; }
+.g-vs { align-self: center; font-family: var(--f-pixel); font-size: 18px; color: var(--harsh); }
+.g-card { background: var(--cream); color: var(--ink); border: 0; text-align: left; padding: 16px; display: grid; gap: 12px; align-content: start; box-shadow: 0 0 0 4px var(--ink), 8px 8px 0 4px var(--ink); transition: transform .1s, opacity .2s; min-width: 0; }
+.g-card:not(:disabled):hover { transform: translateY(-4px); box-shadow: 0 0 0 4px var(--gold), 8px 8px 0 4px var(--ink); }
+.g-card .who { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-weight: 700; font-size: 20px; line-height: 1.2; }
+.g-card .who img { width: 38px; background: var(--panel); padding: 5px; }
+.g-new { font-size: 11px; font-weight: 700; background: var(--new); color: var(--ink); padding: 2px 5px; vertical-align: 2px; white-space: nowrap; }
+.g-reacts { display: grid; gap: 7px; }
+.g-react { display: grid; grid-template-columns: 22px 54px minmax(0, 1fr); gap: 8px; align-items: center; font-size: 16px; color: var(--panel); }
+.g-react img { width: 20px; background: var(--panel); padding: 2px; }
+.g-react b { font-size: 18px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.g-reveal { display: grid; gap: 8px; border-top: 3px dashed var(--muted); padding-top: 12px; }
+.g-score { justify-self: start; background: var(--ink); color: var(--buff); font-weight: 700; font-size: 28px; padding: 4px 12px; font-variant-numeric: tabular-nums; }
+.g-first { justify-self: start; background: var(--gold); color: var(--ink); font-weight: 700; font-size: 14px; padding: 3px 8px; }
+.g-why { font-size: 15px; color: var(--panel); line-height: 1.45; }
+.g-card.win { box-shadow: 0 0 0 6px var(--gold), 8px 8px 0 6px var(--ink); }
+.g-card.lose { opacity: .55; }
+.g-result { grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--ink); padding: 12px 16px; }
+.g-verdict { font-weight: 700; font-size: 21px; }
+.g-verdict.ok { color: var(--buff); }
+.g-verdict.bad { color: var(--harsh); }
+.g-final b { display: block; font-size: 72px; line-height: 1; color: var(--gold); font-variant-numeric: tabular-nums; }
+.g-final span { font-size: 16px; color: var(--muted); }
+.g-rank { font-size: 21px; font-weight: 700; }
+.g-share { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.g-learn { font-size: 16px; }
+@media (max-width: 760px) {
+  .g-round { grid-template-columns: minmax(0, 1fr); }
+  .g-vs { justify-self: center; }
+}
+
 #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
 .float { position: fixed; z-index: 51; font-family: var(--f-pixel); font-size: 20px; pointer-events: none; text-shadow: 3px 3px 0 var(--ink); animation: rise 1.2s ease-out forwards; white-space: nowrap; }
 @keyframes rise { from { transform: translate(-50%, 0) scale(.6); opacity: 1; } 30% { transform: translate(-50%, -30px) scale(1.15); } to { transform: translate(-50%, -90px) scale(1); opacity: 0; } }
@@ -481,6 +529,20 @@ html.promo body > :not(#promoStage) { display: none !important; }
 </div>
 
 <main>
+  <section class="block wrap" id="play">
+    <div class="head"><div><h2>BEAT THE ALGORITHM</h2><p>Two posts. Pick the one X shows first. Scored with X's real rules, updated every day.</p></div></div>
+    <div class="box game" id="game">
+      <div class="g-top">
+        <span class="g-lives" id="gLives" aria-label="3 lives left"></span>
+        <span class="g-stat">SCORE<b id="gScore">0</b></span>
+        <span class="g-stat">STREAK<b id="gStreak">0</b></span>
+        <span class="g-stat">BEST<b id="gBest">0</b></span>
+        <span class="g-timer" id="gTimer" style="visibility:hidden" aria-hidden="true"><i></i></span>
+      </div>
+      <div class="g-stage" id="gStage" aria-live="polite"></div>
+    </div>
+  </section>
+
   <section class="block wrap" id="howto">
     <div class="head"><div><h2>HOW IT WORKS</h2><p>A 20 second tour. Pause anytime, jump to a chapter, or try each part for real.</p></div></div>
     <div class="box tour">
@@ -771,7 +833,7 @@ $("#latestCard").innerHTML = `
   <div class="eyebrow"><i class="dot" style="background:var(--harsh)"></i>LATEST PATCH · ${fmtShort(latest.date)}</div>
   <h2>${esc(latest.title)}</h2>
   <p>${esc(latest.story)}</p>
-  <button class="btn" id="playLatest">PLAY IT</button>`;
+  <button class="btn" id="playLatest">SEE WHAT CHANGED</button>`;
 const checked = D.checkedAt.slice(0, 10);
 (function ticker() {
   let seen = null;
@@ -930,8 +992,8 @@ addEventListener("keydown", e => {
   if (e.key === "ArrowRight") show(sel + 1, true);
 });
 show(sel, false);
-$("#start").onclick = () => { SFX.start(); jumpTo(days.length - 1); };
-$("#playLatest").onclick = $("#start").onclick;
+$("#start").onclick = () => window.__xaqGame && window.__xaqGame.start();
+$("#playLatest").onclick = () => { SFX.start(); jumpTo(days.length - 1); };
 
 /* ---------- score card ---------- */
 const like = F.FavoriteWeight ? F.FavoriteWeight.now : null, rep = F.ReportWeight ? F.ReportWeight.now : null;
@@ -1415,7 +1477,7 @@ renderScores(false);
   tryBtn.onclick = () => {
     pause();
     const go = tryBtn.dataset.go;
-    if (go === "start") { jumpTo(days.length - 1); return; }
+    if (go === "start") { window.__xaqGame && window.__xaqGame.start(); return; }
     if (go === "#viewer") { jumpTo(star.idx); return; }
     const target = document.querySelector(go);
     if (target) target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
@@ -1662,6 +1724,198 @@ renderScores(false);
   addEventListener("resize", fit); fit();
   window.__xaqPromo = { seek: t => { render(t); return true; }, dur: DUR, sounds: SOUNDS, music: { bpm: 100, kick: true, until: S.cta[0] + 1.6 } };
   render(0);
+})();
+
+/* ---------- game: Beat the Algorithm (pick the post X ranks higher, scored with the real weights) ---------- */
+(function game() {
+  const box = $("#gStage"), livesEl = $("#gLives"), scoreEl = $("#gScore"), streakEl = $("#gStreak"), bestEl = $("#gBest"), timerEl = $("#gTimer");
+  if (!box) return;
+  const W = c => (F[c] && !F[c].gone ? F[c].now : 0);
+  /* what a viewer might do, in plain words, with the weight X gives it today */
+  const R = {
+    like: { icon: "heart", say: "would like it", c: ["FavoriteWeight"] },
+    reply: { icon: "reply", say: "would reply", c: ["ReplyWeight"] },
+    mreply: { icon: "mutual", say: "would reply (you follow each other)", c: ["ReplyWeight", "BidirectionalFollowReplyWeightBoost"] },
+    repost: { icon: "repost", say: "would repost", c: ["RetweetWeight"] },
+    quote: { icon: "quote", say: "would quote it", c: ["QuoteWeight"] },
+    dm: { icon: "dm", say: "would send it in DMs", c: ["ShareViaDmWeight"] },
+    link: { icon: "link", say: "would copy the link", c: ["ShareViaCopyLinkWeight"] },
+    follow: { icon: "follow", say: "would follow the author", c: ["FollowAuthorWeight"] },
+    open: { icon: "open", say: "would open the link", c: ["OpenLinkWeight"] },
+    photo: { icon: "photo", say: "would open the photo", c: ["PhotoExpandWeight"] },
+    notint: { icon: "thumbdown", say: "would tap Not interested", c: ["NotInterestedWeight"] },
+    mute: { icon: "mute", say: "would mute the author", c: ["MuteAuthorWeight"] },
+    block: { icon: "block", say: "would block the author", c: ["BlockAuthorWeight"] },
+    report: { icon: "skull", say: "would report it", c: ["ReportWeight"] }
+  };
+  Object.values(R).forEach(r => { r.w = () => r.c.reduce((t, c) => t + W(c), 0); });
+  /* post types with realistic ranges of reactions, in percent */
+  const TYPES = [
+    { name: "Your friend's life update", icon: "mutual", r: { like: [12, 40], mreply: [2, 12], notint: [.1, 1] } },
+    { name: "Breaking news link", icon: "open", r: { like: [4, 18], repost: [2, 8], link: [.5, 5], open: [10, 40], report: [0, .4] } },
+    { name: "A meme", icon: "heart", r: { like: [18, 50], dm: [1, 6], repost: [2, 8], notint: [.5, 3] } },
+    { name: "A spicy hot take", icon: "quote", r: { like: [4, 25], reply: [2, 10], quote: [1, 6], mute: [.2, 2], report: [.1, 1] } },
+    { name: "A helpful how-to thread", icon: "reply", r: { like: [8, 30], link: [1, 6], follow: [.5, 4], dm: [.5, 3] } },
+    { name: "A cute dog video", icon: "play", r: { like: [20, 45], dm: [2, 8], repost: [1, 5], notint: [.2, 1.5] } },
+    { name: "A spammy giveaway", icon: "link", r: { like: [1, 8], notint: [3, 15], mute: [1, 5], report: [.5, 4] } },
+    { name: "A product launch", icon: "star", r: { like: [4, 20], reply: [1, 5], link: [1, 4], follow: [.5, 3], notint: [.5, 4] } },
+    { name: "Rage bait", icon: "skull", r: { reply: [4, 15], quote: [2, 8], like: [2, 10], block: [.3, 3], report: [.5, 3] } },
+    { name: "A photo dump", icon: "photo", r: { like: [15, 40], photo: [10, 40], dm: [.5, 3], notint: [.2, 2] } }
+  ];
+  const changedRecently = new Set(days.filter(d => isRecent(d.date)).flatMap(d => d.chips.filter(c => c.factor && c.kind !== "gone").map(c => c.factor)));
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const pctTxt = p => p >= 1 ? `${Math.round(p)}%` : `${p.toFixed(1)}%`;
+  function makePost(type) {
+    const rows = Object.entries(type.r).map(([k, [a, b]]) => {
+      let p = rnd(a, b); p = p >= 1 ? Math.round(p) : Math.round(p * 10) / 10;
+      return { k, p, pts: p / 100 * R[k].w() * 100 };
+    }).filter(x => x.p > 0 && R[x.k].w() !== 0);
+    /* only what is shown counts, so every round is solvable */
+    const shown = rows.sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts)).slice(0, 5);
+    return { type, rows: shown, pts: shown.reduce((s, x) => s + x.pts, 0) };
+  }
+  const GAP = [0, 150, 80, 40, 20, 10];
+  const TIME = [0, 12, 11, 10, 8, 7];
+  let lives, score, streak, correct, level, round, best = 0, timer = null, tLeft = 0, tMax = 0, locked = false;
+  try { best = +localStorage.getItem("xaq-best") || 0; } catch (e) {}
+  bestEl.textContent = best;
+  function makeRound() {
+    for (let tries = 0; tries < 200; tries++) {
+      const [a, b] = [TYPES[Math.floor(Math.random() * TYPES.length)], TYPES[Math.floor(Math.random() * TYPES.length)]];
+      const A = makePost(a), B = makePost(b);
+      const gap = Math.abs(A.pts - B.pts), need = GAP[Math.min(level, 5)];
+      if (gap >= need && gap < need * 6 + 60) return [A, B];
+    }
+    return [makePost(TYPES[0]), makePost(TYPES[6])];
+  }
+  function hud() {
+    livesEl.innerHTML = [0, 1, 2].map(i => `<img class="spr" src="${sprURL("heart")}" alt="" style="${i < lives ? "" : "opacity:.18;filter:grayscale(1)"}">`).join("");
+    livesEl.setAttribute("aria-label", `${lives} lives left`);
+    scoreEl.textContent = score; streakEl.textContent = streak; bestEl.textContent = best;
+  }
+  function intro() {
+    stopTimer();
+    timerEl.style.visibility = "hidden";
+    box.innerHTML = `<div class="g-intro">
+      <h3>BEAT THE<br>ALGORITHM</h3>
+      <ul>
+        <li>Two posts appear. Tap the one X shows first.</li>
+        <li>3 lives. Answer fast for bonus points.</li>
+        <li>After each pick, see the real math.</li>
+      </ul>
+      <button class="btn press" id="gGo">PRESS START</button>
+      <div class="g-rules">Scored with X's own rules as of ${fmtShort(latest.date)}, from its open source code.</div>
+    </div>`;
+    $("#gGo").onclick = start;
+  }
+  function start() {
+    lives = 3; score = 0; streak = 0; correct = 0; level = 1;
+    SFX.start(); hud(); next();
+  }
+  function card(post, side) {
+    return `<button class="g-card" data-side="${side}" aria-label="Pick ${esc(post.type.name)}">
+      <span class="who">${img(post.type.icon)}${esc(post.type.name)}</span>
+      <span class="g-reacts">${post.rows.map(x => `<span class="g-react">${img(R[x.k].icon)}<b>${pctTxt(x.p)}</b><span>${R[x.k].say}${R[x.k].c.some(c => changedRecently.has(c)) ? ` <span class="g-new" title="X changed this rule in the last week">CHANGED</span>` : ""}</span></span>`).join("")}</span>
+      <span class="g-reveal" hidden></span>
+    </button>`;
+  }
+  function next() {
+    locked = false;
+    round = makeRound();
+    box.innerHTML = `<div class="g-round">
+      <div class="g-q">Level ${level}: which post does X show first?</div>
+      ${card(round[0], 0)}<div class="g-vs">VS</div>${card(round[1], 1)}
+    </div>`;
+    box.querySelectorAll(".g-card").forEach(c => c.onclick = () => pick(+c.dataset.side));
+    tMax = TIME[Math.min(level, 5)]; tLeft = tMax;
+    timerEl.style.visibility = "visible";
+    startTimer();
+  }
+  function startTimer() {
+    stopTimer();
+    let last = performance.now(), lastTick = Math.ceil(tLeft);
+    const step = now => {
+      if (document.hidden) { last = now; timer = requestAnimationFrame(step); return; }
+      tLeft = Math.max(0, tLeft - (now - last) / 1000); last = now;
+      timerEl.querySelector("i").style.width = (tLeft / tMax * 100) + "%";
+      timerEl.classList.toggle("low", tLeft < 3);
+      if (Math.ceil(tLeft) < lastTick && tLeft < 3 && tLeft > 0) { tone(880, 0, .05); lastTick = Math.ceil(tLeft); }
+      if (tLeft <= 0) { pick(-1); return; }
+      timer = requestAnimationFrame(step);
+    };
+    timer = requestAnimationFrame(step);
+  }
+  function stopTimer() { if (timer) cancelAnimationFrame(timer); timer = null; }
+  function why(post) {
+    const top = [...post.rows].sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts)).slice(0, 2);
+    return top.map(x => `${R[x.k].say.replace(/^would /, "")}: ${pctTxt(x.p)} &times; ${fmtNum(R[x.k].w()).replace("+", "")} = <b>${x.pts >= 0 ? "+" : ""}${Math.round(x.pts)}</b>`).join("<br>");
+  }
+  function pick(side) {
+    if (locked) return; locked = true; stopTimer();
+    const win = round[0].pts >= round[1].pts ? 0 : 1;
+    const ok = side === win;
+    const cards = [...box.querySelectorAll(".g-card")];
+    cards.forEach((c, i) => {
+      c.disabled = true;
+      c.classList.add(i === win ? "win" : "lose");
+      const r = c.querySelector(".g-reveal");
+      r.hidden = false;
+      r.innerHTML = `<span class="g-score">${Math.round(round[i].pts)} pts</span>${i === win ? `<span class="g-first">X SHOWS THIS FIRST</span>` : ""}<span class="g-why">${why(round[i])}</span>`;
+    });
+    const rect = (side >= 0 ? cards[side] : cards[win]).getBoundingClientRect();
+    let msg;
+    if (ok) {
+      correct++; streak++;
+      const gain = 100 + Math.round(tLeft * 15) + (streak >= 3 ? 50 * (streak - 2) : 0);
+      score += gain;
+      SFX.coin(); burst(rect.left + rect.width / 2, rect.top + 30, 40, [CSS("--gold"), CSS("--buff"), CSS("--cream")]);
+      floatText(`+${gain}`, rect.left + rect.width / 2, rect.top + 20, CSS("--gold"));
+      msg = `<span class="g-verdict ok">${streak >= 3 ? `${streak} in a row!` : "You think like the algorithm."}</span>`;
+      if (correct % 4 === 0) { level++; setTimeout(() => { SFX.mega(); floatText(`LEVEL ${level}`, innerWidth / 2, rect.top, CSS("--new")); }, 350); }
+    } else {
+      lives--; streak = 0;
+      SFX.down();
+      const g = $("#game");
+      if (!reduce) { g.style.setProperty("--amp", "6px"); g.classList.remove("shake"); void g.offsetWidth; g.classList.add("shake"); }
+      msg = `<span class="g-verdict bad">${side < 0 ? "Too slow!" : "The algorithm disagrees."}</span>`;
+    }
+    if (score > best) { best = score; try { localStorage.setItem("xaq-best", best); } catch (e) {} }
+    hud();
+    const over = lives <= 0;
+    box.querySelector(".g-round").insertAdjacentHTML("beforeend", `<div class="g-result">${msg}<button class="btn" id="gNext">${over ? "SEE SCORE" : "NEXT"}</button></div>`);
+    const nb = $("#gNext"); nb.focus({ preventScroll: true });
+    nb.onclick = over ? gameOver : next;
+  }
+  function gameOver() {
+    stopTimer();
+    timerEl.style.visibility = "hidden";
+    const rank = correct >= 16 ? "You ARE the algorithm." : correct >= 10 ? "Algorithm whisperer." : correct >= 5 ? "Getting the hang of it." : "The feed is a mystery to you. For now.";
+    const text = `I scored ${score} on X Algo Quest (${correct} right). Can you beat the algorithm?`;
+    const url = "https://xalgoquest.vercel.app";
+    box.innerHTML = `<div class="g-intro">
+      <h3>GAME OVER</h3>
+      <div class="g-final"><b>${score}</b><span>points</span></div>
+      <div class="g-rank">${correct} right. ${rank}</div>
+      <div class="g-rules">Best: ${best}</div>
+      <div class="g-share">
+        <a class="btn" href="https://x.com/intent/post?text=${encodeURIComponent(text + " " + url)}" target="_blank" rel="noopener">POST YOUR SCORE ON X</a>
+        <button class="btn ghost" id="gAgain">PLAY AGAIN</button>
+      </div>
+      <a href="#score" class="g-learn">See every rule X uses</a>
+    </div>`;
+    SFX.mega();
+    const r = box.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + 80, 70, [CSS("--gold"), CSS("--harsh"), CSS("--new"), CSS("--cream")]);
+    $("#gAgain").onclick = start;
+  }
+  addEventListener("keydown", e => {
+    if (!box.querySelector(".g-round") || e.target.closest("input, textarea")) return;
+    if (!locked && (e.key === "1" || e.key === "a")) { e.preventDefault(); pick(0); }
+    if (!locked && (e.key === "2" || e.key === "d")) { e.preventDefault(); pick(1); }
+  });
+  window.__xaqGame = { start: () => { $("#play").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); setTimeout(start, reduce ? 0 : 450); } };
+  intro();
+  lives = 3; score = 0; streak = 0; hud();
 })();
 
 /* ---------- feed machine ---------- */
