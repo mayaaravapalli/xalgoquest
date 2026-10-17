@@ -641,6 +641,52 @@
     "ads"
    ],
    "hype": 4
+  },
+  "2026-10-16": {
+   "title": "Video row spots lookalikes",
+   "story": "A new check can catch near identical videos in the video row. Off by default for now.",
+   "extra": [
+    [
+     "Lookalike video check",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "tech"
+   ],
+   "hype": 2
+  },
+  "2026-10-17": {
+   "title": "Fewer repeats in videos",
+   "story": "The video row now skips repeat creators and lookalike clips. It hides when follow suggestions show.",
+   "extra": [
+    [
+     "One video per creator",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Lookalike video check",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Hide zero like posts test",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "discovery"
+   ],
+   "hype": 4
   }
  }
 }
