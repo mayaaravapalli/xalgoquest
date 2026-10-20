@@ -687,6 +687,29 @@
     "discovery"
    ],
    "hype": 4
+  },
+  "2026-10-20": {
+   "title": "No double videos",
+   "story": "The video row now skips clips already in your main feed. A topic history tracker was added, off by default.",
+   "extra": [
+    [
+     "Skip videos already in feed",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "28 day topic history",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "discovery"
+   ],
+   "hype": 3
   }
  }
 }
