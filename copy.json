@@ -710,6 +710,29 @@
     "discovery"
    ],
    "hype": 3
+  },
+  "2026-10-21": {
+   "title": "Fair share for sources",
+   "story": "A new rule would give each post source a fair slice of the feed shortlist. Off by default for now.",
+   "extra": [
+    [
+     "Fair share shortlist",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Video row logging",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "discovery",
+    "tech"
+   ],
+   "hype": 2
   }
  }
 }
