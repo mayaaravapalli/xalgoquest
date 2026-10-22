@@ -733,6 +733,41 @@
     "tech"
    ],
    "hype": 2
+  },
+  "2026-10-22": {
+   "title": "Fair share goes live",
+   "story": "Every post source now gets a fair slice of your feed shortlist. Reactions to private or graphic posts get hidden or blurred.",
+   "extra": [
+    [
+     "Fair share shortlist",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Reactions to private accounts",
+     null,
+     "hidden",
+     "harsher"
+    ],
+    [
+     "Reactions to adult or gore media",
+     null,
+     "blurred",
+     "harsher"
+    ],
+    [
+     "New account soft NSFW filter",
+     null,
+     "added, off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "discovery",
+    "safety"
+   ],
+   "hype": 4
   }
  }
 }
