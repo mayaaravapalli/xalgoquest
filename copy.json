@@ -768,6 +768,42 @@
     "safety"
    ],
    "hype": 4
+  },
+  "2026-10-23": {
+   "title": "Searches could shape feed",
+   "story": "X wired in your recent searches as a possible feed signal, off by default. Rule breaking posts kept for public interest get a label.",
+   "extra": [
+    [
+     "Recent searches signal",
+     null,
+     "added, off by default",
+     "new"
+    ],
+    [
+     "Public interest label",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Auto enforcement speed limits",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Ads tracing",
+     null,
+     "added, off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "discovery",
+    "safety",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
