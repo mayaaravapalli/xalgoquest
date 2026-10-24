@@ -804,6 +804,35 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-10-24": {
+   "title": "Ads tracing switched on",
+   "story": "X turned on tracing for how ads reach your feed. The ad model also learns from purchases made days after seeing an ad.",
+   "extra": [
+    [
+     "Ads tracing",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Late view through ad sales",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Credibility skip threshold",
+     "50",
+     "hidden, demo value",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
