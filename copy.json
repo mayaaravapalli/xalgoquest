@@ -862,6 +862,41 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-10-28": {
+   "title": "Brazil election filter removed",
+   "story": "With Brazil's election over, X removed the filter that hid posts from flagged accounts. A whole feed reranker was added, off by default.",
+   "extra": [
+    [
+     "Brazil election filter",
+     "on",
+     "removed",
+     "gone"
+    ],
+    [
+     "Whole feed reranker",
+     null,
+     "added, off by default",
+     "new"
+    ],
+    [
+     "Feed exploration test",
+     null,
+     "added, off by default",
+     "new"
+    ],
+    [
+     "New account mature filter window",
+     "1 day",
+     "7 days (filter off)",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "legal",
+    "discovery"
+   ],
+   "hype": 4
   }
  }
 }
