@@ -131,6 +131,11 @@
    "name": "Active time bonus",
    "icon": "clock",
    "note": "Was set to 0, then deleted"
+  },
+  "VideoCarouselOpenTimesImmersiveDwellWeight": {
+   "name": "Open and keep watching",
+   "icon": "play",
+   "note": "Video row only. Set to 0 for now"
   }
  },
  "days": {
@@ -897,6 +902,41 @@
     "discovery"
    ],
    "hype": 4
+  },
+  "2026-10-29": {
+   "title": "Two new ad placers",
+   "story": "X built two new ways to place ads that keep them away from risky posts. A new video row score is set to 0 for now.",
+   "extra": [
+    [
+     "Ad placement options",
+     null,
+     "2 more added",
+     "new"
+    ],
+    [
+     "Brand safety check v2",
+     "on",
+     "off",
+     "switch"
+    ],
+    [
+     "Feed page logging",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Video row open plus watch time score",
+     null,
+     "added, set to 0",
+     "new"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "video"
+   ],
+   "hype": 3
   }
  }
 }
