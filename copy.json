@@ -136,6 +136,16 @@
    "name": "Open and keep watching",
    "icon": "play",
    "note": "Video row only. Set to 0 for now"
+  },
+  "PostVideoWeight": {
+   "name": "Post a video",
+   "icon": "camera",
+   "note": "Renamed from reply with a video. Set to 0 for now"
+  },
+  "VideoCarouselWeightedScoreWeight": {
+   "name": "Main score in video row",
+   "icon": "play",
+   "note": "Brand new. Set to 0 for now"
   }
  },
  "days": {
@@ -934,6 +944,47 @@
    ],
    "tags": [
     "ads",
+    "video"
+   ],
+   "hype": 3
+  },
+  "2026-10-30": {
+   "title": "Permanent bans get labels",
+   "story": "X's spam enforcer can now mark a suspension as permanent and tag why. The video row got a new score, set to 0.",
+   "extra": [
+    [
+     "Permanent suspension option",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Suspension reason tag",
+     null,
+     "manipulation or child safety",
+     "new"
+    ],
+    [
+     "Reply with a video score",
+     "renamed",
+     "post a video, still 0",
+     "switch"
+    ],
+    [
+     "Video row uses main feed score",
+     null,
+     "added, set to 0",
+     "new"
+    ],
+    [
+     "Extra videos considered for row",
+     "fixed 30",
+     "adjustable, 30",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "safety",
     "video"
    ],
    "hype": 3
