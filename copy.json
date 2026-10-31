@@ -988,6 +988,49 @@
     "video"
    ],
    "hype": 3
+  },
+  "2026-10-31": {
+   "title": "Video row drops risky posts",
+   "story": "The swipe video row now skips posts flagged high risk. Ads switched to a new placer that spreads them out.",
+   "extra": [
+    [
+     "High risk filter on video row",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Ad placer",
+     "multi risk",
+     "slot spread",
+     "switch"
+    ],
+    [
+     "Report shows which posts got labels",
+     null,
+     "added, off by default",
+     "new"
+    ],
+    [
+     "How to appeal a label",
+     null,
+     "shown in report",
+     "new"
+    ],
+    [
+     "Ads learn from late link clicks",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "safety",
+    "video",
+    "ads",
+    "creators"
+   ],
+   "hype": 4
   }
  }
 }
