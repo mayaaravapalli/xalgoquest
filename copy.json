@@ -1031,6 +1031,43 @@
     "creators"
    ],
    "hype": 4
+  },
+  "2026-11-03": {
+   "title": "Ads go back, scores explained",
+   "story": "X switched ads back to the placer that weighs risk. Posts can now show the top reasons behind their score.",
+   "extra": [
+    [
+     "Ad placer",
+     "slot spread",
+     "multi risk",
+     "switch"
+    ],
+    [
+     "Top 3 reasons behind a post's score",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Medium risk filter on video row",
+     null,
+     "added, off by default",
+     "new"
+    ],
+    [
+     "Look up a post's safety labels",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "safety",
+    "video",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
