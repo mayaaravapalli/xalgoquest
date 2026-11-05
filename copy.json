@@ -146,6 +146,11 @@
    "name": "Main score in video row",
    "icon": "play",
    "note": "Brand new. Set to 0 for now"
+  },
+  "GrokAnalyzeWeight": {
+   "name": "Ask Grok to analyze",
+   "icon": "brain",
+   "note": "Brand new. Set to 0 for now"
   }
  },
  "days": {
@@ -1068,6 +1073,90 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-04": {
+   "title": "New Grok analyze score",
+   "story": "X added a score for asking Grok to analyze a post. It is set to 0, so no effect yet.",
+   "extra": [
+    [
+     "Ask Grok to analyze score",
+     null,
+     "added, set to 0",
+     "new"
+    ],
+    [
+     "Safety check data loaders",
+     "old",
+     "rebuilt",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "weights",
+    "tech",
+    "safety"
+   ],
+   "hype": 2
+  },
+  "2026-11-05": {
+   "title": "Likes and shares count more",
+   "story": "Likes and shares now count a bit more, clicks a bit less. X also started predicting video watch and profile visit time.",
+   "extra": [
+    [
+     "Like",
+     "0.66",
+     "0.708",
+     "buff"
+    ],
+    [
+     "Share",
+     "2.0",
+     "2.118",
+     "buff"
+    ],
+    [
+     "Click",
+     "0.3",
+     "0.274",
+     "nerf"
+    ],
+    [
+     "Open a video",
+     "0.02",
+     "0",
+     "gone"
+    ],
+    [
+     "Reading time",
+     "0.006",
+     "0.0075",
+     "buff"
+    ],
+    [
+     "Reading after a click",
+     "0.4",
+     "0.385",
+     "nerf"
+    ],
+    [
+     "Not interested",
+     "-52.272",
+     "-53.07",
+     "harsher"
+    ],
+    [
+     "Video watch and profile visit predictions",
+     "off",
+     "on",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "big",
+    "weights",
+    "video"
+   ],
+   "hype": 5
   }
  }
 }
