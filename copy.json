@@ -151,6 +151,11 @@
    "name": "Ask Grok to analyze",
    "icon": "brain",
    "note": "Brand new. Set to 0 for now"
+  },
+  "VideoCarouselVideoContinuationWeight": {
+   "name": "Keep watching in video row",
+   "icon": "play",
+   "note": "Brand new. Set to 0 for now"
   }
  },
  "days": {
@@ -1157,6 +1162,35 @@
     "video"
    ],
    "hype": 5
+  },
+  "2026-11-06": {
+   "title": "Smarter video row, still off",
+   "story": "X built a way to skip videos you already saw in the video row and a new model to pick them. All off by default.",
+   "extra": [
+    [
+     "Skip videos already seen in the row",
+     "off",
+     "off by default",
+     "new"
+    ],
+    [
+     "Video row picking model",
+     "off",
+     "off by default",
+     "new"
+    ],
+    [
+     "Keep watching time in video row",
+     null,
+     "added, set to 0",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "tech"
+   ],
+   "hype": 2
   }
  }
 }
