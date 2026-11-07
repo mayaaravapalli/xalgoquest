@@ -1191,6 +1191,35 @@
     "tech"
    ],
    "hype": 2
+  },
+  "2026-11-07": {
+   "title": "Video row model picked",
+   "story": "X chose which model will pick videos for the video row. The model itself is still off by default.",
+   "extra": [
+    [
+     "Video row picking model",
+     null,
+     "chosen, still off",
+     "switch"
+    ],
+    [
+     "Search relevance feedback signal",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "How long X remembers ads you saw",
+     "5 min",
+     "5 min, now adjustable",
+     "switch"
+    ]
+   ],
+   "tags": [
+    "video",
+    "tech"
+   ],
+   "hype": 2
   }
  }
 }
