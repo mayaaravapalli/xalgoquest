@@ -156,6 +156,11 @@
    "name": "Keep watching in video row",
    "icon": "play",
    "note": "Brand new. Set to 0 for now"
+  },
+  "VideoCarouselNotInterestedWeight": {
+   "name": "Not interested in video row",
+   "icon": "play",
+   "note": "Brand new. Set to 0 for now"
   }
  },
  "days": {
@@ -1220,6 +1225,42 @@
     "tech"
    ],
    "hype": 2
+  },
+  "2026-11-10": {
+   "title": "Ads spread out more",
+   "story": "X switched how ads get placed in your feed to a new spacing method. A video row thumbs down signal was added, set to 0.",
+   "extra": [
+    [
+     "How ads are placed in your feed",
+     "multi risk",
+     "slot spread",
+     "switch"
+    ],
+    [
+     "Minimum likes for brand new accounts",
+     "off",
+     "tuned, still off",
+     "switch"
+    ],
+    [
+     "Thumbs down in video row",
+     null,
+     "added, set to 0",
+     "new"
+    ],
+    [
+     "Shuffled history post finder",
+     "off",
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "video",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
