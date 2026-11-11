@@ -1261,6 +1261,48 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-11": {
+   "title": "Video row filters on",
+   "story": "The video row now skips videos you already saw and medium risk videos. The row itself is still off by default.",
+   "extra": [
+    [
+     "Skip videos already seen in the row",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Hide medium risk videos in the row",
+     "off",
+     "on",
+     "harsher"
+    ],
+    [
+     "Move feed videos into the video row",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Grok suggested tasks card in feed",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Send post topics to the ranking model",
+     null,
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "safety",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
