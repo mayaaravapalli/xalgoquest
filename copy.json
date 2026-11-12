@@ -1303,6 +1303,48 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-12": {
+   "title": "Grok card remembers dismissals",
+   "story": "The Grok tasks card now remembers when you close it and stays away for a while. It is still off by default.",
+   "extra": [
+    [
+     "Grok tasks card remembers you closed it",
+     null,
+     "added, card still off",
+     "new"
+    ],
+    [
+     "Shuffled history post finder",
+     "off",
+     "removed",
+     "gone"
+    ],
+    [
+     "Index of videos flagged as AI made",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Two more post safety labels (NSFA)",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Training skips some of your last 15 minutes",
+     null,
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "tech",
+    "video",
+    "safety"
+   ],
+   "hype": 2
   }
  }
 }
