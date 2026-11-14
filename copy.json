@@ -1345,6 +1345,36 @@
     "safety"
    ],
    "hype": 2
+  },
+  "2026-11-13": {
+   "title": "Big photo posts checked",
+   "story": "Posts with more than four photos or videos now get every item safety checked, four at a time.",
+   "extra": [
+    [
+     "Safety check for posts with 5+ media",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Following tab ads wait for 5 posts",
+     null,
+     "now a setting, still 5",
+     "switch"
+    ],
+    [
+     "Spread out similar posts in the feed",
+     null,
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "safety",
+    "ads",
+    "tech"
+   ],
+   "hype": 2
   }
  }
 }
