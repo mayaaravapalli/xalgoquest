@@ -1375,6 +1375,36 @@
     "tech"
    ],
    "hype": 2
+  },
+  "2026-11-14": {
+   "title": "Ranker sees your recent feed",
+   "story": "For You now tells the ranking model your last 50 shown posts, so it can avoid repeats and similar posts.",
+   "extra": [
+    [
+     "Send your recently shown posts to the ranker",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Recent posts it looks back on",
+     "200",
+     "50",
+     "switch"
+    ],
+    [
+     "One wide view of 5+ photo posts for safety checks",
+     null,
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "discovery",
+    "tech",
+    "safety"
+   ],
+   "hype": 3
   }
  }
 }
