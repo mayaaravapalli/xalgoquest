@@ -1405,6 +1405,36 @@
     "safety"
    ],
    "hype": 3
+  },
+  "2026-11-17": {
+   "title": "Recent feed check paused",
+   "story": "The ranker stops seeing your recently shown posts again. Ad amounts based on how active you are is built but off by default.",
+   "extra": [
+    [
+     "Send your recently shown posts to the ranker",
+     "on",
+     "off",
+     "switch"
+    ],
+    [
+     "Fewer ads based on how active you are (not Premium)",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Ads only test timeline",
+     null,
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "discovery",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
