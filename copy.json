@@ -1435,6 +1435,43 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-18": {
+   "title": "Copy link now counts",
+   "story": "Copying a post's link used to be worth nothing. Now it is one of the biggest signals that lifts a post.",
+   "extra": [
+    [
+     "Ads adjusted by how good your feed page is",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Separate tuning for posts from people you follow and from others",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Save a second model's scores for some feeds",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Abuse checks can skip X test accounts",
+     null,
+     "added, list empty by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "big",
+    "weights",
+    "ads",
+    "tech"
+   ],
+   "hype": 5
   }
  }
 }
