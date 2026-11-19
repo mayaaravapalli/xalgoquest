@@ -1472,6 +1472,48 @@
     "tech"
    ],
    "hype": 5
+  },
+  "2026-11-19": {
+   "title": "Muted words quiet mentions",
+   "story": "Mentions with words you muted no longer notify you. Flagging posts that push for replies is built, off by default.",
+   "extra": [
+    [
+     "Muted words block mention notifications",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Save model scores for posts you were shown",
+     "off",
+     "on",
+     "switch"
+    ],
+    [
+     "Tell the ranker which posts are labeled as pushing for replies, shares or clicks",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Space ads evenly when you get fewer of them",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Abuse rules for very large accounts need a double confirmation",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "safety",
+    "ads",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
