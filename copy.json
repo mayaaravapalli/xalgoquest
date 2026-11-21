@@ -1563,6 +1563,60 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-21": {
+   "title": "Popular video pool built",
+   "story": "A new pool collects videos from the last 2 days with 10,000 views and 100 likes. Yesterday's watch time change was undone.",
+   "extra": [
+    [
+     "Pool of popular videos from the last 2 days",
+     null,
+     "needs 10,000 views and 100 likes",
+     "new"
+    ],
+    [
+     "Predicted video watch time counts as time spent in one scoring mode",
+     "changed",
+     "undone",
+     "gone"
+    ],
+    [
+     "Ignore reply, share or click predictions on posts labeled as pushing for them",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Fill the video row only from its extra video source",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Show the feed's behind the scenes view only to people who turned it on",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "AI video picks counted as their own source",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Abuse rules on a post can pick a permanent ban and a reason for its author",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "safety",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
