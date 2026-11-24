@@ -1617,6 +1617,72 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-24": {
+   "title": "Popular videos get wired in",
+   "story": "The popular video pool can now feed the video row, off by default. Abuse checks skip replies you were tagged into.",
+   "extra": [
+    [
+     "Popular video pool feeds the video row",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Fill the video row only from popular videos",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Popular videos fetched for the video row",
+     null,
+     "up to 100",
+     "new"
+    ],
+    [
+     "Popular pool videos show only in the video row, not the main feed",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "How long saved model scores are kept",
+     "50 minutes",
+     "3 hours",
+     "switch"
+    ],
+    [
+     "Saved model scores now cover later pages of your feed",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Abuse rules skip a reply when the post it answers tagged the replier",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Abuse rules skip a reply when the post it answers can't be read",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "New control layer for delivering ranking model updates",
+     null,
+     "added",
+     "new"
+    ]
+   ],
+   "tags": [
+    "video",
+    "safety",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
