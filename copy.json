@@ -1683,6 +1683,72 @@
     "tech"
    ],
    "hype": 3
+  },
+  "2026-11-25": {
+   "title": "Grok Black Friday card",
+   "story": "A Grok Black Friday card can now sit in your For You feed, off by default. The ranking model gets new training tools.",
+   "extra": [
+    [
+     "Grok Black Friday card in the For You feed",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "When on, it takes the place of the Grok suggested tasks card",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Wait before the Black Friday card shows again",
+     null,
+     "6 hours",
+     "new"
+    ],
+    [
+     "Limit on who gets the feed's behind the scenes view",
+     null,
+     "off by default",
+     "new"
+    ],
+    [
+     "Behind the scenes view skips background refreshes",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Video row only posts no longer take saved spots from the main feed",
+     null,
+     "up to 30 saved on the side",
+     "new"
+    ],
+    [
+     "Training tool that adjusts predictions for how much each person usually engages",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "Training data can include notification history and not interested taps",
+     null,
+     "added",
+     "new"
+    ],
+    [
+     "New way to train the time spent prediction",
+     null,
+     "off by default",
+     "new"
+    ]
+   ],
+   "tags": [
+    "ads",
+    "video",
+    "tech"
+   ],
+   "hype": 3
   }
  }
 }
